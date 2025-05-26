@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "lib": ["es2016"]
+  },
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
+}
