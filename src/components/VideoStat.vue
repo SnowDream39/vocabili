@@ -8,23 +8,34 @@
       :label="column.label"
       :prop="column.key"
     />
+    <el-table-column
+      key="operation"
+      label="计算器"
+    >
+      <template #default="{ row }">
+          <el-button
+            type="primary"
+            size="small"
+            :icon="InfoFilled"
+            @click="showCalculator(row)"
+          />
+        </template>
+    </el-table-column>
   </el-table>
-  <el-button type="primary" v-if="haveTodayStat" @click="showCalculator" >显示计算器</el-button>
   <el-dialog v-model="calculatorVisible" >
-    <Calculator v-bind="form"/>
+    <Calculator v-bind="form" :key="form.board.issue"/>
   </el-dialog>
 </template>
 
 <script lang="ts" setup>
 import axios from 'axios'
-import { computed, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { requester } from '../utils/requester';
 import { DateTime } from 'luxon';
 import Board, { currentIssue } from '../utils/board';
+import { InfoFilled } from '@element-plus/icons-vue'
 
-const calculatorVisible = ref(false)
-const haveTodayStat = ref(false)
-
+const props = defineProps(['bvid','songId','videoId','copyright','upload'])
 
 interface Count {
   view: number,
@@ -32,7 +43,6 @@ interface Count {
   coin: number,
   like: number  
 }
-
 
 const columns = [
   {key: "name", label: "数据"},
@@ -42,41 +52,11 @@ const columns = [
   {key: "like", label: "点赞"},
 ]
 
-const props = defineProps(['bvid','songId','videoId','copyright'])
-const lastStat = ref<Count>({
-  view: 0,
-  favorite: 0,
-  coin: 0,
-  like: 0
-})
-const stat = ref<any>()
+const stat = ref<any[]>()
+const form = ref<any>()
+const calculatorVisible = ref(false)
 
-const currentStat = ref({
-  view: 0,
-  favorite: 0,
-  coin: 0,
-  like: 0
-})
-
-const form = computed(() => {
-
-  return {
-    ...todayChange.value,
-    copyright: props.copyright,
-    board: new Board('vocaloid-daily', currentIssue.daily)
-  }
-})
-
-
-const todayChange = computed(() => {
-  return {
-    view: currentStat.value.view - lastStat.value.view,
-    favorite: currentStat.value.favorite - lastStat.value.favorite,
-    coin: currentStat.value.coin - lastStat.value.coin,
-    like: currentStat.value.like - lastStat.value.like,
-  }
-})
-
+// ==================== 函数 =============================
 
 async function get_video_data(bvid: string) {
   const response = await axios.get('https://api.vocabili.top/bilibili/get-video/', {
@@ -86,34 +66,78 @@ async function get_video_data(bvid: string) {
   return response.data
 }
 
-
-async function init() {
-  let data = await get_video_data(props.bvid)
-  const {view,favorite,coin,like} = data.stat
-  currentStat.value = {view,favorite,coin,like}
-  data = (await requester.get_video_stat_history(props.videoId, 1, 1, "newset")).result.slice(-1)[0]
-  if (data.date == DateTime.local().toFormat('yyyy-MM-dd')) {
-    haveTodayStat.value = true
-    lastStat.value = data.count
-    stat.value = [
-      { name:'当前数据', ...currentStat.value},
-      { name:'昨日数据', ...lastStat.value},
-      { name:'今日增长', ...todayChange.value}
-    ]
-  } else {
-    haveTodayStat.value = false
-    stat.value = [
-      { name:'当前数据', ...currentStat.value},
-    ]
+function difference(currentStat: Count, lastStat: Count): Count {
+  return {
+    view: currentStat.view - lastStat.view,
+    favorite: currentStat.favorite - lastStat.favorite,
+    coin: currentStat.coin - lastStat.coin,
+    like: currentStat.like - lastStat.like,
   }
-  console.log(data.date)
-  console.log(stat.value)
-
-
 }
 
-function showCalculator() {
+
+async function init() {
+  stat.value = []
+  const uploadTime = DateTime.fromFormat(props.upload, 'yyyy-MM-dd HH:mm:ss')
+  const today = DateTime.local().startOf('day')
+
+  // 当前数据
+  let data = await get_video_data(props.bvid)
+  const {view,favorite,coin,like} = data.stat
+  const currentStat = {view,favorite,coin,like}
+  stat.value.push(
+    { name:'当前数据', board:'monthly', ...currentStat},
+  )
+
+  // 0时数据
+  data = (await requester.get_video_stat_history(props.videoId, 1, 1, "newset")).result.slice(-1)[0]
+  let settings = []
+
+  if (data.date == DateTime.local().toFormat('yyyy-MM-dd')) {
+    //  今天有数据
+    settings.push(
+      { name:'今日增长', sinceTime: today, board: 'daily', days: 1},
+      { name:'本周增长', sinceTime: today.minus({days: (today.weekday-6+7)%7}), board: 'weekly', days: (DateTime.local().weekday -5+7)%7},
+      { name:'本月增长', sinceTime: today.minus({days: today.day-1}), board: 'monthly', days: (DateTime.local().day)}
+    )
+  } else {
+    //  今天没有数据，这意味着API获取的数据是多退了一天的，所以需要减去1天
+    if ( DateTime.local().weekday == 6) {
+      // 今天是周六，没有周六数据，那就不要本周数据
+    } else {
+      settings.push({ name:'本周增长', sinceTime: today.minus({days: (today.weekday-6+7)%7}), board: 'weekly', days: (DateTime.local().weekday -6+7)%7})
+    }
+
+    if ( DateTime.local().day == 1) {
+      // 今天是1号，没有1号数据，那就不要本月数据
+    } else {
+      settings.push({ name:'本月增长', sinceTime: today.minus({days: today.day-1}), board: 'monthly', days: (DateTime.local().day -1)})
+    }
+  }
+  for (const setting of settings) { 
+    data = (await requester.get_video_stat_history(props.videoId, 1, setting.days, 'newset')).result.slice(-1)
+    if (data.length) { 
+      const lastStat: Count = data[0].count
+      const change = difference(currentStat, lastStat)
+      stat.value.push({ name: setting.name, board: setting.board, ...change })
+    } else {
+      // 说明那个时候歌曲尚未投稿或者未收录。验证一下投稿日期
+      if (uploadTime.toMillis() > setting.sinceTime.toMillis()) {
+        stat.value.push({ name: setting.name, board: setting.board, ...currentStat })
+      }
+    }
+  }
+}
+
+function showCalculator(row: any) {
+  console.log(row)
+  const {coin, favorite, like, view} = row
   calculatorVisible.value = true
+  form.value = {
+    view, favorite, coin, like,
+    copyright: props.copyright,
+    board: new Board(`vocaloid-${row.board}`, currentIssue[row.board as keyof typeof currentIssue])
+  }
 }
 
 

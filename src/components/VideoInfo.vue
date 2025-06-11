@@ -22,6 +22,7 @@
     :songId="song.id" 
     :videoId="video.id" 
     :copyright="video.copyright"
+    :upload="video.upload"
   />
 </el-dialog>
 </template>
