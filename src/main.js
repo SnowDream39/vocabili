@@ -22,7 +22,7 @@ app.mount('#app');
 app.config.errorHandler = (err, instance, info) => {  
   console.error('Vue Error:', err)
   ElMessage({
-    message: info + ": " + err.message,
+    message: err.message,
     type: 'error',
     duration: 3000, // 3秒后自动消失
     showClose: true
