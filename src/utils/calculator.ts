@@ -45,7 +45,7 @@ export class Calculator {
         this.favoriteR = favorite*20 + view <=0 ? 0 : Math.min(20, Math.ceil( favorite * 20 / (favorite * 20 + view) * 40 * 100) / 100)
         this.coinR = coin <= 0 ? 0 : Math.min(40, Math.ceil((coin * 100 + view) / (coin * 100) * 10 * 100) / 100)
         this.likeR = like * 20 + view <=0 ? 0 : Math.floor((( coin + favorite ) * 100 ) / (like * 20 + view) * 100) / 100
-        
+
         this.fixA = 1.0
         this.fixB = 1.0
         this.fixC = 1.0
@@ -73,7 +73,7 @@ export class Calculator {
         this.coinP = Math.round(coin * this.coinR)
         this.likeP = Math.round(like * this.likeR)
         this.point = Math.round(this.viewP + this.favoriteP + this.coinP + this.likeP)
-      } else if ((board.section === 'daily' && board.issue >= 123 && board.issue <= 346) || (board.section === 'weekly' && board.issue <= 40)) {
+      } else if ((board.section === 'daily' && board.issue >= 123 && board.issue <= 346) || (board.section === 'weekly' && board.issue <= 41)) {
         coin = (coin === 0 && view > 0 && favorite > 0 && like > 0) ? 1 : coin
         this.fixA = coin <= 0 ? 0 : (copyright === 1 ? 1 : Math.ceil(Math.max(1, (view + 20 * favorite + 40 * coin + 10 * like) / (200 * coin)) * 100) / 100)
         const fixA = this.fixA
@@ -91,7 +91,7 @@ export class Calculator {
         this.coinP = Math.round(coin * this.coinR * this.fixA)
         this.likeP = Math.round(like * this.likeR)
         this.point = Math.round(Math.round(this.viewP + this.favoriteP + this.coinP + this.likeP) * this.fixB * this.fixC)
-    } else if ((board.section === 'daily' && board.issue >= 347 ) || (board.section === 'weekly' && board.issue >= 41)) {
+    } else if ((board.section === 'daily' && board.issue >= 347 ) || (board.section === 'weekly' && board.issue >= 42)) {
       coin = (coin === 0 && view > 0 && favorite > 0 && like > 0) ? 1 : coin
       this.fixA = coin <= 0 ? 0 : (copyright === 1 ? 1 : Math.ceil(Math.max(1, (view + 20 * favorite + 40 * coin + 10 * like) / (200 * coin)) * 100) / 100)
       const fixA = this.fixA
