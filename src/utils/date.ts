@@ -4,7 +4,7 @@
  */
 
 import { DateTime } from 'luxon'
-import { type Section } from './board'
+import { type BasicSection } from './board'
 
 /**
  * 计算一个时间之前截止的那一期。
@@ -37,7 +37,7 @@ export function issueNow(date?: DateTime) {
 /**
  *  获取 issue 对应的开始时间
  */
-export function startTimeOf(issue: number, section: Section) {
+export function startTimeOf(issue: number, section: BasicSection) {
   if (section === 'daily') {
     return DateTime.local(2024,7,2).plus({days: issue})
   } else if (section === 'weekly') {
@@ -51,7 +51,7 @@ export function startTimeOf(issue: number, section: Section) {
  *  获取 issue 对应的结束时间。
  *  也就是下一个 issue 的开始时间。中间不设空隙。
  */
-export function endTimeOf(issue: number, section: Section) {
+export function endTimeOf(issue: number, section: BasicSection) {
   if (section === 'daily') {
     return DateTime.local(2024,7,3).plus({days: issue})
   } else if (section === 'weekly') {

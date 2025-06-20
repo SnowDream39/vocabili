@@ -4,9 +4,14 @@
 import { DateTime } from 'luxon'
 import { endTimeOf, issueBefore, startTimeOf } from './date'
 
-export type Section = 'daily' | 'weekly' | 'monthly'
+export type Section = 'daily' | 'weekly' | 'monthly' | 'special'
+export type BasicSection = 'daily' | 'weekly' | 'monthly'
 
+const basicSections = ['daily', 'weekly', 'monthly'] as const
 
+function isBasicSection(section: Section): section is BasicSection {
+  return basicSections.includes(section as BasicSection);
+}
 
 // 现在时间已经过了哪一期的截止时间。
 export const currentIssue = issueBefore()
@@ -34,11 +39,19 @@ export default class Board {
   get fullId(): string {
     return [this.name, this.section, this.part].join('-');
   }
-  get startTime(): DateTime {
-    return startTimeOf(this.issue, this.section)
+  get startTime(): DateTime | null {
+    if (isBasicSection(this.section)) {
+      return startTimeOf(this.issue, this.section)
+    } else {
+      return null
+    }
   }
-  get endTime(): DateTime {
-    return endTimeOf(this.issue, this.section)
+  get endTime(): DateTime | null {
+    if(isBasicSection(this.section)) {
+      return endTimeOf(this.issue, this.section)
+    } else {
+      return null
+    }
   }
 
   getBoardName() {

@@ -31,9 +31,10 @@
 import axios from 'axios'
 import { onMounted, ref } from 'vue';
 import { requester } from '../utils/requester';
-import { DateTime } from 'luxon';
-import Board, { currentIssue } from '../utils/board';
+
+import Board, { currentIssue, type BasicSection } from '../utils/board';
 import { InfoFilled } from '@element-plus/icons-vue'
+import { issueNow, startTimeOf } from '../utils/date';
 
 const props = defineProps(['bvid','songId','videoId','copyright','upload'])
 
@@ -75,13 +76,26 @@ function difference(currentStat: Count, lastStat: Count): Count {
   }
 }
 
+function searchData(historyData: {date: string, count: Count}[], section: BasicSection): Count | null {
+  // history 里面的日期是那天0点数据的意思
+  const date = startTimeOf(issueNow()[section], section)
+  if (date.isValid) {
+    const data = historyData.find((item: any) => item.date === date.toFormat('yyyy-MM-dd'))
+    if (data) {
+      return data.count
+    }
+    return null
+  } else {
+    throw new Error(`Invalid DateTime: ${date.invalidExplanation || "Unknown reason"}`);
+  }
+}
+
+
 /*
  *
  */
 async function init() {
   stat.value = []
-  const uploadTime = DateTime.fromFormat(props.upload, 'yyyy-MM-dd HH:mm:ss')
-  const today = DateTime.local().startOf('day')
 
   // 当前数据
   let data = await get_video_data(props.bvid)
@@ -91,42 +105,22 @@ async function init() {
     { name:'当前数据', board:'monthly', ...currentStat},
   )
 
-  // 0时数据
-  data = (await requester.get_video_stat_history(props.videoId, 1, 1, "newset")).result.slice(-1)[0]
-  let settings = []
+  // 一些历史数据，等一下找一点出来
+  const historyData = await requester.get_video_stat_history(props.videoId, 31, 1, "newset")
 
-  if (data.date == DateTime.local().toFormat('yyyy-MM-dd')) {
-    //  今天有数据
-    settings.push(
-      { name:'今日增长', sinceTime: today, board: 'daily', days: 1},
-      { name:'本周增长', sinceTime: today.minus({days: (today.weekday-6+7)%7}), board: 'weekly', days: (DateTime.local().weekday -5+7)%7},
-      { name:'本月增长', sinceTime: today.minus({days: today.day-1}), board: 'monthly', days: (DateTime.local().day)}
-    )
-  } else {
-    //  今天没有数据，这意味着API获取的数据是多退了一天的，所以需要减去1天
-    if ( DateTime.local().weekday == 6) {
-      // 今天是周六，没有周六数据，那就不要本周数据
-    } else {
-      settings.push({ name:'本周增长', sinceTime: today.minus({days: (today.weekday-6+7)%7}), board: 'weekly', days: (DateTime.local().weekday -6+7)%7})
-    }
+  const settings = [
+    { name:'今日增长', section: 'daily'},
+    { name:'本周增长', section: 'weekly'},
+    { name:'本月增长', section: 'monthly'}
+  ]
 
-    if ( DateTime.local().day == 1) {
-      // 今天是1号，没有1号数据，那就不要本月数据
-    } else {
-      settings.push({ name:'本月增长', sinceTime: today.minus({days: today.day-1}), board: 'monthly', days: (DateTime.local().day -1)})
-    }
-  }
   for (const setting of settings) {
-    data = (await requester.get_video_stat_history(props.videoId, 1, setting.days, 'newset')).result.slice(-1)
-    if (data.length) {
-      const lastStat: Count = data[0].count
+    // 有数据就算，没有就不算。
+    const lastStat = searchData(historyData.result, setting.section as BasicSection)
+
+    if (lastStat) {
       const change = difference(currentStat, lastStat)
-      stat.value.push({ name: setting.name, board: setting.board, ...change })
-    } else {
-      // 说明那个时候歌曲尚未投稿或者未收录。验证一下投稿日期
-      if (uploadTime.toMillis() > setting.sinceTime.toMillis()) {
-        stat.value.push({ name: setting.name, board: setting.board, ...currentStat })
-      }
+      stat.value.push({ name: setting.name, board: setting.section, ...change })
     }
   }
 }
