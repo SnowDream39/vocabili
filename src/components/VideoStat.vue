@@ -35,6 +35,7 @@ import { requester } from '../utils/requester';
 import Board, { currentIssue, type BasicSection } from '../utils/board';
 import { InfoFilled } from '@element-plus/icons-vue'
 import { issueNow, startTimeOf } from '../utils/date';
+import { DateTime } from 'luxon';
 
 const props = defineProps(['bvid','songId','videoId','copyright','upload'])
 
@@ -95,6 +96,7 @@ function searchData(historyData: {date: string, count: Count}[], section: BasicS
  *
  */
 async function init() {
+  const publishTime = DateTime.fromFormat(props.upload, 'yyyy-MM-dd hh:mm:ss')
   stat.value = []
 
   // 当前数据
@@ -112,15 +114,21 @@ async function init() {
     { name:'今日增长', section: 'daily'},
     { name:'本周增长', section: 'weekly'},
     { name:'本月增长', section: 'monthly'}
-  ]
+  ] as {name: string, section: BasicSection}[]
 
   for (const setting of settings) {
-    // 有数据就算，没有就不算。
-    const lastStat = searchData(historyData.result, setting.section as BasicSection)
+    const startTime = startTimeOf(issueNow()[setting.section], setting.section)
 
-    if (lastStat) {
-      const change = difference(currentStat, lastStat)
-      stat.value.push({ name: setting.name, board: setting.section, ...change })
+    if (startTime.toMillis() > publishTime.toMillis() ) {
+      // 有数据就算，没有就不算。
+      const lastStat = searchData(historyData.result, setting.section as BasicSection)
+
+      if (lastStat) {
+        const change = difference(currentStat, lastStat)
+        stat.value.push({ name: setting.name, board: setting.section, ...change })
+      }
+    } else {
+      stat.value.push({ name: setting.name, board: setting.section, ...currentStat })
     }
   }
 }
