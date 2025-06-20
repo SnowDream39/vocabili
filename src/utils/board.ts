@@ -2,23 +2,25 @@
  * 全部整合到Board对象。
  */
 import { DateTime } from 'luxon'
+import { endTimeOf, issueBefore, startTimeOf } from './date'
 
-export const currentIssue = {
-  daily: Math.floor(DateTime.local().diff(DateTime.local(2024,7,2), 'days').toObject().days!) ,
-  weekly: Math.floor(DateTime.local().diff(DateTime.local(2024,9,7), 'weeks').toObject().weeks!) ,
-  monthly: Math.floor(DateTime.local().diff(DateTime.local(2024,7,1), 'months').toObject().months!) ,
-}
+export type Section = 'daily' | 'weekly' | 'monthly'
+
+
+
+// 现在时间已经过了哪一期的截止时间。
+export const currentIssue = issueBefore()
 
 export default class Board {
   name: string = 'vocaloid'
-  section: string = 'daily'
+  section: Section = 'daily'
   part: string = 'main'
   issue: number = -1
 
   constructor(boardId: string, issue?: number) {
     const items = boardId.split('-', 3)
     this.name = items[0]
-    this.section = items[1]
+    this.section = items[1] as Section
     if (items.length === 3){
       this.part = items[2]
     } else {
@@ -32,6 +34,13 @@ export default class Board {
   get fullId(): string {
     return [this.name, this.section, this.part].join('-');
   }
+  get startTime(): DateTime {
+    return startTimeOf(this.issue, this.section)
+  }
+  get endTime(): DateTime {
+    return endTimeOf(this.issue, this.section)
+  }
+
   getBoardName() {
     const issueNum = this.issue
     if (this.section === 'daily'){

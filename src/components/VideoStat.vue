@@ -2,9 +2,9 @@
   <el-table
     :data="stat"
   >
-    <el-table-column 
-      v-for="column in columns" 
-      :key="column.key" 
+    <el-table-column
+      v-for="column in columns"
+      :key="column.key"
       :label="column.label"
       :prop="column.key"
     />
@@ -41,7 +41,7 @@ interface Count {
   view: number,
   favorite: number,
   coin: number,
-  like: number  
+  like: number
 }
 
 const columns = [
@@ -61,7 +61,7 @@ const calculatorVisible = ref(false)
 async function get_video_data(bvid: string) {
   const response = await axios.get('https://api.vocabili.top/bilibili/get-video/', {
     params: { bvid },
-    
+
   })
   return response.data
 }
@@ -75,7 +75,9 @@ function difference(currentStat: Count, lastStat: Count): Count {
   }
 }
 
-
+/*
+ *
+ */
 async function init() {
   stat.value = []
   const uploadTime = DateTime.fromFormat(props.upload, 'yyyy-MM-dd HH:mm:ss')
@@ -114,9 +116,9 @@ async function init() {
       settings.push({ name:'本月增长', sinceTime: today.minus({days: today.day-1}), board: 'monthly', days: (DateTime.local().day -1)})
     }
   }
-  for (const setting of settings) { 
+  for (const setting of settings) {
     data = (await requester.get_video_stat_history(props.videoId, 1, setting.days, 'newset')).result.slice(-1)
-    if (data.length) { 
+    if (data.length) {
       const lastStat: Count = data[0].count
       const change = difference(currentStat, lastStat)
       stat.value.push({ name: setting.name, board: setting.board, ...change })

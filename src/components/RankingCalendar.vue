@@ -40,6 +40,9 @@ import Board from '../utils/board';
 
 const today = ref(DateTime.local().plus({days: -2}))
 
+/**
+ * 最新一期是哪天的
+ */
 async function getToday() {
   const firstDate = DateTime.local(2024,7,2)
   const data = await requester.get_board(new Board("vocaloid-daily-main"), undefined, 1)
@@ -57,7 +60,7 @@ watch(today, () => {
   while (currentMonth <= today.value) {
     // 月末日期
     const startOfMonth = currentMonth.set({});
-    const endOfMonth = currentMonth.endOf('month');
+    const endOfMonth = currentMonth.endOf('month');  // 是下一个月的前一毫秒
 
     const month = {
       dateString: currentMonth.toFormat('yyyy-MM'),
@@ -67,16 +70,16 @@ watch(today, () => {
     }
 
     let currentWeek = startOfMonth.startOf('week');
-    
+
     // 确保只处理当月的日期
     while (currentWeek <= DateTime.min(endOfMonth, today.value)) {
       const startOfWeek = currentWeek.startOf('week');
-      const endOfWeek = currentWeek.endOf('week');
+      const endOfWeek = currentWeek.endOf('week');  // 是下周的前一毫秒
 
       const week = {
         dateString: currentWeek.toFormat('EEE'),
         issueNum: Math.ceil(currentWeek.diff(DateTime.local(2024, 8, 31)).as('weeks')),
-        disabled: endOfWeek.plus({ days: -1 }) > today.value || endOfWeek < DateTime.local(2024, 9, 7),
+        disabled: endOfWeek.plus({ days: -2 }) > today.value || endOfWeek < DateTime.local(2024, 9, 7),
         days: []
       }
 
@@ -145,7 +148,7 @@ onMounted(init)
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: rgba(250,250,250,0.5); 
+  background-color: rgba(250,250,250,0.5);
   border-radius: 12px; /* 圆角边框 */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 轻微阴影，增加层次感 */
 }
@@ -237,7 +240,7 @@ onMounted(init)
 
   color: #333;
   cursor: pointer;
-  
+
   &:hover {
     background-color: #e1e1e1;
   }
