@@ -1,6 +1,6 @@
 <template>
   <!-- <SideAdvertisement/> -->
-  <Header/>
+  <Navigator/>
   <main>
     <router-view />
   </main>
@@ -9,6 +9,7 @@
 </template>
 
 <script setup>
+import Navigator from './components/Navigator.vue';
 import ScrollToTop from './components/ScrollToTop.vue';
 import SideAdvertisement from './components/SideAdvertisement.vue';
 

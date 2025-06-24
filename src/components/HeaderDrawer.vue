@@ -8,31 +8,17 @@
       <span @click="router.push('/search')" id="search-mobile">
         🔍
       </span>
-
-      <ul>
-        <li @click="router.push('/search')" id="search-vpoll">
-          <el-icon>
-            <component :is="Search" />
-          </el-icon>
-        </li>
-        <li @click="router.push('/board/vocaloid-daily-main/')">日刊</li>
-        <li @click="router.push('/board/vocaloid-weekly-main/')">周刊</li>
-        <li @click="router.push('/board/vocaloid-monthly-main/')">月刊</li>
-        <li @click="router.push('/board/vocaloid-special')">特刊</li>
-        <li @click="router.push('/pool')">统计</li>
-        <li @click="router.push('/about')">关于</li>
-      </ul>
     </nav>
     <el-drawer direction="ltr" v-model="asideVisible" :with-header="false" style="background: rgba(255,255,255,0.2);backdrop-filter: blur(12px);">
       <aside>
         <ul>
-          <li @click="router.push('/')">首页</li>
-          <li @click="router.push('/board/vocaloid-daily-main/')">日刊</li>
-          <li @click="router.push('/board/vocaloid-weekly-main/')">周刊</li>
-          <li @click="router.push('/board/vocaloid-monthly-main/')">月刊</li>
-          <li @click="router.push('/board/vocaloid-special')">特刊</li>
-          <li @click="router.push('/pool')">统计</li>
-          <li @click="router.push('/about')">关于</li>
+          <li @click="jump('/user')">用户</li>
+          <li @click="jump('/board/vocaloid-daily-main/')">日刊</li>
+          <li @click="jump('/board/vocaloid-weekly-main/')">周刊</li>
+          <li @click="jump('/board/vocaloid-monthly-main/')">月刊</li>
+          <li @click="jump('/board/vocaloid-special')">特刊</li>
+          <li @click="jump('/pool')">统计</li>
+          <li @click="jump('/about')">关于</li>
         </ul>
       </aside>
     </el-drawer>
@@ -40,22 +26,20 @@
   </header>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import router from '../router/index.ts'
-import { Search } from '@element-plus/icons-vue'
-import { Menu } from '@element-plus/icons-vue' // 菜单图标
 
 const asideVisible = ref(false)
 
 function logoClicked() {
-  if(document.documentElement.clientWidth > 630) {
-    router.push('/')
-  } else {
-    asideVisible.value = !asideVisible.value
-  }
+  asideVisible.value = !asideVisible.value
 }
 
+function jump(address: string) {
+  router.push(address)
+  asideVisible.value = false
+}
 
 </script>
 
@@ -85,9 +69,9 @@ nav {
 
   #logoheader {
     font-family: 'Arial', sans-serif; /* 使用现代无衬线字体 */
-    font-size: 24px; 
-    font-weight: bold; 
-    color: #fcfcfc; 
+    font-size: 24px;
+    font-weight: bold;
+    color: #fcfcfc;
     padding: 10px 20px; /* 内边距 */
     display: inline flex;
     height: 50px;
@@ -156,7 +140,7 @@ aside ul {
   li {
     padding: 10px 10px;
     border-radius: 10px;
-    cursor: pointer; 
+    cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease; /* 添加平滑过渡 */
   }
 
@@ -187,7 +171,6 @@ aside ul {
 }
 
 
-@media (max-width: 630px) {
   nav {
   display: inline flex;
   flex-direction: row;
@@ -205,9 +188,9 @@ aside ul {
   align-items: center;
   margin: 0 auto;
   font-family: 'Arial', sans-serif; /* 使用现代无衬线字体 */
-  font-size: 25px; 
-  font-weight: bold; 
-  color: #fcfcfc; 
+  font-size: 25px;
+  font-weight: bold;
+  color: #fcfcfc;
   padding: 10px 10px; /* 内边距 */
   transform: translateX(20px);
 }
@@ -226,16 +209,6 @@ aside ul {
     order: 1; /* 强制最左侧 */
     transform: translateX(-5px); /* 微调对齐 */
   }
-}
 
 
-  @media (min-width: 631px) {
-  // 这里添加宽度大于630px时的样式
-  #menu-button {
-    display: none; // 在大屏幕上隐藏菜单按钮
-  }
-  #search-mobile {
-    display: none; // 在大屏幕上隐藏搜索按钮
-  }
-}
 </style>
