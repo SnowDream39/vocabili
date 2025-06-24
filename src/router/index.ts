@@ -15,6 +15,7 @@ const routes = [
   { path: '/search', component: Search },
   { path: '/artist/:type/:id', component: Artist } ,
   { path: '/pool', component: Pool },
+  { path: '/user', component: () => import('../views/User.vue')},
   { path: '/:pathMatch(.*)*', redirect: '/' },
 ]
 

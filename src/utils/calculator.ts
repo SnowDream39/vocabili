@@ -33,7 +33,6 @@ export class Calculator {
 
 
   constructor(count: Count, copyright: number, board: Board) {
-    console.log(board)
     this.count = count
     const view = count.view
     const favorite = count.favorite

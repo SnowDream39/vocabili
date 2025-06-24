@@ -134,7 +134,6 @@ async function init() {
 }
 
 function showCalculator(row: any) {
-  console.log(row)
   const {coin, favorite, like, view} = row
   calculatorVisible.value = true
   form.value = {
