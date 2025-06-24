@@ -9,7 +9,7 @@ import { onMounted, ref } from 'vue';
 import HeaderMenu from './HeaderMenu.vue';
 import HeaderDrawer from './HeaderDrawer.vue';
 
-const isDesktop = ref(true)
+const isDesktop = ref(window.innerWidth > 768)
 
 onMounted(() => {
 

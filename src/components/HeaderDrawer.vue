@@ -9,6 +9,7 @@
         🔍
       </span>
     </nav>
+  </header>
     <el-drawer direction="ltr" v-model="asideVisible" :with-header="false" style="background: rgba(255,255,255,0.2);backdrop-filter: blur(12px);">
       <aside>
         <ul>
@@ -23,7 +24,6 @@
       </aside>
     </el-drawer>
 
-  </header>
 </template>
 
 <script setup lang="ts">
@@ -47,7 +47,6 @@ function jump(address: string) {
 
 
 header {
-  position: fixed;
   top: 0;
   left: 0;
   z-index: 1000;

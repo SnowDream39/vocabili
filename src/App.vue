@@ -1,7 +1,7 @@
 <template>
   <el-config-provider :locale="zhCn">
     <!-- <SideAdvertisement/> -->
-    <Navigator/>
+    <Header/>
     <main>
       <router-view />
     </main>
@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-import Navigator from './components/Navigator.vue';
+import Header from './components/Header.vue';
 import ScrollToTop from './components/ScrollToTop.vue';
 import SideAdvertisement from './components/SideAdvertisement.vue';
 import { ElConfigProvider } from 'element-plus'
