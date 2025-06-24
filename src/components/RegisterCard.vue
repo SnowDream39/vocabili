@@ -27,7 +27,6 @@
 
 <script setup>
 import { reactive, ref } from 'vue'
-import { ElMessage } from 'element-plus'
 import axios from 'axios'
 
 const form = reactive({

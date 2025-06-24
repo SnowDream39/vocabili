@@ -1,10 +1,10 @@
 <template>
   <div class="special-selector__inner">
-    <el-select 
-      v-model="issueInfo" 
+    <el-select
+      v-model="issueInfo"
       value-key="name"
-      placeholder="特刊" 
-      @change="issueChanged" 
+      placeholder="特刊"
+      @change="issueChanged"
       style="width: 70%;"
     >
       <el-option
@@ -15,9 +15,9 @@
       >{{ item.name }}</el-option>
     </el-select>
     <el-select
-      v-model="part" 
-      placeholder="子榜" 
-      @change="issueChanged" 
+      v-model="part"
+      placeholder="子榜"
+      @change="issueChanged"
       style="width: 20%;">
       <el-option
         v-if="issueInfo"

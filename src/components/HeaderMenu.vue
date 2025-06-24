@@ -16,7 +16,7 @@
         /><span>术力口数据库</span>
       </span>
     </el-menu-item>
-    <el-sub-menu>
+    <el-sub-menu index="">
       <template #title>排行</template>
       <el-menu-item index="/board/vocaloid-daily-main">日刊</el-menu-item>
       <el-menu-item index="/board/vocaloid-weekly-main">周刊</el-menu-item>
@@ -41,7 +41,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import router from '../router'
-import { ElMenu } from 'element-plus'
 import { Search, User } from '@element-plus/icons-vue'
 
 const activeIndex = ref('1')

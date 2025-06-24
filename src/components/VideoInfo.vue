@@ -13,14 +13,14 @@
 <el-dialog
   title="最新数据"
   v-model="statVisible"
-  append-to-body 
+  append-to-body
   :modal-append-to-body="false"
   custom-class="video-stats-modal"
   >
-  <VideoStat 
-    :bvid="video.link.split('/').slice(-1)[0]" 
-    :songId="song.id" 
-    :videoId="video.id" 
+  <VideoStat
+    :bvid="video.link.split('/').slice(-1)[0]"
+    :songId="song.id"
+    :videoId="video.id"
     :copyright="video.copyright"
     :upload="video.upload"
   />
@@ -30,7 +30,7 @@
 <script setup>
 import { defineProps, onMounted, ref } from 'vue';
 import { DateTime, Duration } from 'luxon'
-
+import VideoStat from './VideoStat.vue';
 const props = defineProps(['song', 'video'])
 const statVisible = ref(false)
 

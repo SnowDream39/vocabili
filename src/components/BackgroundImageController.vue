@@ -13,13 +13,14 @@
         :label="value.name + ' by ' + value.contributor"
         :title="value.description"
       />
-    </el-select> 
+    </el-select>
     <el-button id="background-image-refresh-button" type="primary" @click="refreshPicture">随机图片</el-button>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { onBeforeUnmount, onMounted, ref } from 'vue';
+
 var verticalPicture: string;
 var horizontalPicture: string;
 var currentImageSetName = ref<string>("daidou");
@@ -27,7 +28,7 @@ var currentMode: "vertical" | "horizontal" = "vertical"
 const imageSets = ref<{ [key: string]: any}>({});
 
 /** 返回"url(...)"的形式
- * */ 
+ * */
 function selectRandomPicture(pictures: string[]) {
   const originalPicture = pictures[Math.floor(Math.random() * pictures.length)]
   const picture = String(originalPicture).includes('/') ? originalPicture : `url("https://pixiv.re/${originalPicture}.jpg")` // 默认是pixiv id，也可以输入别的
@@ -46,7 +47,7 @@ async function loadImageSets() {
 
 function refreshPicture() {
   const data = imageSets.value[currentImageSetName.value]
-  verticalPicture = selectRandomPicture(data.verticalPictures) 
+  verticalPicture = selectRandomPicture(data.verticalPictures)
   horizontalPicture = selectRandomPicture(data.horizontalPictures)
   changePicture()
 }

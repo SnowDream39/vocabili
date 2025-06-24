@@ -1,10 +1,10 @@
 <template>
   <h2>{{ data.name }} <span v-for="color in data.color" :style="{ color: color }">●</span></h2>
-    <el-carousel 
-      height="480px" 
+    <el-carousel
+      height="480px"
       :autoplay="!statVisible"
       interval="5000"
-      :arrow="data.length === 1 ? 'never' : 'always'" 
+      :arrow="data.length === 1 ? 'never' : 'always'"
     >
       <el-carousel-item class="video" v-for="video of data" :key="video.video.link">
         <VideoInfo v-bind="video"></VideoInfo>
@@ -15,6 +15,7 @@
 <script setup>
 import { defineProps, onMounted, ref } from 'vue';
 import { DateTime, Duration } from 'luxon'
+import VideoInfo from './VideoInfo.vue';
 
 // 不处理为最终文本
 function converted(data) {

@@ -23,7 +23,6 @@
 import { reactive, ref } from 'vue'
 import LoginCard from '../components/LoginCard.vue'
 import { login } from '../utils/user'
-import { ElMessage } from 'element-plus'
 
 const form = reactive({
   username: '',

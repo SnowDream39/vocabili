@@ -1,5 +1,5 @@
-<template>    
-  <el-table 
+<template>
+  <el-table
     :data="data"
     border
     stripe
@@ -40,7 +40,7 @@ const handleDetail = (type: string, id: string) => {
 <style scoped>
 .data-table {
   margin: 20px 0;
-  
+
   .thumbnail-img {
     width: 80px;
     height: 80px;

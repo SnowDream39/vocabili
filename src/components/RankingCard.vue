@@ -8,9 +8,9 @@
         </div>
       </div>
       <div class="image-container" :title="title">
-        <el-image 
-          class="cover-image" 
-          :src="image_url + '@400w'" 
+        <el-image
+          class="cover-image"
+          :src="image_url + '@400w'"
           alt="封面"
           :preview-src-list="[image_url]"
           fit="cover"
@@ -76,6 +76,7 @@ import { ref, watch, computed } from 'vue'
 import InfoItem from './InfoItem.vue';
 import type { Form } from './Calculator.vue';
 import Board from '../utils/board';
+import RankChange from './RankChange.vue';
 
 const props = defineProps<VideoData>()
 const dialogVisible = ref(false)
@@ -185,7 +186,7 @@ watch(() => props.rank_before, (newRankBefore) => {
 
 .portrait {
   display: flex;
-  flex-flow: row nowrap;  
+  flex-flow: row nowrap;
   justify-content: center;
   align-items: center;
   gap: 10px;

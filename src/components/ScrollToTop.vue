@@ -42,7 +42,7 @@ onUnmounted(() => {
   background-color: #007BFF; /* 背景色 */
   color: white;
   border: none;
-  border-radius: 12px; 
+  border-radius: 12px;
   display: flex;
   justify-content: center;
   align-items: center;

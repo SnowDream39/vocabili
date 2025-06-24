@@ -1,6 +1,6 @@
-<template>    
+<template>
   <div class="artists-container shadow-box">
-    <el-button 
+    <el-button
       v-for="artist in data"
       @click="handleDetail(type, artist.id)"
     >{{ artist.name }}</el-button>

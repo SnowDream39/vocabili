@@ -2,9 +2,9 @@
   <div class="ranking-card shadow-box">
     <div class="portrait">
       <div class="image-container" :title="title">
-        <el-image 
-          class="cover-image" 
-          :src="image_url + '@400w'" 
+        <el-image
+          class="cover-image"
+          :src="image_url + '@400w'"
           alt="封面"
           :preview-src-list="[image_url]"
           fit="cover"
@@ -54,7 +54,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import InfoItem from './InfoItem.vue';
-
 defineProps<VideoData>()
 const dialogVisible = ref(false)
 
@@ -121,7 +120,7 @@ function showData() {
 
 .portrait {
   display: flex;
-  flex-flow: row nowrap;  
+  flex-flow: row nowrap;
   justify-content: center;
   align-items: center;
   gap: 10px;

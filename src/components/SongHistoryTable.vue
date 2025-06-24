@@ -1,8 +1,8 @@
 <template>
     <el-table
-      ref="table" 
-      :data="data.slice().reverse()" 
-      :fit="false" 
+      ref="table"
+      :data="data.slice().reverse()"
+      :fit="false"
       :row-class-name="rankin"
       :default-sort="{ prop: 'issue', order: 'descending' }"
       max-height="300"

@@ -58,7 +58,7 @@ const handleDetail = (id: string) => {
 .data-table {
   width: 95vw;
   margin: 20px 0;
-  
+
   .thumbnail-img {
     aspect-ratio: 16 / 9;
     border-radius: 4px;
