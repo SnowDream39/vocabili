@@ -4,6 +4,8 @@ import 'element-plus/dist/index.css';
 import { ElMessage } from 'element-plus';
 import App from './App.vue';
 import router from './router';
+import 'virtual:uno.css'
+
 
 const app = createApp(App);
 

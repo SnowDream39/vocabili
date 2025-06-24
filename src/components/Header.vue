@@ -15,7 +15,6 @@ onMounted(() => {
 
 window.addEventListener('resize', () => {
   const width = window.innerWidth
-  console.log(width)
 
   // 你可以在这里执行你想要的逻辑
   if (width <= 768) {

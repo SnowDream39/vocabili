@@ -28,6 +28,7 @@
 <script setup>
 import { reactive, ref } from 'vue'
 import axios from 'axios'
+import { register } from '../utils/user'
 
 const form = reactive({
   username: '',
@@ -63,16 +64,7 @@ const rules = {
 const onRegister = () => {
   registerForm.value.validate(async (valid) => {
     if (valid) {
-      const response = await axios.post('http://localhost:8000/auth/register', {
-        email: form.email,
-        password: form.password,
-        username: form.username
-      })
-
-      console.log(form)
-
-      console.log(response)
-
+      const response = await register(form)
       ElMessage.success('注册成功！🎉')
       console.log('注册信息：', form)
     } else {
