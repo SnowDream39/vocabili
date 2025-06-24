@@ -11,9 +11,9 @@
 </template>
 
 <script setup>
-import Header from './components/Header.vue';
-import ScrollToTop from './components/ScrollToTop.vue';
-import SideAdvertisement from './components/SideAdvertisement.vue';
+import Header from './components/header/Header.vue';
+import ScrollToTop from './components/misc/ScrollToTop.vue';
+import SideAdvertisement from './components/misc/SideAdvertisement.vue';
 import { ElConfigProvider } from 'element-plus'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 

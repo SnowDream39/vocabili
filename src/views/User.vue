@@ -9,8 +9,8 @@
 
 <script setup>
 import { ref } from 'vue';
-import LoginCard from '../components/LoginCard.vue';
-import RegisterCard from '../components/RegisterCard.vue';
+import LoginCard from '../components/user/LoginCard.vue';
+import RegisterCard from '../components/user/RegisterCard.vue';
 
 const isLoginMode = ref(true)
 </script>

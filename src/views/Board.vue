@@ -11,22 +11,22 @@
     <h2 v-if="!isSpecial">{{ issueName }}</h2>
     <div v-if="!isSpecial">{{ rankDateString }}</div>
   </div>
-  <RankingCard 
+  <RankingCard
     v-for="data in plainData"
     v-bind="data"
     v-if="plainData && plainData.length > 0"
     :key="data.point"
   />
   <div class="boardpagination">
-  <el-pagination 
-    background 
-    layout="prev, pager, next, jumper" 
+  <el-pagination
+    background
+    layout="prev, pager, next, jumper"
     :pager-count="5"
     :page-size="20"
-    :total="total" 
+    :total="total"
     v-model:current-page="page"
-    class="pagination" 
-    @current-change="handlePageChanged" 
+    class="pagination"
+    @current-change="handlePageChanged"
   />
 </div>
 </template>
@@ -38,7 +38,7 @@ import router from '../router/index.ts'
 import { boardToPlain } from '../utils/dataConverter.ts'
 import Board from '../utils/board.ts';
 import { requester } from '../utils/requester'
-import SpecialSelector from '../components/SpecialSelector.vue';
+import SpecialSelector from '../components/board/SpecialSelector.vue';
 const route = useRoute()
 
 // 响应式数据
@@ -139,7 +139,7 @@ watch(board, async () => {
   background: rgba(255, 255, 255, 0.8);
 }
 #last-next-issues {
-  
+
   padding: 10px;
   display: flex;
   flex-direction: row;
@@ -165,7 +165,7 @@ watch(board, async () => {
   .boardpagination {
     padding: 10px 5px;
   }
-  
+
   .pagination {
     font-size: 12px;
     :deep(.el-pagination__jump) {

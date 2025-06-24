@@ -36,8 +36,8 @@
  * 我现在比较喜欢把组件拆分得比较小
  */
 import { onMounted, ref, watch } from 'vue';
-import { requester } from '../utils/requester';
-import Board from '../utils/board';
+import { requester } from '../../utils/requester';
+import Board from '../../utils/board';
 
 const emit = defineEmits();
 

@@ -1,11 +1,11 @@
 <template>
   <h1>{{ artistName }}</h1>
   <SearchSongTable if="artistSongs[0]" :data="artistSongs"  />
-  <el-pagination 
-    background 
-    layout="prev, pager, next" 
+  <el-pagination
+    background
+    layout="prev, pager, next"
     :page-size="10"
-    :total="total" 
+    :total="total"
     :pager-count="5"
     v-model:current-page="page"
     @current-change="searchSong"
@@ -16,7 +16,7 @@
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { requester } from '../utils/requester';
-import SearchSongTable from '../components/SearchSongTable.vue';
+import SearchSongTable from '../components/search/SearchSongTable.vue';
 
 
 const route = useRoute()
@@ -36,7 +36,7 @@ function converted(data: any) {
   const {id,name,type,target:artist} = metadata;
   const {vocalist,producer,synthesizer} = artist;
   const {title,thumbnail} = platform[0]
-  
+
   const plainData = {
     id,name,type,
     vocalist: vocalist.map((item: any) => item.name).join('、'),

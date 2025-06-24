@@ -30,10 +30,10 @@
 <script lang="ts" setup>
 import axios from 'axios'
 import { onMounted, ref } from 'vue';
-import { requester } from '../utils/requester';
-import Board, { currentIssue, type BasicSection } from '../utils/board';
+import { requester } from '../../utils/requester';
+import Board, { currentIssue, type BasicSection } from '../../utils/board';
 import { InfoFilled } from '@element-plus/icons-vue'
-import { issueNow, startTimeOf } from '../utils/date';
+import { issueNow, startTimeOf } from '../../utils/date';
 import { DateTime } from 'luxon';
 
 const props = defineProps(['bvid','songId','videoId','copyright','upload'])

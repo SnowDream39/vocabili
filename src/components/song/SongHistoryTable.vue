@@ -37,7 +37,7 @@
 
 <script setup>
 import { onMounted, ref, useTemplateRef } from 'vue'
-import { requester } from '../utils/requester';
+import { requester } from '../../utils/requester';
 
 const table = useTemplateRef('table');
 

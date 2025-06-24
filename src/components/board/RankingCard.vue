@@ -74,8 +74,8 @@
 <script lang="ts" setup>
 import { ref, watch, computed } from 'vue'
 import InfoItem from './InfoItem.vue';
-import type { Form } from './Calculator.vue';
-import Board from '../utils/board';
+import type { Form } from '../song/Calculator.vue';
+import Board from '../../utils/board';
 import RankChange from './RankChange.vue';
 
 const props = defineProps<VideoData>()

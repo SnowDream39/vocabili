@@ -40,7 +40,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import router from '../router'
+import router from '../../router'
 import { Search, User } from '@element-plus/icons-vue'
 
 const activeIndex = ref('1')
