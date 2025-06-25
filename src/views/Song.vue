@@ -15,51 +15,40 @@
       <SongHistoryTable :songId="songId" boardId="vocaloid-monthly" class="board-table" />
     </div>
   </div>
+  <CommentFrame />
 </template>
 
-<script>
+<script lang="ts" setup>
 import { useRoute } from 'vue-router';
 import { requester } from '../utils/requester';
-import Board from '../utils/board';
+import { onMounted, ref } from 'vue';
+import { usePageStore } from '@/store/page';
+import SongHistoryTable from '@/components/song/SongHistoryTable.vue';
+import CommentFrame from '@/components/user/CommentFrame.vue';
 
-export default {
-  data() {
-    return {
-      songInfo: null,
-      songId: null, // 定义为响应式数据
-    };
-  },
+const pageStore = usePageStore()
 
-  methods: {
-    async fetchSongInfo(songId) {
-      try {
-        const data = await requester.get_song_info(songId);
-        return data[0];
-      } catch (error) {
-        console.log('获取数据失败：', error);
-        return null;
-      }
-    },
-    async fetchBoardData(songId, board) {
-      try {
-        const data = await requester.get_song_rank_history(songId, board);
-        return data.result;
-      } catch (error) {
-        console.log('获取数据失败：', error);
-        return [];
-      }
-    },
-    async makeData() {
-      this.songInfo = await this.fetchSongInfo(this.songId);
-    }
-  },
+const songInfo = ref<any>()
+const songId = ref<string>();
 
-  async mounted() {
-    const route = useRoute(); // 在生命周期钩子中调用 useRoute
-    this.songId = route.params.id; // 更新 songId
-    await this.makeData();
+
+async function fetchSongInfo(songId: string) {
+  console.log(songId)
+  try {
+    const data = await requester.get_song_info(songId);
+    return data[0];
+  } catch (error) {
+    console.log('获取数据失败：', error);
+    return null;
   }
-};
+}
+
+onMounted(async () => {
+  const route = useRoute(); // 在生命周期钩子中调用 useRoute
+  songId.value = route.params.id as string ; // 更新 songId
+  songInfo.value = await fetchSongInfo(songId.value);
+  pageStore.name = songId.value;
+})
 </script>
 
 
@@ -74,9 +63,11 @@ body {
   width: 100%;
   height: 100%;
 }
+
 a {
   text-decoration: none;
 }
+
 .song-info-container {
   padding: 20px;
   background-color: #f9f9f9;

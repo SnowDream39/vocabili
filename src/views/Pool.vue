@@ -11,24 +11,25 @@
   </div>
 
   <!-- 展示区域 -->
-  <PoolCard 
+  <PoolCard
     v-for="data in plainData"
     v-bind="data"
     v-if="plainData && plainData.length > 0"
     :key="data.point"
   />
   <div class="boardpagination">
-  <el-pagination 
-    background 
-    layout="prev, pager, next, jumper" 
+  <el-pagination
+    background
+    layout="prev, pager, next, jumper"
     :pager-count="5"
     :page-size="20"
-    :total="total" 
+    :total="total"
     v-model:current-page="page"
-    class="pagination" 
-    @current-change="handlePageChanged" 
+    class="pagination"
+    @current-change="handlePageChanged"
   />
 </div>
+<CommentFrame />
 </template>
 
 <script setup>
@@ -36,7 +37,10 @@ import { ref, computed, watch, onMounted, toRaw } from 'vue';
 import { useRoute } from 'vue-router';
 import { poolToPlain } from '../utils/dataConverter.ts'
 import { requester } from '../utils/requester'
+import CommentFrame from '@/components/user/CommentFrame.vue';
+import { usePageStore } from '@/store/page.ts';
 const route = useRoute()
+const pageStore = usePageStore()
 
 // 响应式数据
 const page = ref(Number(route.query.page) || 1)
@@ -95,6 +99,9 @@ async function init() {
 onMounted(init)
 watch(() => route.path, init)
 
+watch([stat, level], (pool) => {
+  pageStore.name = `pool-${pool[0]}-${pool[1]}`
+}, { immediate: true })
 
 
 // 监听 page 变化，切换分页时重新获取数据
@@ -130,7 +137,7 @@ watch(page, async () => {
   background: rgba(255, 255, 255, 0.8);
 }
 #last-next-issues {
-  
+
   padding: 10px;
   display: flex;
   flex-direction: row;
@@ -156,7 +163,7 @@ watch(page, async () => {
   .boardpagination {
     padding: 10px 5px;
   }
-  
+
   .pagination {
     font-size: 12px;
     :deep(.el-pagination__jump) {

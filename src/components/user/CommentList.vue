@@ -3,7 +3,7 @@
   <ul class="space-y-4 mb-6">
     <li v-for="comment in comments" :key="comment.id" class="border rounded p-3 bg-gray/50">
       <div class="flex justify-between items-center mb-1">
-        <span class="font-medium text-gray-800">{{ comment.user || '匿名' }}</span>
+        <span class="font-medium text-gray-800">{{ comment.username || '匿名' }}</span>
         <span class="text-xs text-gray-400">{{ formatDate(comment.created_at) }}</span>
       </div>
       <p class="whitespace-pre-line text-gray-700">{{ comment.content }}</p>
@@ -21,17 +21,18 @@
 
 
 <script lang="ts" setup>
-
+import {DateTime} from 'luxon'
 
 defineProps<{
   comments: any[]
 }>()
 
 function formatDate(dateStr: string) {
-  const d = new Date(dateStr)
-  return d.toLocaleString()
+  // 假设 dateStr 是 UTC 时间格式，例如 "2025-06-25 10:14:00"
+  const d = DateTime.fromISO(dateStr, { zone: 'utc' })  // 解析为 UTC 时间
+  const local = d.setZone(DateTime.local().zoneName)    // 转换为本地时间
+  return local.toFormat("yyyy-MM-dd HH:mm:ss")
 }
-
 
 const actionIcons = {
   like: {

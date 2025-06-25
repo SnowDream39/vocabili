@@ -8,7 +8,7 @@
     <div v-else>
       <SpecialSelector @updateData="handleIssueChanged" />
     </div>
-    <h2 v-if="!isSpecial">{{ issueName }}</h2>
+    <h1 v-if="!isSpecial">{{ issueName }}</h1>
     <div v-if="!isSpecial">{{ rankDateString }}</div>
   </div>
   <RankingCard
@@ -136,6 +136,11 @@ watch(board, async () => {
 
 
 <style lang="scss" scoped>
+h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 10px 0px;
+}
 .board-header {
   padding: 0px 0px;
   margin: 0px 0px 20px 0px;

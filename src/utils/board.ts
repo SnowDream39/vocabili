@@ -32,6 +32,11 @@ export default class Board {
       this.part = 'main'
     }
     if (issue) this.issue = issue
+    else if (this.section === 'special') {
+      this.issue = 1
+    } else {
+      this.issue = currentIssue[this.section]
+    }
   }
   get id(): string {
     return [this.name, this.section].join('-');

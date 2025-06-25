@@ -11,6 +11,12 @@
       </button>
     </form>
 
+    <button @click="emit('refresh')"
+      class="bg-blue-600 text-white py-2 px-4 mb-3 rounded hover:bg-blue-700 transition disabled:opacity-50"
+      :disabled="loading">
+      加载评论
+    </button>
+
 </template>
 
 
@@ -32,7 +38,6 @@ async function submitComment() {
   if (!newComment.value.trim()) return
   loading.value = true
   error.value = null
-  emit('refresh')
 
   try {
     // 这里你写接口请求，把 newComment.value 发给后端
@@ -44,6 +49,8 @@ async function submitComment() {
 
     console.log(response)
     newComment.value = ''
+
+    emit('refresh')
   } catch {
     error.value = '提交失败，请稍后再试'
   } finally {

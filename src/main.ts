@@ -5,6 +5,7 @@ import { ElMessage } from 'element-plus';
 import App from './App.vue';
 import router from './router';
 import 'virtual:uno.css'
+import '@unocss/reset/normalize.css'
 import { createPinia } from 'pinia';
 
 const app = createApp(App);

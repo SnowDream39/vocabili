@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import CommentList from './CommentList.vue'
 import CommentInput from './CommentInput.vue'
 import { getByArticleId } from '@/utils/comment'
@@ -28,7 +28,6 @@ const loadComments = async () => {
   comments.value = data
 }
 
-onMounted(loadComments)
 
 
 // ================= 交互事件 ==================

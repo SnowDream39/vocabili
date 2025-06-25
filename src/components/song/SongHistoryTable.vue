@@ -35,14 +35,17 @@
     </el-table>
 </template>
 
-<script setup>
-import { onMounted, ref, useTemplateRef } from 'vue'
+<script lang="ts" setup>
+import { ref, useTemplateRef, watch } from 'vue'
 import { requester } from '../../utils/requester';
 
-const table = useTemplateRef('table');
+const table = useTemplateRef<any>('table');
 
 // configs
-const props = defineProps(['songId', 'boardId']);
+const props = defineProps<{
+  songId?: string;
+  boardId: string;
+}>();
 const columns = [
   {key: "view", label: "播放"},
   {key: "favorite", label: "收藏"},
@@ -51,13 +54,13 @@ const columns = [
 ]
 
 // data
-const tableRef = ref(null);
-const data = ref([]);
+const data = ref<any[]>([]);
 const index = ref(0);
 const end = ref(true);
 
 // methods
 async function fetchData() {
+  if (!props.songId) return[]
   try {
     index.value += 1;
     const response = await requester.get_song_rank_history(props.songId, props.boardId, 50, index.value);
@@ -74,14 +77,14 @@ async function fetchData() {
 }
 
 // template methods
-const rankin = (data) => {
+const rankin = (data: any) => {
   if (data.row.rank.board <= 20) {
     return 'rankin-row'
   }
 }
 
-function sortChange(key) {
-  return (a, b) => {
+function sortChange(key: string) {
+  return (a: any, b: any) => {
     const changeA = a.change[key];
     const changeB = b.change[key];
     // 比较 change 值来进行排序
@@ -91,18 +94,10 @@ function sortChange(key) {
   };
 }
 
-async function handleScroll(scroll){
-  const element = table.value.$el.querySelector('.el-scrollbar__view');
-  if (element.scrollHeight - scroll.scrollTop < 400) {
-    await fetchData()
-  }
-}
 
 
 // hook
-onMounted(async () => {
-  await fetchData();
-})
+watch(() => props.songId, fetchData, { immediate: true })
 
 </script>
 
