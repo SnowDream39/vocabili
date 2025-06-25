@@ -47,8 +47,10 @@ export const deleteLike = async (comment_id: number) => {
 
 // 管理员专用
 
-export const getAllComments = async () => {
-  const response = await api.get(`/comments/all`)
+export const getAllComments = async (page: number = 1, page_size: number = 20) => {
+  const response = await api.get(`/comments/all`, {
+    params: { page, page_size }
+  })
   return response.data
 }
 

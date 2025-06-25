@@ -42,6 +42,7 @@ import { requester } from '../utils/api/requester.ts'
 import SpecialSelector from '../components/board/SpecialSelector.vue';
 import CommentFrame from '../components/user/CommentFrame.vue';
 import { useStatusStore } from '@/store/status.ts';
+import RankingCard from '@/components/board/RankingCard.vue';
 const route = useRoute()
 const statusStore = useStatusStore()
 

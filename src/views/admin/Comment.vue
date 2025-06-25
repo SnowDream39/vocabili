@@ -24,20 +24,34 @@
     </el-table>
 
     <el-empty v-if="comments.length === 0" description="暂无评论" />
+
+
+    <el-pagination
+      background
+      layout="prev, pager, next, jumper"
+      :total="total"
+      :pager-count="7"
+      :page-size="20"
+      v-model:current-page="page"
+      class="pagination"
+      @current-change="loadComments"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { getAllComments, deleteComment } from '@/utils/api/comment'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage, ElMessageBox, ElPagination } from 'element-plus'
 import { formatTime } from '@/utils/date'
 
 const comments = ref<any[]>([])
-
+const page = ref<number>(1)
+const total = ref<number>(0)
 async function loadComments() {
   try {
-    comments.value = await getAllComments()
+    comments.value = await getAllComments(page.value, 20)
+    if (total.value === 0) total.value = comments.value[0].id
   } catch {
     ElMessage.error('加载评论失败')
   }
@@ -62,3 +76,37 @@ async function handleDelete(id: number) {
 
 onMounted(loadComments)
 </script>
+
+<style lang="scss" scoped>
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  padding: 15px 10px;
+}
+
+.pagination {
+  max-width: 100%;
+  font-size: 14px;
+}
+
+@media (max-width: 630px) {
+  .boardpagination {
+    padding: 10px 5px;
+  }
+
+  .pagination {
+    font-size: 12px;
+    :deep(.el-pagination__jump) {
+      margin-left: 0;
+    }
+    :deep(.el-pagination button) {
+      min-width: 16px;
+    }
+    :deep(.el-pager li) {
+      min-width: 16px;
+    }
+  }
+}
+
+</style>
