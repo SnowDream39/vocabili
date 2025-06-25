@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineModel } from 'vue';
+import { computed } from 'vue';
 import { postLike, deleteLike } from '../../utils/comment'
 
 const props = defineProps<{

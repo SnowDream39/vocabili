@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-xl mx-auto p-4 bg-paper rounded shadow">
+  <div class="mx-[600px] w-[90%] p-4 bg-paper rounded shadow">
     <h2 class="text-xl font-semibold mb-4">评论区</h2>
 
     <!-- 新评论输入 -->
