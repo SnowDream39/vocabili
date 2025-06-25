@@ -8,7 +8,14 @@ export default defineConfig({
     }),
   ],
   safelist: [
-
+    'i-material-symbols-thumb-up-outline',
+    'i-material-symbols-thumb-up',
+    'i-material-symbols-reply',
+    'i-material-symbols-reply',
+    'i-material-symbols-thumb-down-outline',
+    'i-material-symbols-thumb-down',
+    'i-material-symbols-share',
+    'i-material-symbols-share',
   ],
   shortcuts: [
 

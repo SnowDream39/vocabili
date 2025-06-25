@@ -10,13 +10,6 @@
         {{ loading ? '提交中...' : '发表评论' }}
       </button>
     </form>
-
-    <button @click="emit('refresh')"
-      class="bg-blue-600 text-white py-2 px-4 mb-3 rounded hover:bg-blue-700 transition disabled:opacity-50"
-      :disabled="loading">
-      加载评论
-    </button>
-
 </template>
 
 

@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import CommentList from './CommentList.vue'
 import CommentInput from './CommentInput.vue'
 import { getByArticleId } from '@/utils/comment'
@@ -29,8 +29,8 @@ const loadComments = async () => {
 }
 
 
+watch(() => pageStore.name, loadComments)
 
-// ================= 交互事件 ==================
 
 
 

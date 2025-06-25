@@ -11,7 +11,6 @@ const api = axios.create({
 
 api.interceptors.request.use(config => {
   const token = localStorage.getItem('access_token')
-  console.log('正在附加 token:', token)
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
   }
@@ -31,5 +30,16 @@ export const post = async (form: CommentPost) => {
 
 export const getByArticleId = async (article_id: string) => {
   const response = await api.get(`/user/comments/by_article/${article_id}`)
+  return response.data
+}
+
+export const postLike = async (comment_id: number) => {
+  console.log(comment_id)
+  const response = await api.post(`/user/likes`, {comment_id})
+  return response.data
+}
+
+export const deleteLike = async (comment_id: number) => {
+  const response = await api.delete(`/user/likes/${comment_id}`)
   return response.data
 }
