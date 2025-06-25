@@ -19,8 +19,6 @@ declare module 'vue' {
     CommentLikeButton: typeof import('./src/components/user/CommentLikeButton.vue')['default']
     CommentList: typeof import('./src/components/user/CommentList.vue')['default']
     CommentReplyButton: typeof import('./src/components/user/CommentReplyButton.vue')['default']
-    CommentShareButton: typeof import('./src/components/user/CommentShareButton.vue')['default']
-    copy: typeof import('./src/components/user/CommentAction copy.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']
     ElCarousel: typeof import('element-plus/es')['ElCarousel']

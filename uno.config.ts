@@ -16,6 +16,8 @@ export default defineConfig({
     'i-material-symbols-thumb-down',
     'i-material-symbols-share',
     'i-material-symbols-share',
+    'border-l-2',
+    'border',
   ],
   shortcuts: [
 

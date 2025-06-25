@@ -19,7 +19,8 @@ api.interceptors.request.use(config => {
 
 interface CommentPost {
   content: string,
-  article_id: string
+  article_id: string,
+  parent_id?: number,
 }
 
 

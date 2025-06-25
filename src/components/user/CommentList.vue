@@ -1,8 +1,8 @@
 <template>
-  <div v-if="comments.length === 0" class="text-gray-500">暂无评论</div>
-  <ul class="space-y-4 mb-6">
-    <li v-for="comment in comments" :key="comment.id" class="border rounded p-3 bg-gray/10 dark:bg-gray/90!">
-      <Comment :comment="comment" />
+  <div v-if="comments && comments.length === 0" class="text-gray-500">暂无评论</div>
+  <ul class="space-y-4 mb-6" :class="externalClasses">
+    <li v-for="comment in comments" :key="comment.id" class="p-3 rounded bg-gray/10 dark:bg-gray/90!" :class="externalClasses">
+      <Comment :comment="comment" :isReply="isReply" />
     </li>
   </ul>
 </template>
@@ -10,11 +10,19 @@
 
 <script lang="ts" setup>
 import Comment from './Comment.vue';
+import { computed } from 'vue';
 
-
-defineProps<{
-  comments: any[]
+ const props =defineProps<{
+  comments: any[],
+  isReply: boolean
 }>()
 
+
+const externalClasses = computed(() => {
+  return {
+    'border-l-2': false,
+    'border': !props.isReply
+  }
+})
 
 </script>

@@ -16,6 +16,7 @@
     "element-plus": "^2.9.3",
     "express": "^4.21.2",
     "luxon": "^3.5.0",
+    "mitt": "^3.0.1",
     "pinia": "^3.0.3",
     "vue": "^3.5.13",
     "vue-chartjs": "^5.3.2",

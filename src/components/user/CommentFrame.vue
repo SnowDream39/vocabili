@@ -3,21 +3,22 @@
     <h2 class="text-xl font-semibold mb-4">评论区</h2>
 
     <!-- 新评论输入 -->
-    <CommentInput @refresh="loadComments" />
+    <CommentInput/>
 
     <!-- 评论列表 -->
-    <CommentList :comments="comments"/>
+    <CommentList :comments="comments" :isReply="false" />
 
 
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 import CommentList from './CommentList.vue'
 import CommentInput from './CommentInput.vue'
 import { getByArticleId } from '@/utils/comment'
 import { usePageStore } from '@/store/page'
+import emitter from '@/utils/emitter'
 
 const pageStore = usePageStore()
 
@@ -31,6 +32,13 @@ const loadComments = async () => {
 
 watch(() => pageStore.name, loadComments)
 
+onMounted(() => {
+  emitter.on('reload-comments', loadComments)
+})
+
+onUnmounted(() => {
+  emitter.off('reload-comments', loadComments)
+})
 
 
 
