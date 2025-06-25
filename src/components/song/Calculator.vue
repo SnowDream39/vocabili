@@ -43,8 +43,8 @@
 
 <script lang="ts" setup>
 import { ref, computed, onMounted } from 'vue';
-import { Calculator } from '../utils/calculator'
-import Board from '../utils/board';
+import { Calculator } from '@/utils/calculator'
+import Board from '@/utils/board';
 
 export interface Form {
   view: number

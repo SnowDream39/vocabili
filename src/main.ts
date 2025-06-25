@@ -5,17 +5,17 @@ import { ElMessage } from 'element-plus';
 import App from './App.vue';
 import router from './router';
 import 'virtual:uno.css'
-
+import { createPinia } from 'pinia';
 
 const app = createApp(App);
 
 
 app.use(router);
-
+app.use(createPinia());
 
 app.mount('#app');
 
-app.config.errorHandler = (err, instance, info) => {
+app.config.errorHandler = (err: any) => {
   console.error('Vue Error:', err)
   ElMessage({
     message: err.message,

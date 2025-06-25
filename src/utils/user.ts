@@ -11,10 +11,10 @@ interface UserRegister {
   username: string
 }
 
-const api = axios.create({
-  baseURL: 'https://api.vocabili.top/user'
-})
 
+const api = axios.create({
+  baseURL: 'https://api.vocabili.top',
+})
 
 export const login = async (form: UserLogin) => {
 
@@ -26,18 +26,20 @@ export const login = async (form: UserLogin) => {
   data.append('client_id', 'string')        // 如果Swagger要求，这里必须写
   data.append('client_secret', '********') // 同上
 
-  const response = await api.post('/auth/jwt/login', data, {
+  const response = await api.post('/user/auth/jwt/login', data, {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
       'Accept': 'application/json',
     },
   })
-
+  const access_token = response.data.access_token
+  localStorage.setItem('access_token', access_token)
+  console.log(access_token)
   return response.data.access_token
 }
 
 export const register = async (form: UserRegister) => {
-  const response = await api.post('/auth/register', {
+  const response = await api.post('/user/auth/register', {
     email: form.email,
     password: form.password,
     username: form.username

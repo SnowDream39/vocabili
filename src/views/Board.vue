@@ -28,7 +28,8 @@
     class="pagination"
     @current-change="handlePageChanged"
   />
-</div>
+  </div>
+  <CommentFrame/>
 </template>
 
 <script lang="ts" setup>
@@ -39,7 +40,10 @@ import { boardToPlain } from '../utils/dataConverter.ts'
 import Board from '../utils/board.ts';
 import { requester } from '../utils/requester'
 import SpecialSelector from '../components/board/SpecialSelector.vue';
+import CommentFrame from '../components/user/CommentFrame.vue';
+import { usePageStore } from '@/store/page.ts';
 const route = useRoute()
+const pageStore = usePageStore()
 
 // 响应式数据
 const page = ref(Number(route.query.page) || 1)
@@ -109,6 +113,7 @@ async function init() {
   const boardId = params.boardId as string
   const issue = params.issue as string
   board.value = new Board(boardId, Number(issue))
+  pageStore.name = `${board.value.id}-${board.value.issue}`
 }
 
 // 注册事件

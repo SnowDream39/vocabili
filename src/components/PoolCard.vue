@@ -53,7 +53,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import InfoItem from './InfoItem.vue';
+import InfoItem from '@/components/board/InfoItem.vue';
 defineProps<VideoData>()
 const dialogVisible = ref(false)
 
