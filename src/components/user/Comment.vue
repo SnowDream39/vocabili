@@ -13,7 +13,7 @@
     <div class="actions text-right text-xs text-gray-400 flex flex-row justify-between text-lg">
       <CommentReplyButton :id="comment.id" v-model="replyActive" />
       <div class="flex flex-row text-lg gap-1">
-        <CommentLikeButton :id="comment.id" v-model="likeActive" />
+        <CommentLikeButton :id="comment.id" :count="comment.like_count" v-model="likeActive" />
       </div>
     </div>
 
