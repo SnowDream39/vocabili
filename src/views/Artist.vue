@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { requester } from '../utils/requester';
+import { requester } from '../utils/api/requester';
 import SearchSongTable from '../components/search/SearchSongTable.vue';
 
 

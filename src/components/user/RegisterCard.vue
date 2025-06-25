@@ -28,7 +28,7 @@
 <script setup>
 import { reactive, ref } from 'vue'
 import axios from 'axios'
-import { register } from '../../utils/user'
+import { register } from '../../utils/api/user'
 
 const form = reactive({
   username: '',

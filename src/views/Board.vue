@@ -38,7 +38,7 @@ import { useRoute } from 'vue-router';
 import router from '../router/index.ts'
 import { boardToPlain } from '../utils/dataConverter.ts'
 import Board from '../utils/board.ts';
-import { requester } from '../utils/requester'
+import { requester } from '../utils/api/requester.ts'
 import SpecialSelector from '../components/board/SpecialSelector.vue';
 import CommentFrame from '../components/user/CommentFrame.vue';
 import { usePageStore } from '@/store/page.ts';

@@ -20,7 +20,7 @@
 
 <script lang="ts" setup>
 import { useRoute } from 'vue-router';
-import { requester } from '../utils/requester';
+import { requester } from '../utils/api/requester';
 import { onMounted, ref } from 'vue';
 import { usePageStore } from '@/store/page';
 import SongHistoryTable from '@/components/song/SongHistoryTable.vue';

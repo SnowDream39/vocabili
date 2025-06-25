@@ -22,7 +22,7 @@
 <script setup>
 import { reactive, ref } from 'vue'
 import LoginCard from './LoginCard.vue'
-import { login } from '../../utils/user'
+import { login } from '../../utils/api/user'
 
 const form = reactive({
   username: '',

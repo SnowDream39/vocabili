@@ -7,7 +7,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { postLike, deleteLike } from '../../utils/comment'
+import { postLike, deleteLike } from '../../utils/api/comment'
 
 const props = defineProps<{
   id: number,

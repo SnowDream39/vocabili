@@ -25,7 +25,7 @@ interface CommentPost {
 
 
 export const post = async (form: CommentPost) => {
-  const response = await api.post('/user/comments/', form)
+  const response = await api.post('/user/comments', form)
   return response.data
 }
 

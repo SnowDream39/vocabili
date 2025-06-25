@@ -36,7 +36,7 @@
 import { ref, computed, watch, onMounted, toRaw } from 'vue';
 import { useRoute } from 'vue-router';
 import { poolToPlain } from '../utils/dataConverter.ts'
-import { requester } from '../utils/requester'
+import { requester } from '../utils/api/requester.ts'
 import CommentFrame from '@/components/user/CommentFrame.vue';
 import { usePageStore } from '@/store/page.ts';
 const route = useRoute()

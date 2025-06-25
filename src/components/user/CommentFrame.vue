@@ -16,7 +16,7 @@
 import { onMounted, onUnmounted, ref, watch } from 'vue'
 import CommentList from './CommentList.vue'
 import CommentInput from './CommentInput.vue'
-import { getByArticleId } from '@/utils/comment'
+import { getByArticleId } from '@/utils/api/comment'
 import { usePageStore } from '@/store/page'
 import emitter from '@/utils/emitter'
 

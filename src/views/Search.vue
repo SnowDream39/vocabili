@@ -31,15 +31,15 @@
     <el-button type="primary" @click="expandSearch" id="expand-search" >扩大搜索</el-button>
 
     <!-- 分页器 -->
-    <el-pagination 
-      v-model:current-page="page" 
-      :page-size="pageSize" 
-      :total="total" 
-      :pager-count="5" 
+    <el-pagination
+      v-model:current-page="page"
+      :page-size="pageSize"
+      :total="total"
+      :pager-count="5"
       background
-      layout="prev, pager, next, jumper" 
-      class="pagination" 
-      @current-change="handlePageChanged" 
+      layout="prev, pager, next, jumper"
+      class="pagination"
+      @current-change="handlePageChanged"
     />
 
   </div>
@@ -48,7 +48,7 @@
 <script setup>
 import { computed, ref, toRaw } from 'vue';
 import router from '../router/index.ts';
-import { requester } from '../utils/requester.ts';
+import { requester } from '../utils/api/requester.ts';
 import { Search } from '@element-plus/icons-vue'
 
 
@@ -218,7 +218,7 @@ img {
   .boardpagination {
     padding: 10px 5px;
   }
-  
+
   .pagination {
     font-size: 12px;
     :deep(.el-pagination__jump) {

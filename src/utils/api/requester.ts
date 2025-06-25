@@ -1,5 +1,5 @@
 import axios from 'axios';
-import Board from './board';
+import Board from '../board';
 
 interface SearchOptions {
   index?: number;
@@ -61,7 +61,7 @@ class Requester {
   constructor() {}
 
   async get_song_info(target: string) {
-    const response = await api.get(Requester.endpoint.get_song_info, {  
+    const response = await api.get(Requester.endpoint.get_song_info, {
       params: { target: target }
     })
     return response.data.data
@@ -148,15 +148,15 @@ class Requester {
   async search_vocalist(target: string, options: SearchOptions = {}){
     return this.search_artist('Vocalist', target, options)
   }
-  
+
   async search_uploader(target: string, options: SearchOptions = {}){
     return this.search_artist('Uploader', target, options)
   }
-  
+
   async search_producer(target: string, options: SearchOptions = {}){
     return this.search_artist('Producer', target, options)
   }
-  
+
   async search_synthesizer(target: string, options: SearchOptions = {}){
     return this.search_artist('Synthesizer', target, options)
   }

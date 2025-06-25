@@ -37,7 +37,7 @@
 
 <script lang="ts" setup>
 import { ref, useTemplateRef, watch } from 'vue'
-import { requester } from '../../utils/requester';
+import { requester } from '../../utils/api/requester';
 
 const table = useTemplateRef<any>('table');
 

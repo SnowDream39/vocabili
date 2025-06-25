@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { post } from '@/utils/comment'
+import { post } from '@/utils/api/comment'
 import { usePageStore } from '@/store/page'
 import emitter from '@/utils/emitter'
 

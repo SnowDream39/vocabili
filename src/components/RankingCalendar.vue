@@ -35,7 +35,7 @@
 import { ref, computed, onMounted, watch } from 'vue';
 import { DateTime } from 'luxon';
 import router from '../router';
-import { requester } from '../utils/requester';
+import { requester } from '../utils/api/requester';
 import Board from '../utils/board';
 
 const today = ref(DateTime.local().plus({days: -2}))
