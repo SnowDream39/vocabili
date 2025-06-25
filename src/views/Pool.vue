@@ -38,9 +38,9 @@ import { useRoute } from 'vue-router';
 import { poolToPlain } from '../utils/dataConverter.ts'
 import { requester } from '../utils/api/requester.ts'
 import CommentFrame from '@/components/user/CommentFrame.vue';
-import { usePageStore } from '@/store/page.ts';
+import { useStatusStore } from '@/store/status.ts';
 const route = useRoute()
-const pageStore = usePageStore()
+const statusStore = useStatusStore()
 
 // 响应式数据
 const page = ref(Number(route.query.page) || 1)
@@ -100,7 +100,7 @@ onMounted(init)
 watch(() => route.path, init)
 
 watch([stat, level], (pool) => {
-  pageStore.name = `pool-${pool[0]}-${pool[1]}`
+  statusStore.articleId = `pool-${pool[0]}-${pool[1]}`
 }, { immediate: true })
 
 

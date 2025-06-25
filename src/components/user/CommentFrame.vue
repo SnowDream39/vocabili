@@ -17,20 +17,20 @@ import { onMounted, onUnmounted, ref, watch } from 'vue'
 import CommentList from './CommentList.vue'
 import CommentInput from './CommentInput.vue'
 import { getByArticleId } from '@/utils/api/comment'
-import { usePageStore } from '@/store/page'
+import { useStatusStore } from '@/store/status'
 import emitter from '@/utils/emitter'
 
-const pageStore = usePageStore()
+const statusStore = useStatusStore()
 
 const comments = ref<any[]>([])
 
 const loadComments = async () => {
-  const data = await getByArticleId(pageStore.name)
+  const data = await getByArticleId(statusStore.articleId)
   comments.value = data
 }
 
 
-watch(() => pageStore.name, loadComments)
+watch(() => statusStore.articleId, loadComments)
 
 onMounted(() => {
   emitter.on('reload-comments', loadComments)

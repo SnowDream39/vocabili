@@ -22,11 +22,11 @@
 import { useRoute } from 'vue-router';
 import { requester } from '../utils/api/requester';
 import { onMounted, ref } from 'vue';
-import { usePageStore } from '@/store/page';
+import { useStatusStore } from '@/store/status';
 import SongHistoryTable from '@/components/song/SongHistoryTable.vue';
 import CommentFrame from '@/components/user/CommentFrame.vue';
 
-const pageStore = usePageStore()
+const statusStore = useStatusStore()
 
 const songInfo = ref<any>()
 const songId = ref<string>();
@@ -47,7 +47,7 @@ onMounted(async () => {
   const route = useRoute(); // 在生命周期钩子中调用 useRoute
   songId.value = route.params.id as string ; // 更新 songId
   songInfo.value = await fetchSongInfo(songId.value);
-  pageStore.name = songId.value;
+  statusStore.articleId = songId.value;
 })
 </script>
 

@@ -2,7 +2,7 @@ import axios from "axios"
 
 
 const api = axios.create({
-  baseURL: 'https://api.vocabili.top',
+  baseURL: 'https://api.vocabili.top/user',
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
@@ -25,22 +25,34 @@ interface CommentPost {
 
 
 export const post = async (form: CommentPost) => {
-  const response = await api.post('/user/comments', form)
+  const response = await api.post('/comments', form)
   return response.data
 }
 
 export const getByArticleId = async (article_id: string) => {
-  const response = await api.get(`/user/comments/by_article/${article_id}`)
+  const response = await api.get(`/comments/by_article/${article_id}`)
   return response.data
 }
 
 export const postLike = async (comment_id: number) => {
   console.log(comment_id)
-  const response = await api.post(`/user/likes`, {comment_id})
+  const response = await api.post(`/likes`, {comment_id})
   return response.data
 }
 
 export const deleteLike = async (comment_id: number) => {
-  const response = await api.delete(`/user/likes/${comment_id}`)
+  const response = await api.delete(`/likes/${comment_id}`)
+  return response.data
+}
+
+// 管理员专用
+
+export const getAllComments = async () => {
+  const response = await api.get(`/comments/all`)
+  return response.data
+}
+
+export const deleteComment = async (comment_id: number) => {
+  const response = await api.delete(`/comments/${comment_id}`)
   return response.data
 }

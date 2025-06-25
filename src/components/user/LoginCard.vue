@@ -22,7 +22,10 @@
 <script setup>
 import { reactive, ref } from 'vue'
 import LoginCard from './LoginCard.vue'
-import { login } from '../../utils/api/user'
+import { updateUserInfo, login } from '../../utils/api/user'
+import router from '@/router'
+import { useStatusStore } from '@/store/status'
+const statusStore = useStatusStore()
 
 const form = reactive({
   username: '',
@@ -37,7 +40,7 @@ const rules = {
 
 const loginForm = ref()
 
-const onSubmit = () => {
+const onSubmit = async () => {
   loginForm.value.validate(async (valid) => {
     if (valid) {
       const access_token = await login(form)
@@ -48,7 +51,13 @@ const onSubmit = () => {
         duration: 1000,
         showClose: false
       })
-      console.log('登录成功：', access_token)
+
+      const userInfo = await updateUserInfo()
+
+      if (statusStore.isSuperUser) {
+        router.push('/admin')
+      }
+
     } else {
       ElMessage({
         message: '登录失败',

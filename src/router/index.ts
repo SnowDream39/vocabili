@@ -16,6 +16,8 @@ const routes = [
   { path: '/artist/:type/:id', component: Artist } ,
   { path: '/pool', component: Pool },
   { path: '/user', component: () => import('../views/User.vue')},
+  { path: '/admin', component: () => import('../views/admin/Index.vue')},
+  { path: '/admin/comment', component: () => import('../views/admin/Comment.vue')},
   { path: '/:pathMatch(.*)*', redirect: '/' },
 ]
 

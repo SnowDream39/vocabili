@@ -41,9 +41,9 @@ import Board from '../utils/board.ts';
 import { requester } from '../utils/api/requester.ts'
 import SpecialSelector from '../components/board/SpecialSelector.vue';
 import CommentFrame from '../components/user/CommentFrame.vue';
-import { usePageStore } from '@/store/page.ts';
+import { useStatusStore } from '@/store/status.ts';
 const route = useRoute()
-const pageStore = usePageStore()
+const statusStore = useStatusStore()
 
 // 响应式数据
 const page = ref(Number(route.query.page) || 1)
@@ -113,7 +113,7 @@ async function init() {
   const boardId = params.boardId as string
   const issue = params.issue as string
   board.value = new Board(boardId, Number(issue))
-  pageStore.name = `${board.value.id}-${board.value.issue}`
+  statusStore.articleId = `${board.value.id}-${board.value.issue}`
 }
 
 // 注册事件

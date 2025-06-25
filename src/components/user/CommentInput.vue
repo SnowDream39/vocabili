@@ -24,10 +24,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { post } from '@/utils/api/comment'
-import { usePageStore } from '@/store/page'
+import { useStatusStore } from '@/store/status'
 import emitter from '@/utils/emitter'
 
-const pageStore = usePageStore()
+const statusStore = useStatusStore()
 
 const props = defineProps<{
   parent_id?: number
@@ -45,7 +45,7 @@ async function submitComment() {
   try {
     await post({
       content: content.value,
-      article_id: pageStore.name,
+      article_id: statusStore.articleId,
       parent_id: props.parent_id ?? undefined,
     })
 

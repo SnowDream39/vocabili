@@ -1,4 +1,8 @@
+import { useStatusStore } from "@/store/status";
 import axios from "axios";
+
+const statusStore = useStatusStore()
+
 
 interface UserLogin {
   username: string,
@@ -44,6 +48,28 @@ export const register = async (form: UserRegister) => {
     password: form.password,
     username: form.username
   })
+
+  return response.data
+}
+
+export const updateUserInfo = async () => {
+  const access_token = localStorage.getItem('access_token')
+  if (!access_token) {
+    return null
+  }
+  const response = await api.get('/user/users/me', {
+    headers: {
+      'Authorization': `Bearer ${access_token}`
+    }
+  })
+
+  const data = response.data
+  statusStore.userName = data.username
+
+  if (data.is_superuser) {
+    statusStore.isSuperUser = true
+    localStorage.setItem('is_superuser', 'true')
+  }
 
   return response.data
 }
