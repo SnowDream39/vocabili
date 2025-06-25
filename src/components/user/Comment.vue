@@ -32,12 +32,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 import CommentLikeButton from './CommentLikeButton.vue'
 import CommentReplyButton from './CommentReplyButton.vue'
 import CommentInput from './CommentInput.vue'
 import { formatTime } from '@/utils/date'
 import CommentList from './CommentList.vue'
+import emitter from '@/utils/emitter'
 
 const props = defineProps<{ comment: any }>()
 const replyActive = ref(false)
@@ -47,5 +48,15 @@ watch(() => replyActive.value, (value) => {
   console.log(value)
 })
 
+function closeReply() {
+  replyActive.value = false
+}
 
+onMounted(() => {
+  emitter.on('reload-comments', closeReply)
+})
+
+onUnmounted(() => {
+  emitter.off('reload-comments', closeReply)
+})
 </script>
