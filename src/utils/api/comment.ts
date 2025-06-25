@@ -1,7 +1,7 @@
 import axios from "axios"
 
 
-const api = axios.create({
+export const api = axios.create({
   baseURL: 'https://api.vocabili.top/user',
   headers: {
     Accept: 'application/json',
@@ -42,19 +42,5 @@ export const postLike = async (comment_id: number) => {
 
 export const deleteLike = async (comment_id: number) => {
   const response = await api.delete(`/likes/${comment_id}`)
-  return response.data
-}
-
-// 管理员专用
-
-export const getAllComments = async (page: number = 1, page_size: number = 20) => {
-  const response = await api.get(`/comments/all`, {
-    params: { page, page_size }
-  })
-  return response.data
-}
-
-export const deleteComment = async (comment_id: number) => {
-  const response = await api.delete(`/comments/${comment_id}`)
   return response.data
 }

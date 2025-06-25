@@ -18,6 +18,7 @@ const routes = [
   { path: '/user', component: () => import('../views/User.vue')},
   { path: '/admin', component: () => import('../views/admin/Index.vue')},
   { path: '/admin/comment', component: () => import('../views/admin/Comment.vue')},
+  { path: '/admin/user', component: () => import('../views/admin/User.vue')},
   { path: '/:pathMatch(.*)*', redirect: '/' },
 ]
 

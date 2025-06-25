@@ -1,16 +1,16 @@
 <template>
   <div class="p-4">
-    <el-table :data="comments" stripe style="width: 100%">
-      <el-table-column prop="id" label="ID" width="60" />
-      <el-table-column prop="username" label="用户" width="100" />
-      <el-table-column prop="content" label="内容" />
-      <el-table-column prop="created_at" label="时间" width="180" >
+    <el-table :data="comments" stripe style="width: 95vw;">
+      <el-table-column prop="id" label="ID" width="50" />
+      <el-table-column prop="username" label="用户" />
+      <el-table-column prop="content" label="内容" min-width="200" />
+      <el-table-column prop="created_at" label="时间" >
         <template #default="{ row }">
           {{ formatTime(row.created_at) }}
         </template>
       </el-table-column>
-      <el-table-column prop="article_id" label="页面" width="80" />
-      <el-table-column label="操作" width="100">
+      <el-table-column prop="article_id" label="页面"/>
+      <el-table-column label="操作" width="80">
         <template #default="{ row }">
           <el-button
             size="small"
@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { getAllComments, deleteComment } from '@/utils/api/comment'
+import { getAllComments, deleteComment } from '@/utils/api/admin'
 import { ElMessage, ElMessageBox, ElPagination } from 'element-plus'
 import { formatTime } from '@/utils/date'
 

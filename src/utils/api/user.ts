@@ -38,7 +38,7 @@ export const login = async (form: UserLogin) => {
   })
   const access_token = response.data.access_token
   localStorage.setItem('access_token', access_token)
-  console.log(access_token)
+  await updateUserInfo()
   return response.data.access_token
 }
 
@@ -65,6 +65,7 @@ export const updateUserInfo = async () => {
 
   const data = response.data
   statusStore.userName = data.username
+  statusStore.userId = data.id
 
   if (data.is_superuser) {
     statusStore.isSuperUser = true
@@ -73,3 +74,4 @@ export const updateUserInfo = async () => {
 
   return response.data
 }
+
