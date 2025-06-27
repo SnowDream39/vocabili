@@ -50,7 +50,7 @@ const statusStore = useStatusStore()
 const page = ref(Number(route.query.page) || 1)
 const total = ref(1000)
 const rawData = ref<Record<string, any>>();
-const board = ref<Board>(new Board('vocaloid-daily-main'))
+const board = ref<Board>(new Board('vocaloid-daily-main', -1))
 
 const lastIssueStatus = ref(false)
 const nextIssueStatus = ref(false)
@@ -113,7 +113,8 @@ async function init() {
   const params = route.params
   const boardId = params.boardId as string
   const issue = params.issue as string
-  board.value = new Board(boardId, Number(issue))
+  if (issue !== '') board.value = new Board(boardId, Number(issue))
+  else board.value = new Board(boardId, -1)
   statusStore.articleId = `${board.value.id}-${board.value.issue}`
 }
 

@@ -70,7 +70,7 @@ class Requester {
   /**
    * 如果不填写issue，默认最新期
    */
-  async get_board(board = new Board("vocaloid-daily-main"), count = 20, index = 1 ) {
+  async get_board(board = new Board("vocaloid-daily-main", -1), count = 20, index = 1 ) {
     if (board.issue !== -1) {
       const response = await api.get(Requester.endpoint.get_board, {
         params: { board: board.id, part: board.part, issue: board.issue, count, index }
@@ -84,7 +84,7 @@ class Requester {
     }
   }
 
-  async get_board_metadata(board = new Board("vocaloid-daily")) {
+  async get_board_metadata(board = new Board("vocaloid-daily", -1)) {
     const response = await api.get(Requester.endpoint.get_board_metadata, {
       params: { target: board.id }
     })

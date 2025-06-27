@@ -63,7 +63,7 @@ const form = ref<Form>({
   coin: 1,
   like: 1,
   copyright: 1,
-  board: new Board('vocaloid-daily-main', 1),
+  board: new Board('vocaloid-daily-main'),
 })
 
 const boards = ref([
