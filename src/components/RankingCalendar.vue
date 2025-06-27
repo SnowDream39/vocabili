@@ -45,7 +45,7 @@ const today = ref(DateTime.local().plus({days: -2}))
  */
 async function getToday() {
   const firstDate = DateTime.local(2024,7,2)
-  const data = await requester.get_board(new Board("vocaloid-daily-main"), undefined, 1)
+  const data = await requester.get_board(new Board("vocaloid-daily-main", -1), undefined, 1)
   const issueNum = data.metadata.issue
   return firstDate.plus({days: issueNum})
 }

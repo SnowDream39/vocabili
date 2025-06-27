@@ -22,6 +22,11 @@ export default class Board {
   part: string = 'main'
   issue: number = -1
 
+  /**
+   *
+   * @param boardId 可以传入 boardId，也可以只传 name 和 section。
+   * @param issue 如果-1就是向服务器要最新一期，不传就是当天。
+   */
   constructor(boardId: string, issue?: number) {
     const items = boardId.split('-', 3)
     this.name = items[0]
