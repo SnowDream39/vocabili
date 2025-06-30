@@ -86,6 +86,7 @@ async function handleSearch() {
   rawData.value = data;
   total.value = data.metadata.count
   board.value.issue = data.metadata.issue
+  statusStore.articleId = `${board.value.id}-${board.value.issue}`
 }
 
 /**
@@ -113,9 +114,11 @@ async function init() {
   const params = route.params
   const boardId = params.boardId as string
   const issue = params.issue as string
-  if (issue !== '') board.value = new Board(boardId, Number(issue))
-  else board.value = new Board(boardId, -1)
-  statusStore.articleId = `${board.value.id}-${board.value.issue}`
+  if (issue !== '') {
+    board.value = new Board(boardId, Number(issue))
+  } else {
+    board.value = new Board(boardId, -1)
+  }
 }
 
 // 注册事件

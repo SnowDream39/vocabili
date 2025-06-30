@@ -3,10 +3,13 @@
     <div v-for="month in months" class="calendar-month">
       <button @click="month.disabled ? undefined : jumpToBoard('monthly', month.issueNum)" class="month-btn">{{ month.dateString }}</button>
       <div class="calendar-body">
+        <div class="week">
+          <div class="day" v-for="day in weekDays">{{ day }}</div>
+        </div>
         <div
           v-for="week in month.weeks"
           class="week"
-          :key="week"
+          :key="week.dateString"
         >
           <button
             class="week-button"
@@ -19,7 +22,7 @@
             v-for="day in week.days"
             class="day"
             :class="day.disabled ? 'day-disabled' : 'day-enabled'"
-            :key="day.date"
+            :key="day.dateString"
             @click="day.disabled ? undefined : jumpToBoard('daily', day.issueNum)"
           >
             {{ day.dateString }}
@@ -31,19 +34,44 @@
   </div>
 </template>
 
-<script setup>
-import { ref, computed, onMounted, watch } from 'vue';
+<script lang="ts" setup>
+import { ref, onMounted, watch } from 'vue';
 import { DateTime } from 'luxon';
 import router from '../router';
 import { requester } from '../utils/api/requester';
 import Board from '../utils/board';
 
-const today = ref(DateTime.local().plus({days: -2}))
+const weekDays = [
+  '','六','日', '一', '二', '三', '四', '五',
+];
+
+const today = ref<DateTime>(DateTime.local().plus({days: -2}))
+
+interface MonthConfig {
+  dateString: string;
+  issueNum: number;
+  disabled: boolean;
+  weeks: WeekConfig[];
+}
+
+interface WeekConfig {
+  dateString: string;
+  issueNum: number;
+  disabled: boolean;
+  days: DayConfig[];
+}
+
+
+interface DayConfig {
+  dateString: string;
+  issueNum: number;
+  disabled: boolean;
+}
 
 /**
  * 最新一期是哪天的
  */
-async function getToday() {
+async function getToday(): Promise<DateTime> {
   const firstDate = DateTime.local(2024,7,2)
   const data = await requester.get_board(new Board("vocaloid-daily-main", -1), undefined, 1)
   const issueNum = data.metadata.issue
@@ -51,7 +79,7 @@ async function getToday() {
 }
 
 // 月份列表，日期均存储于此
-const months = ref([])
+const months = ref<MonthConfig[]>([])
 
 watch(today, () => {
   months.value = []
@@ -66,21 +94,22 @@ watch(today, () => {
       dateString: currentMonth.toFormat('yyyy-MM'),
       issueNum: Math.ceil(currentMonth.diff(DateTime.local(2024, 7, 1)).as('months')),
       disabled: endOfMonth > today.value,
-      weeks: []
+      weeks: [] as any[]
     }
 
-    let currentWeek = startOfMonth.startOf('week');
+    // 接下来处理周。显示的一周是从周六开始的
+    let currentWeek = startOfMonth.weekday <= 5 ? startOfMonth.startOf('week').plus({ days: -2 }) : startOfMonth.startOf('week').plus({ days: 5 });
 
     // 确保只处理当月的日期
     while (currentWeek <= DateTime.min(endOfMonth, today.value)) {
-      const startOfWeek = currentWeek.startOf('week');
-      const endOfWeek = currentWeek.endOf('week');  // 是下周的前一毫秒
+      const startOfWeek = currentWeek;
+      const endOfWeek = currentWeek.plus({ days: 7, milliseconds: -1});  // 是下周的前一毫秒
 
       const week = {
         dateString: currentWeek.toFormat('EEE'),
-        issueNum: Math.ceil(currentWeek.diff(DateTime.local(2024, 8, 31)).as('weeks')),
-        disabled: endOfWeek.plus({ days: -2 }) > today.value || endOfWeek < DateTime.local(2024, 9, 7),
-        days: []
+        issueNum: Math.ceil(currentWeek.diff(DateTime.local(2024, 8, 24)).as('weeks')),
+        disabled: endOfWeek.plus({ days: -2 }) > today.value || endOfWeek < DateTime.local(2024, 8, 31),
+        days: [] as any[]
       }
 
 
@@ -119,23 +148,9 @@ async function init() {
   today.value = await getToday()
 }
 
-function jumpToBoard(board, issue) {
+function jumpToBoard(board: string, issue: number) {
   router.push(`/board/vocaloid-${board}-main/${issue}`)
 }
-
-
-// 点击日期事件
-const handleDayClick = (day) => {
-  console.log(`点击了日期: ${day.date.toISODate()}`);
-  // 可以调用其他函数
-};
-
-// 点击一周的按钮事件
-const handleWeekClick = (week) => {
-  console.log('点击了这一周:', week);
-  // 可以调用其他函数
-};
-
 
 onMounted(init)
 </script>

@@ -55,7 +55,7 @@ import { Search } from '@element-plus/icons-vue'
 // 响应式数据
 const searchWord = ref('')
 const rawData = ref(null)
-const searchTarget = ref('platform')
+const searchTarget = ref('name')
 const searchSort = ref('default')
 const searchAscending = ref(false)
 const total = ref(0)
@@ -66,8 +66,8 @@ const threshold = ref(0.2)
 
 // 配置项
 const searchTargetOptions = [
-  { value: 'platform', label: '视频' },
   { value: 'name', label: '歌名' },
+  { value: 'platform', label: '视频' },
   { value: 'producer', label: '作者' },
   { value: 'uploader', label: 'UP主' },
   { value: 'vocalist', label: '歌手' },
