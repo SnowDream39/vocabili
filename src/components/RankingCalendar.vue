@@ -93,7 +93,7 @@ watch(today, () => {
     const month = {
       dateString: currentMonth.toFormat('yyyy-MM'),
       issueNum: Math.ceil(currentMonth.diff(DateTime.local(2024, 7, 1)).as('months')),
-      disabled: endOfMonth > today.value,
+      disabled: endOfMonth > today.value.plus({ days: 1 }),
       weeks: [] as any[]
     }
 

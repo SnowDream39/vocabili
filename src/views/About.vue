@@ -22,6 +22,10 @@
     <p>ETeyondLitle（网站后端）</p>
     <p>李慕路（网页样式）</p>
     </div>
+    <h2>相关站点</h2>
+    <ul>
+      <li><el-link type="primary" href="https://moegirl.vocabili.top/" target="_blank">萌娘百科条目生成工具</el-link></li>
+    </ul>
     <h2>友情链接</h2>
     <ul>
       <li><el-link type="primary" href="https://www.vocarancn.cc/" target="_blank" >周刊Vocaloid排行榜数据汇总</el-link></li>
