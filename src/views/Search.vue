@@ -22,9 +22,8 @@
     </div>
 
 
-    <!-- 数据表格 -->
-    <SearchSongTable v-if="tableData[0] && ['platform', 'name'].includes(searchTarget)" :data="tableData"
-      :loading="loading" />
+    <!-- 搜索结果 -->
+    <SearchMusicCards :data="tableData" v-if="tableData[0] && ['name', 'platform'].includes(searchTarget)" />
     <SearchArtistBlocks v-if="tableData[0] && ['vocalist', 'uploader', 'producer', 'synthesizer'].includes(searchTarget)"
       :type="searchTarget" :data="tableData" :loading="loading" />
 
@@ -50,6 +49,9 @@ import { computed, ref, toRaw } from 'vue';
 import router from '../router/index.ts';
 import { requester } from '../utils/api/requester.ts';
 import { Search } from '@element-plus/icons-vue'
+import SearchMusicCard from '@/components/search/SearchMusicCard.vue';
+import SearchArtistBlocks from '@/components/search/SearchArtistBlocks.vue';
+import SearchMusicCards from '@/components/search/SearchMusicCards.vue';
 
 
 // 响应式数据

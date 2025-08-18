@@ -58,6 +58,8 @@ declare module 'vue' {
     ScrollToTop: typeof import('./src/components/misc/ScrollToTop.vue')['default']
     SearchArtist: typeof import('./src/components/search/SearchArtist.vue')['default']
     SearchArtistBlocks: typeof import('./src/components/search/SearchArtistBlocks.vue')['default']
+    SearchMusicCard: typeof import('./src/components/search/SearchMusicCard.vue')['default']
+    SearchMusicCards: typeof import('./src/components/search/SearchMusicCards.vue')['default']
     SearchSongTable: typeof import('./src/components/search/SearchSongTable.vue')['default']
     SideAdvertisement: typeof import('./src/components/misc/SideAdvertisement.vue')['default']
     SongHistoryTable: typeof import('./src/components/song/SongHistoryTable.vue')['default']
