@@ -41,17 +41,6 @@ function showStat() {
 </script>
 
 <style lang="scss" scoped>
-
-.song-info {
-  max-width: 90%;
-  background-color: rgba(255, 255, 255, 0.8);
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 20px; /* Add gap between items */
-  padding: 20px 0;
-}
-
 .el-carousel {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -107,10 +96,7 @@ ul {
 }
 
 @media (max-width: 768px) {
-  .song-info {
-    flex-direction: column;
-    padding: 15px;
-  }
+
 
   .right {
     max-width: 100%;

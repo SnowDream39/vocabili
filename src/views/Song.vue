@@ -25,6 +25,7 @@ import { onMounted, ref } from 'vue';
 import { useStatusStore } from '@/store/status';
 import SongHistoryTable from '@/components/song/SongHistoryTable.vue';
 import CommentFrame from '@/components/user/CommentFrame.vue';
+import SongInfo from '@/components/song/SongInfo.vue';
 
 const statusStore = useStatusStore()
 

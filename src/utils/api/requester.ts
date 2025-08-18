@@ -84,6 +84,16 @@ class Requester {
     }
   }
 
+  /**
+   * 获取多期数据，必须填入期数
+   */
+  async get_boards(boardId: string, part: string, issues: number[], count = 5, index = 1) {
+    const response = await api.get(Requester.endpoint.get_board, {
+      params: { board: boardId, part, issue: issues.join(','), count, index }
+    })
+    return response.data.data
+  }
+
   async get_board_metadata(board = new Board("vocaloid-daily", -1)) {
     const response = await api.get(Requester.endpoint.get_board_metadata, {
       params: { target: board.id }

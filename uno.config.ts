@@ -20,7 +20,7 @@ export default defineConfig({
     'border',
   ],
   shortcuts: [
-
+    ['big-title', ['text-2xl', 'font-bold']]
   ],
   content: {
     pipeline: {
