@@ -27,7 +27,7 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 800px;
+  max-width: 1000px;
 }
 
 .el-dialog__headerbtn {

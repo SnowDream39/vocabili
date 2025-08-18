@@ -1,6 +1,6 @@
 <template>
   <h1>{{ artistName }}</h1>
-  <SearchSongTable if="artistSongs[0]" :data="artistSongs"  />
+  <SearchMusicCards v-if="artistSongs[0]" :data="artistSongs"  />
   <el-pagination
     background
     layout="prev, pager, next"
@@ -16,7 +16,7 @@
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { requester } from '../utils/api/requester';
-import SearchSongTable from '../components/search/SearchSongTable.vue';
+import SearchMusicCards from '@/components/search/SearchMusicCards.vue';
 
 
 const route = useRoute()

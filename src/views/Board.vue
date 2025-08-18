@@ -11,12 +11,15 @@
     <h1 v-if="!isSpecial">{{ issueName }}</h1>
     <div v-if="!isSpecial">{{ rankDateString }}</div>
   </div>
-  <RankingCard
-    v-for="data in plainData"
-    v-bind="data"
-    v-if="plainData && plainData.length > 0"
-    :key="data.point"
-  />
+  <div class="w-full flex flex-row flex-wrap justify-center items-center gap-4">
+
+    <RankingCard
+      v-for="data in plainData"
+      v-bind="data"
+      v-if="plainData && plainData.length > 0"
+      :key="data.point"
+    />
+  </div>
   <div class="boardpagination">
   <el-pagination
     background

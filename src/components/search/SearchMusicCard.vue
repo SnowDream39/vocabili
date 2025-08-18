@@ -1,6 +1,6 @@
 <template>
-  <div class="producer_music_card">
-    <div class="producer_music_card-info" style="background: linear-gradient(to right, #454f54, #454f5480)">
+  <div class="producer_music_card dark:text-white">
+    <div class="producer_music_card-info">
       <div class="producer_music_card-split">
         <div>{{ vocalist }}</div>
       </div>
@@ -27,12 +27,6 @@ defineProps<{
   thumbnail: string;
 }>();
 
-function commaJoin(arr: string[]): string {
-  return arr.join('、');
-}
-
-
-
 </script>
 
 <style lang="scss" scoped>
@@ -46,6 +40,8 @@ function commaJoin(arr: string[]): string {
   box-shadow: #454f54 5px 5px 7px -3px;
   overflow: hidden;
   flex: 0 0 auto;
+  color: black;
+  cursor: pointer;
 }
 
 .producer_music_card * {
@@ -66,25 +62,20 @@ function commaJoin(arr: string[]): string {
   position: relative;
   z-index: 1;
 
+  background: linear-gradient(to right, #eeeeee, #eeeeee80);
+
   display: flex;
   flex-direction: column;
-  color: white;
   width: 100%;
   height: 100%;
   padding: 0.5em 1em 0.5em 1em;
   justify-content: space-around;
 }
 
-.producer_music_card-info a {
-  color: white;
-}
-
-.producer_music_card-info a:visited {
-  color: white;
-}
-
-.producer_music_card-info a:hover {
-  text-decoration: underline;
+@media (prefer-color-scheme: dark) {
+  .producer_music_card-info {
+    background: linear-gradient(to right, #444444, #44444480);
+  }
 }
 
 .producer_music_card-info-space {
