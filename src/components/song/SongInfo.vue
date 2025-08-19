@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-import { defineProps, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { DateTime, Duration } from 'luxon'
 import VideoInfo from './VideoInfo.vue';
 
