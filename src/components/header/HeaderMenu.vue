@@ -16,14 +16,18 @@
         /><span>术力口数据库</span>
       </span>
     </el-menu-item>
-    <el-sub-menu index="">
+    <el-sub-menu index="1">
       <template #title>排行</template>
       <el-menu-item index="/board/vocaloid-daily-main">日刊</el-menu-item>
       <el-menu-item index="/board/vocaloid-weekly-main">周刊</el-menu-item>
       <el-menu-item index="/board/vocaloid-monthly-main">月刊</el-menu-item>
       <el-menu-item index="/board/vocaloid-special">特刊</el-menu-item>
     </el-sub-menu>
-    <el-menu-item index="/pool">统计</el-menu-item>
+    <el-sub-menu index="2">
+      <template #title>统计</template>
+      <el-menu-item index="/pool">总数据</el-menu-item>
+      <el-menu-item index="/top5">zm喜欢的</el-menu-item>
+    </el-sub-menu>
     <el-menu-item index="/about">关于</el-menu-item>
     <el-menu-item index="/search">
       <el-icon>

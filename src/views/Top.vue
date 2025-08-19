@@ -11,7 +11,7 @@
       </template>
     </ElTableColumn>
   </ElTable>
-  <ElPagination v-if="tableData.length > 0" :total="currentIssue" :sizes="size" v-model:current-page="page" @current-change="getData" />
+  <ElPagination v-if="tableData.length > 0" :total="currentIssue" :page-size="size" v-model:current-page="page" @current-change="getData" />
 </template>
 
 

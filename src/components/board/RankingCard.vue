@@ -1,24 +1,29 @@
 <template>
   <div
-    class="relative max-w-[min(90%,474px)] overflow-hidden rounded-xl border-2 border-gray-800 text-zinc-800 dark:text-zinc-200 shadow-xl shadow-gray-300 grid grid-flow-row gap-4 *:align-self-center"
+    class="relative max-w-[min(90%,474px)] overflow-hidden rounded-xl border-2 border-gray-800 text-zinc-800 dark:text-zinc-200 text-shadow-md text-shadow-white dark:text-shadow-black shadow-xl shadow-gray-300 grid grid-flow-row gap-4 *:align-self-center"
     style="font-family: '思源黑体', '思源黑体 CN', sans-serif;
   font-weight: 500;">
-    <div class="z-1 p-3 bg-white/50 dark:bg-black/70 flex flex-row flex-wrap justify-center items-center gap-0 sm:gap-4  ">
-      <div class="flex flex-row flex-nowrap justify-center items-center gap-4">
-        <div class="w-20 flex-none flex flex-col items-center gap-0 sm:gap-4 z-1">
-          <div style="font-size: 300%;">{{ rank }}</div>
-          <div class="flex flex-row gap-4">
-            <RankChange v-bind="change" />
+    <div class="z-1 p-3 bg-white/50 dark:bg-black/70 flex flex-row sm:flex-col flex-wrap justify-center items-center gap-0 sm:gap-4 overflow-hidden ">
+      <div name="left" class="w-20 h-40 sm:h-20 flex flex-col flex-wrap justify-center items-center ">
+        <div class="justify-center items-center gap-4">
+          <div class="w-20 flex-none flex flex-col items-center gap-0 sm:gap-2 z-1">
+            <div style="font-size: 300%;">{{ rank }}</div>
+            <div class="flex flex-row gap-4">
+              <RankChange v-bind="change" />
+            </div>
+          </div>
+          <div class="w-50 inline-block m-4 hidden!" :title="title">
+            <el-image class="w-full rounded-xl" :src="image_url + '@400w'" alt="封面" :preview-src-list="[image_url]"
+              fit="cover" />
           </div>
         </div>
-        <div class="w-50 inline-block m-4 hidden!" :title="title">
-          <el-image class="w-full rounded-xl" :src="image_url + '@400w'" alt="封面" :preview-src-list="[image_url]"
-            fit="cover" />
+        <div class="vocal-colors mt-4 w-20 max-h-12 sm:max-h-20 sm:w-30 overflow-hidden whitespace-normal break-words leading-none text-center">
+          <span v-for="color in colors" class="text-lg leading-none inline" :style="{ color: color }">●</span>
         </div>
       </div>
-      <div class="block items-center w-[350px] z-10  ">
+      <div name="right" class="block items-center w-[350px] z-10  ">
         <div class="info-row inline-block w-full text-3xl overflow-hidden text-ellipsis whitespace-nowrap"
-          :title="name">{{ name }}<span v-for="color in colors" :style="{ color: color }">●</span></div>
+          :title="name">{{ name }}</div>
         <div class="w-full grid grid-flow-col grid-cols-[1fr_1fr] grid-rows-[repeat(5,20px)]">
           <InfoItem name="P主" :value="author" />
           <InfoItem name="歌手" :value="vocal" />
