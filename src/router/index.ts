@@ -16,6 +16,7 @@ const routes = [
   { path: '/artist/:type/:id', component: Artist } ,
   { path: '/pool', component: Pool },
   { path: '/top5', component: () => import('../views/Top.vue')},
+  { path: '/work', component: () => import('../views/Work.vue')},
   { path: '/user', component: () => import('../views/User.vue')},
   { path: '/admin', component: () => import('../views/admin/Index.vue')},
   { path: '/admin/comment', component: () => import('../views/admin/Comment.vue')},

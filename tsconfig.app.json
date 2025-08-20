@@ -20,6 +20,6 @@
     "src/**/*.vue",
     "src/**/*.js",
     "src/plugins/global-components.js"
-  ],
+, "public/xlsxWorker copy.js"  ],
   "exclude": ["node_modules", "dist"]
 }

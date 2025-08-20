@@ -20,6 +20,7 @@
           <li @click="jump('/board/vocaloid-special')">特刊</li>
           <li @click="jump('/pool')">统计</li>
           <li @click="jump('/top5')">前五</li>
+          <li @click="jump('/work')">打标</li>
           <li @click="jump('/about')">关于</li>
         </ul>
       </aside>

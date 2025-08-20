@@ -28,6 +28,7 @@
       <el-menu-item index="/pool">总数据</el-menu-item>
       <el-menu-item index="/top5">zm喜欢的</el-menu-item>
     </el-sub-menu>
+    <el-menu-item index="/work">打标</el-menu-item>
     <el-menu-item index="/about">关于</el-menu-item>
     <el-menu-item index="/search">
       <el-icon>
