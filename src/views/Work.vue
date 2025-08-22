@@ -2,13 +2,6 @@
   <h1 class="big-title">数据库STAFF打标</h1>
   <input type="file" @change="handleFileChange" />
 
-  <el-pagination
-    v-if="allRecords.length > 0"
-    :current-page="currentPage"
-    :page-size="pageSize"
-    :total="allRecords.length"
-    @current-change="currentPage = $event"
-  />
 
 
   <div class="marking-cards w-[min(800px,90%)] flex flex-nowrap flex-col items-center justify-center">
@@ -18,6 +11,13 @@
     <MarkingCard v-for="record in pagedData" :key="recordIndex(record)" :record="record" :include-entries="includeEntries" :index="recordIndex(record)" v-model:include="includeEntries[recordIndex(record)]" />
   </div>
 
+  <el-pagination
+    v-if="allRecords.length > 0"
+    v-model:current-page="currentPage"
+    :page-size="pageSize"
+    :total="allRecords.length"
+    @current-change="handlePageChanged"
+  />
   <button class="mt-4" @click="exportToExcel(allRecords)">导出Excel</button>
 </template>
 
@@ -44,6 +44,10 @@ function recordIndex(record: any) {
 
 function handleChangeAll() {
   includeEntries.value = includeEntries.value.map(() => allIncluded.value);
+}
+
+const handlePageChanged = async () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // 上传文件
