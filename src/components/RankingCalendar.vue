@@ -1,5 +1,5 @@
 <template>
-  <div class="calendar">
+  <div class="calendar grid grid-cols-1 lg:grid-cols-2">
     <div v-for="month in months" class="calendar-month">
       <button @click="month.disabled ? undefined : jumpToBoard('monthly', month.issueNum)" class="month-btn">{{ month.dateString }}</button>
       <div class="calendar-body">
@@ -157,15 +157,8 @@ onMounted(init)
 
 <style scoped>
 .calendar {
-  width: 300px;
   box-sizing: border-box;
   padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: rgba(250,250,250,0.5);
-  border-radius: 12px; /* 圆角边框 */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 轻微阴影，增加层次感 */
 }
 
 .calendar-month {
@@ -174,6 +167,8 @@ onMounted(init)
   font-weight: 600;
   color: #333; /* 深色字体，增强可读性 */
   margin-bottom: 20px; /* 月份之间间隔 */
+  width: 280px;
+  padding: 0px 10px;
 }
 
 .month-btn {

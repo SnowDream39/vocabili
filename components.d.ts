@@ -55,6 +55,7 @@ declare module 'vue' {
     LoginCard: typeof import('./src/components/user/LoginCard.vue')['default']
     MarkingCard: typeof import('./src/components/song/MarkingCard.vue')['default']
     MarkingTags: typeof import('./src/components/song/MarkingTags.vue')['default']
+    NoticeBoard: typeof import('./src/components/NoticeBoard.vue')['default']
     PoolCard: typeof import('./src/components/PoolCard.vue')['default']
     RankChange: typeof import('./src/components/board/RankChange.vue')['default']
     RankingCalendar: typeof import('./src/components/RankingCalendar.vue')['default']

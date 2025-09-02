@@ -37,7 +37,7 @@ export default class Board {
       this.part = 'main'
     }
     if (issue) {
-      this.issue = issue
+      this.issue = Number(issue)
     } else if (this.section === 'special') {
       this.issue = 1
     } else {

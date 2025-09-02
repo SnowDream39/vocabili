@@ -18,7 +18,6 @@
     <p>Sayonzei（收录）</p>
     <p>菱角lenjow（美工）</p>
     <p>若汐ミク（歌曲截取）</p>
-    <p>信彦与影月（图文版制作）</p>
     <p>ETeyondLitle（网站后端）</p>
     <p>李慕路（网页样式）</p>
     </div>
@@ -29,7 +28,6 @@
     <h2>友情链接</h2>
     <ul>
       <li><el-link type="primary" href="https://www.vocarancn.cc/" target="_blank" >周刊Vocaloid排行榜数据汇总</el-link></li>
-      <li><el-link type="primary" href="https://aquarite.uk" target="_blank" >Biliboard</el-link></li>
       <li><el-link type="primary" href="https://vocaloid-rankings.fly.dev" target="_blank" >Vocaranking</el-link></li>
       <li><el-link type="primary" href="https://monitor.lisfox.top/" target="_blank" >VOCALOID-Video-Monitor</el-link></li>
       <li><el-link type="primary" href="https://ys.mihoyo.com" target="_blank" >原神</el-link></li>
@@ -50,6 +48,11 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+h2 {
+  font-size: 20px;
+  font-weight: bold;
 }
 
 #credits {

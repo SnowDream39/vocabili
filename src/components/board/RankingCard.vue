@@ -36,7 +36,7 @@
           <InfoItem name="硬币" :value="String(coin)" :append="`${coin_rank}位`" />
           <InfoItem name="点赞" :value="String(like)" :append="`${like_rank}位`" />
         </div>
-        <div class="[&>*]:m-2 [&>*]:text-gray-800">
+        <div class="[&>*]:m-2 [&>*]:text-gray-800!">
           <el-link type="primary" :href="link" target="_blank">视频链接</el-link>
           <el-link type="primary" :href="'/song/' + id" target="_blank">历史数据</el-link>
           <el-link type="primary" @click="showData">详细信息</el-link>
@@ -159,12 +159,6 @@ watch(() => props.rank_before, (newRankBefore) => {
 </script>
 
 <style lang="scss" scoped>
-* {
-  font-size: 15px;
-}
-
-
-
 // 移动版样式
 @media screen and (max-width: 768px) {
   .ranking-card {

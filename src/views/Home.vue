@@ -1,8 +1,12 @@
 <template>
-  <RankingCalendar />
+  <div class="bg-zinc-50 shadow-lg md:flex md:flex-row md:items-start">
+    <RankingCalendar />
+    <NoticeBoard />
+  </div>
 </template>
 
 <script setup lang="ts">
+import NoticeBoard from '@/components/NoticeBoard.vue';
 import RankingCalendar from '../components/RankingCalendar.vue';
 
 </script>

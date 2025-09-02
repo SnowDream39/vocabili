@@ -137,7 +137,7 @@ watch(board, async () => {
   if (board.value.section !== 'special'){
     await handleSearch()
     lastIssueStatus.value = await requester.check_issue(board.value.id, board.value.issue - 1);
-    nextIssueStatus.value = await requester.check_issue(board.value.id, board.value.issue + 1);
+    nextIssueStatus.value = await requester.check_issue(board.value.id, Number(board.value.issue) + 1);
   }
 }, {immediate: false})
 </script>
