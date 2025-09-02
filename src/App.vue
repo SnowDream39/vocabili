@@ -20,10 +20,11 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn'
 
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 main {
   box-sizing: border-box;
   width: 100%;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
