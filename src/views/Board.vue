@@ -1,38 +1,53 @@
 <template>
-  <div class="board-header">
-    <div id="last-next-issues" v-if="!isSpecial">
-      <el-link type="primary" :href="`/board/${board.fullId}/${board.issue-1}?page=1`" id="last-issue" :disabled="!lastIssueStatus"><<上一期</el-link>
-      <el-link type="info" @click="changeBoard" id="change-board">切换总榜/新曲榜</el-link>
-      <el-link type="primary" :href="`/board/${board.fullId}/${board.issue+1}?page=1`" id="next-issue" :disabled="!nextIssueStatus">下一期 >></el-link>
+  <div class="flex flex-row flex-nowrap gap-4 items-start">
+    <div class="flex flex-col items-center lg:w-[964px]" >
+      <div class="board-header">
+        <div id="last-next-issues" v-if="!isSpecial">
+          <el-link type="primary" :href="`/board/${board.fullId}/${board.issue-1}?page=1`" id="last-issue" :disabled="!lastIssueStatus">&lt;&lt;上一期</el-link>
+          <el-link type="info" @click="changeBoard" id="change-board">切换总榜/新曲榜</el-link>
+          <el-link type="primary" :href="`/board/${board.fullId}/${board.issue+1}?page=1`" id="next-issue" :disabled="!nextIssueStatus">下一期 &gt;&gt;</el-link>
+        </div>
+        <div v-else>
+          <SpecialSelector @updateData="handleIssueChanged" />
+        </div>
+        <h1 v-if="!isSpecial">{{ issueName }}</h1>
+        <div v-if="!isSpecial">{{ rankDateString }}</div>
+      </div>
+      <div class="w-auto grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <RankingCard
+          v-for="data in plainData"
+          v-bind="data"
+          v-if="plainData && plainData.length > 0"
+          :key="data.point"
+        />
+      </div>
+      <div class="boardpagination">
+      <el-pagination
+        background
+        layout="prev, pager, next, jumper"
+        :pager-count="5"
+        :page-size="20"
+        :total="total"
+        v-model:current-page="page"
+        class="pagination"
+        @current-change="handlePageChanged"
+      />
+      </div>
+      <CommentFrame/>
     </div>
-    <div v-else>
-      <SpecialSelector @updateData="handleIssueChanged" />
+    <!-- 开发中内容，只有大屏可见 -->
+    <div class="hidden 2xl:block bg-cyan-200 w-[400px] my-4 p-4">
+      <h2 class="big-title">本期看点</h2>
+      <h3 class="small-title">统计</h3>
+      <h3 class="small-title">火箭</h3>
+      <ul>
+        <li></li>
+      </ul>
+      <h3 class="small-title">跳水</h3>
+      <div>该部分开发中</div>
     </div>
-    <h1 v-if="!isSpecial">{{ issueName }}</h1>
-    <div v-if="!isSpecial">{{ rankDateString }}</div>
   </div>
-  <div class="w-full flex flex-row flex-wrap justify-center items-center gap-4">
 
-    <RankingCard
-      v-for="data in plainData"
-      v-bind="data"
-      v-if="plainData && plainData.length > 0"
-      :key="data.point"
-    />
-  </div>
-  <div class="boardpagination">
-  <el-pagination
-    background
-    layout="prev, pager, next, jumper"
-    :pager-count="5"
-    :page-size="20"
-    :total="total"
-    v-model:current-page="page"
-    class="pagination"
-    @current-change="handlePageChanged"
-  />
-  </div>
-  <CommentFrame/>
 </template>
 
 <script lang="ts" setup>
@@ -160,6 +175,7 @@ h1 {
 
   padding: 10px;
   display: flex;
+  width: 100%;
   flex-direction: row;
   justify-content: space-between;
 

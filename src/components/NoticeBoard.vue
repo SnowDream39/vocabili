@@ -1,7 +1,7 @@
 <template>
   <div class="w-80 bg-zinc-50 h-auto p-3">
     <div class="text-xl">欢迎来到术力口数据库！你可以在这里探索最新的bilibili术力口数据。</div>
-    <div class="text-2xl font-bold my-4">公告</div>
+    <h2 class="small-title">公告</h2>
     <div v-if="announcementData" v-for="data in announcementData.reverse()" class="my-2 border-1 border-black rounded-md p-2 *:my-1">
       <div class="font-bold">{{ data.title }}</div>
       <div>{{ data.content }}</div>

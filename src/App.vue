@@ -20,14 +20,13 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn'
 
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 main {
   box-sizing: border-box;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 1000px;
 }
 
 .el-dialog__headerbtn {
@@ -35,4 +34,11 @@ main {
   color: #8b8b8b;
 
 }
+
+h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
 </style>

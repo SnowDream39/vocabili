@@ -1,9 +1,8 @@
 <template>
-  <div
-    class="relative max-w-[min(90%,474px)] overflow-hidden rounded-xl border-2 border-gray-800 text-zinc-800 dark:text-zinc-200 text-shadow-md text-shadow-white dark:text-shadow-black shadow-xl shadow-gray-300 grid grid-flow-row gap-4 *:align-self-center"
+  <div class="relative max-w-[474px] overflow-hidden rounded-xl border-2 border-gray-800 text-zinc-800 dark:text-zinc-200 text-shadow-md text-shadow-white dark:text-shadow-black shadow-xl shadow-gray-300 grid grid-flow-row gap-4 *:align-self-center"
     style="font-family: '思源黑体', '思源黑体 CN', sans-serif;
   font-weight: 500;">
-    <div class="z-1 p-3 bg-white/50 dark:bg-black/70 flex flex-col sm:flex-row flex-wrap justify-center items-center gap-0 sm:gap-4 overflow-hidden ">
+    <div class="z-1 p-3 bg-white/50 dark:bg-black/70 flex flex-col sm:flex-row! flex-nowrap justify-center items-center gap-0 sm:gap-4 overflow-hidden ">
       <div name="left" class="w-20 h-20 sm:h-40 flex flex-col flex-wrap justify-center items-center ">
         <div class="justify-center items-center gap-4">
           <div class="w-20 flex-none flex flex-col items-center gap-0 sm:gap-2 z-1">

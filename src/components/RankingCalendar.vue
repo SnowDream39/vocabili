@@ -1,5 +1,5 @@
 <template>
-  <div class="calendar grid grid-cols-1 lg:grid-cols-2">
+  <div class="calendar grid grid-cols-1 max-h-[80vh] overflow-y-scroll md:max-h-none lg:grid-cols-2">
     <div v-for="month in months" class="calendar-month">
       <button @click="month.disabled ? undefined : jumpToBoard('monthly', month.issueNum)" class="month-btn">{{ month.dateString }}</button>
       <div class="calendar-body">
