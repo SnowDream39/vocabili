@@ -79,7 +79,7 @@ export function compareRank(rank_current: number, rank_before: number | undefine
   }
 }
 
-export function boardToPlain(data: any, board: Board, meta: Metadata) {
+export function boardToPlain(data: any, board: Board, meta: Metadata): VideoData | {} {
   try{
 
     const {rank,count,change:stat,target:songInfo,last} = data
