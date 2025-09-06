@@ -5,7 +5,7 @@
         <div id="last-next-issues" v-if="!isSpecial">
           <el-link type="primary" :href="`/board/${board.fullId}/${board.issue-1}?page=1`" id="last-issue" :disabled="!lastIssueStatus">&lt;&lt;上一期</el-link>
           <el-link type="info" @click="changeBoard" id="change-board">切换总榜/新曲榜</el-link>
-          <el-link type="primary" :href="`/board/${board.fullId}/${board.issue+1}?page=1`" id="next-issue" :disabled="!nextIssueStatus">下一期 &gt;&gt;</el-link>
+          <el-link type="primary" :href="`/board/${board.fullId}/${Number(board.issue)+1}?page=1`" id="next-issue" :disabled="!nextIssueStatus">下一期 &gt;&gt;</el-link>
         </div>
         <div v-else>
           <SpecialSelector @updateData="handleIssueChanged" />

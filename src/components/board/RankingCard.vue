@@ -53,13 +53,15 @@
     <div class="*:mt-4">
       <div>第{{ rank }}位（{{ change.change === "new" ? "NEW" : `上期${change.rank_before}` }}）</div>
       <div>{{ title }}</div>
-      <div style="font-size: small;">P主：{{ author }}
-        {{ [1, 4].includes(copyright) ? "本家投稿" : `搬运：${uploader}` }}
-        {{ type }}
+      <div class="text-sm *:mr-1">
+        <span>P主：<el-link>{{ author }}</el-link></span>
+        <span v-if="[1, 4].includes(copyright)">本家投稿</span>
+        <span v-else>搬运：<el-link>{{ uploader }}</el-link></span>
+        <span>{{ type }}</span>
       </div>
-      <div style="font-size: small;">歌手：{{ vocal }}</div>
-      <div style="font-size: small;">引擎：{{ synthesizer }}</div>
-      <div style="font-size: small;">投稿时间：{{ pubdate }}</div>
+      <div class="text-sm">歌手：<el-link>{{ vocal }}</el-link></div>
+      <div class="text-sm">引擎：<el-link>{{ synthesizer }}</el-link></div>
+      <div class="text-sm">投稿时间：{{ pubdate }}</div>
       <div>得分：{{ point }}</div>
       <div>上期：{{ point_before }}</div>
       <div>RATE：{{ rate }}</div>

@@ -2,7 +2,7 @@
     <el-table
       ref="table"
       :data="data.slice().reverse()"
-      :fit="false"
+      :fit="true"
       :row-class-name="rankin"
       :default-sort="{ prop: 'issue', order: 'descending' }"
       max-height="300"
