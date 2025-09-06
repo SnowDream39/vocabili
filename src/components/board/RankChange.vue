@@ -4,14 +4,14 @@
   </template>
   <template v-else>
     <span :class="changeClass">{{ changeIcon }}</span>
-    <span class="rank_before">{{ rank_before }}</span>
+    <span class="rank_before">{{ rankBefore }}</span>
   </template>
 </template>
 
 <script setup>
 import { computed } from 'vue';
 
-const props = defineProps(['rank_before', 'change']);
+const props = defineProps(['rankBefore', 'change']);
 
 const changeClass = computed(() => props.change);
 const changeIcon = computed(() => ({

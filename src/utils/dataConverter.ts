@@ -3,6 +3,52 @@ import { Calculator } from './calculator'
 import Issue from './board'
 import type Board from './board'
 
+
+interface VideoData {
+  id: string
+  title?: string
+  link?: string
+  name: string
+  author: string
+  uploader: string
+  copyright: 1 | 2 | 3 | 4
+  synthesizer: string
+  vocal: string
+  colors: string[]
+  type: "原创" | "翻唱" | "本家重置"
+  pubdate: string
+  duration: string
+  page: number
+  view: number
+  favorite: number
+  coin: number
+  like: number
+  viewR: string
+  favoriteR: string
+  coinR: string
+  likeR: string
+  fixA: string
+  fixB: string
+  fixC: string
+  fix: string
+  point: number
+  image_url: string
+  view_rank: number
+  favorite_rank: number
+  coin_rank: number
+  like_rank: number
+  rank: number
+  rank_before: number | undefined
+  point_before: number | undefined
+  rate: string | null
+  count: number
+  vocal_colors: string[]
+  change: "up" | "cont" | "down" | "new"
+  board: Board
+  issue: number
+}
+
+
 interface Metadata {
   id: string,
   name?: string,
@@ -21,7 +67,7 @@ interface Vocalist extends Artist {
 }
 
 
-function compareRank(rank_current: number, rank_before: number) {
+export function compareRank(rank_current: number, rank_before: number | undefined) {
   if (!rank_before) {
     return "new"
   } else if (rank_current > rank_before) {
@@ -39,7 +85,7 @@ export function boardToPlain(data: any, board: Board, meta: Metadata) {
     const {rank,count,change:stat,target:songInfo,last} = data
     const {id:boardId, issue:issueNum} = meta
     const issue = new Issue(boardId, issueNum)
-    
+
 
     let [id,name,type] = ['','','']
     let [vocalist,producer,synthesizer] = [([] as Vocalist[]),([] as Artist[]),([] as Artist[])]
@@ -56,7 +102,7 @@ export function boardToPlain(data: any, board: Board, meta: Metadata) {
         synthesizer = target.synthesizer
       }
     }
-    
+
     let [link,page,title,publish,uploader,thumbnail,duration,copyright] = ['',0,'','',([] as Artist[]),'',0,0]
     const platform = songInfo.platform
     if(platform.link !== undefined){
@@ -137,7 +183,7 @@ export function poolToPlain(achieve: any) {
   try{
 
     const {rank,count,target:songInfo} = achieve
-    
+
 
     let [id,name,type] = ['','','']
     let [vocalist,producer,synthesizer] = [([] as Vocalist[]),([] as Artist[]),([] as Artist[])]
@@ -154,7 +200,7 @@ export function poolToPlain(achieve: any) {
         synthesizer = target.synthesizer
       }
     }
-    
+
     let [link,page,title,publish,uploader,thumbnail,duration,copyright] = ['',0,'','',([] as Artist[]),'',0,0]
     const platform = songInfo.platform
     if(platform.link !== undefined){

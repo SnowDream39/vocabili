@@ -15,10 +15,11 @@
       </div>
       <div class="w-auto grid grid-cols-1 lg:grid-cols-2 gap-4">
         <RankingCard
-          v-for="data in plainData"
-          v-bind="data"
-          v-if="plainData && plainData.length > 0"
-          :key="data.point"
+          v-for="data in rawData.board"
+          :board="data"
+          :metadata="rawData.metadata"
+          v-if="rawData && rawData.board.length > 0"
+          :key="data.target.metadata.id"
         />
       </div>
       <div class="boardpagination">
@@ -54,37 +55,25 @@
 import { ref, computed, watch, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import router from '../router/index.ts'
-import { boardToPlain } from '../utils/dataConverter.ts'
 import Board from '../utils/board.ts';
 import { requester } from '../utils/api/requester.ts'
 import SpecialSelector from '../components/board/SpecialSelector.vue';
 import CommentFrame from '../components/user/CommentFrame.vue';
 import { useStatusStore } from '@/store/status.ts';
 import RankingCard from '@/components/board/RankingCard.vue';
+import { ElPagination } from 'element-plus';
+import type { BoardData } from '@/utils/boardData.ts';
 const route = useRoute()
 const statusStore = useStatusStore()
 
 // 响应式数据
 const page = ref(Number(route.query.page) || 1)
 const total = ref(1000)
-const rawData = ref<Record<string, any>>();
+const rawData = ref<BoardData>();
 const board = ref<Board>(new Board('vocaloid-daily-main', -1))
 
 const lastIssueStatus = ref(false)
 const nextIssueStatus = ref(false)
-
-// 计算属性
-const plainData = computed(() => {
-  try {
-    if (rawData.value) {
-      return rawData.value.board.map((item: any) => boardToPlain(item, board.value, rawData.value?.metadata));
-    }
-    return [];
-  } catch (error) {
-    console.log(error)
-    return [];
-  }
-});
 
 const isSpecial = computed(() => {
   return board.value.section === 'special'
@@ -101,7 +90,7 @@ async function handleSearch() {
   } else {
     data = await requester.get_board(board.value, undefined, page.value)
   }
-  rawData.value = data;
+  rawData.value = data as BoardData;
   total.value = data.metadata.count
   board.value.issue = data.metadata.issue
   statusStore.articleId = `${board.value.id}-${board.value.issue}`

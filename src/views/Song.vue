@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full mx-4 flex flex-nowrap flex-col items-center xl:flex-row">
+  <div class="w-full mx-4 flex flex-nowrap flex-col items-center xl:flex-row xl:items-start">
     <!-- 歌曲信息 -->
     <SongInfo v-if="songInfo" v-bind="songInfo" class="w-full m-10 xl:w-auto xl:max-w-[600px] xl:basis-lg xl:grow-1" />
 
