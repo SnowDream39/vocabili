@@ -1,5 +1,6 @@
 <template>
-  <h2>{{ data.name }} <span v-for="color in data.color" :style="{ color: color }">●</span></h2>
+  <div>
+    <h2>{{ data.name }} <span v-for="color in data.color" :style="{ color: color }">●</span></h2>
     <el-carousel
       height="480px"
       :autoplay="!statVisible"
@@ -10,6 +11,7 @@
         <VideoInfo v-bind="video"></VideoInfo>
       </el-carousel-item>
     </el-carousel>
+  </div>
 </template>
 
 <script setup>

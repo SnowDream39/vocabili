@@ -1,7 +1,7 @@
 <template>
-  <div class="song-info-container">
+  <div class="w-full mx-4 flex flex-nowrap flex-col items-center xl:flex-row">
     <!-- 歌曲信息 -->
-    <SongInfo v-if="songInfo" v-bind="songInfo" class="song-info" />
+    <SongInfo v-if="songInfo" v-bind="songInfo" class="w-full m-10 xl:w-auto xl:max-w-[600px] xl:basis-lg xl:grow-1" />
 
     <!-- 排行数据 -->
     <div class="board-data">
@@ -69,25 +69,6 @@ a {
   text-decoration: none;
 }
 
-.song-info-container {
-  padding: 20px;
-  background-color: #f9f9f9;
-  /* 背景色 */
-  border-radius: 8px;
-  width: 100%;
-  box-sizing: border-box;
-
-  max-width: 1200px;
-  margin: 0 auto;
-  /* 居中 */
-  overflow-x: hidden;
-  /* 禁止横向滚动 */
-}
-
-.song-info {
-  margin-bottom: 30px;
-  /* 歌曲信息与排行数据之间的间距 */
-}
 
 .board-data {
   display: flex;

@@ -31,6 +31,7 @@
 import { onMounted, ref } from 'vue';
 import { DateTime, Duration } from 'luxon'
 import VideoStat from './VideoStat.vue';
+import ArtistList from '../search/ArtistList.vue';
 const props = defineProps(['song', 'video'])
 const statVisible = ref(false)
 
