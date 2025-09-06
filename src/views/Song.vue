@@ -1,10 +1,10 @@
 <template>
   <div class="w-full mx-4 flex flex-nowrap flex-col items-center xl:flex-row xl:items-start">
     <!-- 歌曲信息 -->
-    <SongInfo v-if="songInfo" v-bind="songInfo" class="w-full m-10 xl:w-auto xl:max-w-[600px] xl:basis-lg xl:grow-1" />
+    <SongInfo v-if="songInfo" v-bind="songInfo" class="w-full max-w-[600px] m-10 xl:w-auto xl:basis-lg xl:grow-1" />
 
     <!-- 排行数据 -->
-    <div class="flex flex-col gap-4 w-full xl:w-auto xl:basis-lg xl:grow-1">
+    <div class="board-data">
       <h3 class="board-title">日刊数据</h3>
       <SongHistoryTable :songId="songId" boardId="vocaloid-daily" class="board-table" />
 
@@ -70,6 +70,12 @@ a {
 }
 
 
+.board-data {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  /* 增加板块之间的间距 */
+}
 
 .board-title {
   font-size: 24px;
