@@ -11,7 +11,17 @@
       </template>
     </ElTableColumn>
   </ElTable>
-  <ElPagination v-if="tableData.length > 0" :total="currentIssue" :page-size="size" v-model:current-page="page" @current-change="getData" />
+  <ElPagination
+    v-if="tableData.length > 0"
+    layout="prev, pager, next, sizes, jumper"
+    :pager-count="5"
+    :total="currentIssue"
+    v-model:page-size="size"
+    :page-sizes="[5,10,20]"
+    @size-change="getData"
+    @current-change="getData"
+    v-model:current-page="page"
+  />
 </template>
 
 
@@ -55,7 +65,9 @@ async function getData() {
   console.log(page.value)
   let data = await requester.get_board(new Board(`${board.value}-main`, -1), undefined, 1)
   currentIssue.value = data.metadata.issue
-  data = await requester.get_boards(board.value, "main", Array.from({length: size.value}, (_, i) => currentIssue.value - (page.value - 1 ) * size.value - i), 5)
+  let issues: number[] = Array.from({length: size.value}, (_, i) => currentIssue.value - (page.value - 1) * size.value - i).filter(n => n > 0)
+
+  data = await requester.get_boards(board.value, "main", issues, size.value)
   tableData.value = makeData(data)
 }
 

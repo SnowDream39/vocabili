@@ -22,11 +22,11 @@
       <el-menu-item index="/board/vocaloid-weekly-main">周刊</el-menu-item>
       <el-menu-item index="/board/vocaloid-monthly-main">月刊</el-menu-item>
       <el-menu-item index="/board/vocaloid-special">特刊</el-menu-item>
+      <el-menu-item index="/top5">前五</el-menu-item>
     </el-sub-menu>
     <el-sub-menu index="2">
       <template #title>统计</template>
       <el-menu-item index="/pool">总数据</el-menu-item>
-      <el-menu-item index="/top5">zm喜欢的</el-menu-item>
     </el-sub-menu>
     <el-menu-item index="/work">打标</el-menu-item>
     <el-menu-item index="/about">关于</el-menu-item>

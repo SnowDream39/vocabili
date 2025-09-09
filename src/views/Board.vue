@@ -10,10 +10,11 @@
         <div v-else>
           <SpecialSelector @updateData="handleIssueChanged" />
         </div>
+        <el-button @click="toggleBoardStyle" class="absolute right-5 sm:hidden!" type="primary">切换外观</el-button>
         <h1 v-if="!isSpecial">{{ issueName }}</h1>
         <div v-if="!isSpecial">{{ rankDateString }}</div>
       </div>
-      <div class="w-auto grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div class="w-auto grid grid-cols-1 lg:grid-cols-2 gap-4" ref="boardList">
         <RankingCard
           v-for="data in rawData.board"
           :board="data"
@@ -61,7 +62,7 @@ import SpecialSelector from '../components/board/SpecialSelector.vue';
 import CommentFrame from '../components/user/CommentFrame.vue';
 import { useStatusStore } from '@/store/status.ts';
 import RankingCard from '@/components/board/RankingCard.vue';
-import { ElPagination } from 'element-plus';
+import { ElPagination, ElButton } from 'element-plus';
 import type { BoardData } from '@/utils/boardData.ts';
 const route = useRoute()
 const statusStore = useStatusStore()
@@ -82,7 +83,8 @@ const isSpecial = computed(() => {
 const rankDateString = computed(() => board.value.getRankDateString())
 const issueName = computed(() => board.value.getBoardName())
 
-// 方法
+const boardList = ref<HTMLElement | null>(null)
+// =============== 交互事件 ===============
 async function handleSearch() {
   let data
   if (board.value.issue === -1){
@@ -117,21 +119,6 @@ function changeBoard() {
   router.push(`/board/${board.value.fullId}/${board.value.issue}`)
 }
 
-async function init() {
-  const params = route.params
-  const boardId = params.boardId as string
-  const issue = params.issue as string
-  if (issue !== '') {
-    board.value = new Board(boardId, Number(issue))
-  } else {
-    board.value = new Board(boardId, -1)
-  }
-}
-
-// 注册事件
-onMounted(init)
-watch(() => route.path, init)
-
 // 监听 page 变化，切换分页时重新获取数据
 watch(page, async () => {
   await handleSearch();
@@ -144,6 +131,30 @@ watch(board, async () => {
     nextIssueStatus.value = await requester.check_issue(board.value.id, Number(board.value.issue) + 1);
   }
 }, {immediate: false})
+
+function toggleBoardStyle() {
+  if (boardList.value) {
+    boardList.value.classList.toggle('mini')
+  }
+}
+
+// =============== 生命周期 ===============
+
+async function init() {
+  const params = route.params
+  const boardId = params.boardId as string
+  const issue = params.issue as string
+  if (issue !== '') {
+    board.value = new Board(boardId, Number(issue))
+  } else {
+    board.value = new Board(boardId, -1)
+  }
+}
+
+
+onMounted(init)
+watch(() => route.path, init)
+
 </script>
 
 
@@ -173,15 +184,35 @@ h1 {
     width: auto;
   }
   .boardpagination {
-  display: flex;
-  justify-content: center;
-  padding: 15px 10px;
-}
-
+    display: flex;
+    justify-content: center;
+    padding: 15px 10px;
+  }
  .pagination {
-  max-width: 100%;
-  font-size: 14px; // 减小默认字体大小
+    max-width: 100%;
+    font-size: 14px; // 减小默认字体大小
+  }
 }
+.mini {
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+
+  :deep(.ranking-card) {
+    width: 45%;
+    aspect-ratio: 16 / 9;
+  }
+  :deep([name="right"]) {
+    display: none;
+  }
+  :deep(.current-rank) {
+    font-size: 250%;
+  }
+  :deep(.vocal-colors) {
+    display: none;
+  }
 }
 @media (max-width: 630px) {
   .boardpagination {

@@ -1,10 +1,13 @@
 <template>
-  <div class="w-full mx-4 flex flex-nowrap flex-col items-center xl:flex-row xl:items-start">
+  <div class="w-full m-4 flex flex-nowrap flex-col justify-center items-center xl:flex-row xl:items-start">
     <!-- 歌曲信息 -->
-    <SongInfo v-if="songInfo" v-bind="songInfo" class="w-full max-w-[600px] m-10 xl:w-auto xl:basis-lg xl:grow-1" />
+    <div class="w-full max-w-[600px] mx-10 xl:w-auto xl-basis-lg xl:grow-1 flex flex-col flex-nowrap items-center gap-4" >
+      <SongInfo v-if="songInfo" v-bind="songInfo" class="w-full" />
+      <CommentFrame class="hidden xl:block" />
+    </div>
 
     <!-- 排行数据 -->
-    <div class="board-data">
+    <div class="board-data max-w-full">
       <h3 class="board-title">日刊数据</h3>
       <SongHistoryTable :songId="songId" boardId="vocaloid-daily" class="board-table" />
 
@@ -15,7 +18,7 @@
       <SongHistoryTable :songId="songId" boardId="vocaloid-monthly" class="board-table" />
     </div>
   </div>
-  <CommentFrame />
+  <CommentFrame class="xl:hidden" />
 </template>
 
 <script lang="ts" setup>
