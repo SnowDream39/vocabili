@@ -35,11 +35,11 @@
           <InfoItem name="硬币" :value="String(board.change.coin)" :append="`${board.rank.coin}位`" />
           <InfoItem name="点赞" :value="String(board.change.like)" :append="`${board.rank.like}位`" />
         </div>
-        <div class="[&>*]:m-2 [&>*]:text-gray-800!">
-          <el-link type="primary" :href="board.target.platform.link" target="_blank">视频链接</el-link>
-          <el-link type="primary" :href="'/song/' + board.target.metadata.id" target="_blank">历史数据</el-link>
-          <el-link type="primary" @click="showData">详细信息</el-link>
-          <el-link type="primary" @click="showCalculator">分数计算器</el-link>
+        <div class="[&>*]:m-2">
+          <el-link underline="always" type="default" :href="board.target.platform.link" target="_blank">视频链接</el-link>
+          <el-link underline="always" type="default" :href="'/song/' + board.target.metadata.id" target="_blank">历史数据</el-link>
+          <el-link underline="always" type="default" @click="showData">详细信息</el-link>
+          <el-link underline="always" type="default" @click="showCalculator">分数计算器</el-link>
         </div>
       </div>
     </div>
@@ -84,6 +84,7 @@ import type { Board as DataBoard, DataMetadata } from '@/utils/boardData';
 import { DateTime } from 'luxon';
 import Board from '@/utils/board';
 import { compareRank } from '@/utils/dataConverter';
+import { ElLink } from 'element-plus';
 
 const props = defineProps<{
   board: DataBoard,

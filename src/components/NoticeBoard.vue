@@ -8,7 +8,11 @@
       <div class="text-gray-500">{{ data.date }}</div>
     </div>
     <div>
-      <el-link class="*:text-lg" href="https://www.wjx.top/vm/Q0elCBQ.aspx" type="primary">网站反馈入口</el-link>
+      <a class="*:text-lg" href="https://www.wjx.top/vm/Q0elCBQ.aspx">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-lg shadow-blue-500/50 my-2">
+          点击提交网站反馈
+        </button>
+      </a>
     </div>
   </div>
 </template>

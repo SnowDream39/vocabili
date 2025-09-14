@@ -10,9 +10,9 @@
         <div v-else>
           <SpecialSelector @updateData="handleIssueChanged" />
         </div>
-        <el-button @click="toggleBoardStyle" class="absolute right-5 sm:hidden!" type="primary">切换外观</el-button>
         <h1 v-if="!isSpecial">{{ issueName }}</h1>
         <div v-if="!isSpecial">{{ rankDateString }}</div>
+        <el-button @click="toggleBoardStyle" class="float-right sm:hidden!" type="primary">切换外观</el-button>
       </div>
       <div class="w-auto grid grid-cols-1 lg:grid-cols-2 gap-4" ref="boardList">
         <RankingCard

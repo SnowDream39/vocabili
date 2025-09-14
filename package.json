@@ -13,7 +13,7 @@
     "@unocss/reset": "^66.3.0",
     "axios": "^1.7.9",
     "chart.js": "^4.4.8",
-    "element-plus": "^2.9.3",
+    "element-plus": "^2.11.2",
     "express": "^4.21.2",
     "luxon": "^3.5.0",
     "mitt": "^3.0.1",
