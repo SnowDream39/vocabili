@@ -39,6 +39,7 @@
     </div>
     <!-- 开发中内容，只有大屏可见 -->
     <div class="hidden 2xl:block bg-cyan-200 w-[400px] my-4 p-4">
+      <canvas id="qrcode"></canvas>
       <h2 class="big-title">本期看点</h2>
       <h3 class="small-title">统计</h3>
       <h3 class="small-title">火箭</h3>
@@ -64,6 +65,7 @@ import { useStatusStore } from '@/store/status.ts';
 import RankingCard from '@/components/board/RankingCard.vue';
 import { ElPagination, ElButton } from 'element-plus';
 import type { BoardData } from '@/utils/boardData.ts';
+import QRCode from 'qrcode'
 const route = useRoute()
 const statusStore = useStatusStore()
 
@@ -149,6 +151,10 @@ async function init() {
   } else {
     board.value = new Board(boardId, -1)
   }
+  QRCode.toCanvas(document.getElementById('qrcode'), window.location.href, function (error) {
+    if (error) console.error(error)
+    console.log('成功生成二维码！')
+  })
 }
 
 
