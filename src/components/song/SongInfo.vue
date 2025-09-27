@@ -2,7 +2,7 @@
   <div>
     <h2>{{ data.name }} <span v-for="color in data.color" :style="{ color: color }">●</span></h2>
     <el-carousel
-      height="480px"
+      height="450px"
       :autoplay="!statVisible"
       interval="5000"
       :arrow="data.length === 1 ? 'never' : 'always'"
@@ -96,17 +96,7 @@ function showStat() {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.video {
-  height: 100%;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 15px;
-  background-color: #fff;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
+
 
   img {
     height: 180px;
@@ -115,7 +105,7 @@ function showStat() {
     object-fit: cover;
   }
 
-}
+
 
 :deep(.el-carousel__button) {
   background-color: grey !important;

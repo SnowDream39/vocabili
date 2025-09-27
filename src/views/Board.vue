@@ -14,16 +14,23 @@
         <div v-if="!isSpecial">{{ rankDateString }}</div>
         <el-button @click="toggleBoardStyle" class="float-right sm:hidden!" type="primary">切换外观</el-button>
       </div>
-      <div class="w-auto grid grid-cols-1 lg:grid-cols-2 gap-4" ref="boardList">
-        <TransitionGroup name="list">
-          <RankingCard
-            v-for="data in boards"
-            v-if="metadata && boards && boards.length > 0"
-            :board="data"
-            :metadata="metadata"
-            :key="data.target.metadata.id"
-          />
-        </TransitionGroup>
+      <div class="w-full grid grid-cols-1 lg:grid-cols-2 gap-4" ref="boardList">
+        <RankingCard
+          v-for="data in boards"
+          v-if="metadata && boards && boards.length > 0"
+          class="hidden sm:grid"
+          :board="data"
+          :metadata="metadata"
+          :key="data.target.metadata.id"
+        />
+        <RankingCardMobile
+          v-for="data in boards"
+          v-if="metadata && boards && boards.length > 0"
+          class="grid sm:hidden"
+          :board="data"
+          :metadata="metadata"
+          :key="data.target.metadata.id"
+        />
       </div>
       <div class="boardpagination">
       <el-pagination
@@ -65,6 +72,7 @@ import SpecialSelector from '../components/board/SpecialSelector.vue';
 import CommentFrame from '../components/user/CommentFrame.vue';
 import { useStatusStore } from '@/store/status.ts';
 import RankingCard from '@/components/board/RankingCard.vue';
+import RankingCardMobile from '@/components/board/RankingCardMobile.vue';
 import { ElPagination, ElButton } from 'element-plus';
 import type { DataMetadata, Board as DataBoard } from '@/utils/boardData.ts';
 import QRCode from 'qrcode'
@@ -98,11 +106,7 @@ async function handleSearch() {
   } else {
     data = await requester.get_board(board.value, undefined, page.value)
   }
-  data.board.forEach((item: DataBoard, index: number) => {
-    setTimeout(() => {
-      boards.value.push(item)
-    }, index*150);
-  });
+  boards.value = data.board
   metadata.value = data.metadata
   total.value = data.metadata.count
   board.value.issue = data.metadata.issue
@@ -216,7 +220,7 @@ h1 {
 
   :deep(.ranking-card) {
     width: 45%;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 2 / 1;
   }
   :deep([name="right"]) {
     display: none;
@@ -228,19 +232,6 @@ h1 {
     display: none;
   }
 }
-// 过渡
-.list-move, /* 对移动中的元素应用的过渡 */
-.list-enter-active,
-.list-leave-active {
-  transition: all 0.15s ease;
-}
-
-.list-enter-from,
-.list-leave-to {
-  opacity: 0;
-  transform: translateY(60px);
-}
-
 
 @media (max-width: 630px) {
   .boardpagination {

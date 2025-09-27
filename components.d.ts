@@ -58,6 +58,8 @@ declare module 'vue' {
     RankChange: typeof import('./src/components/board/RankChange.vue')['default']
     RankingCalendar: typeof import('./src/components/RankingCalendar.vue')['default']
     RankingCard: typeof import('./src/components/board/RankingCard.vue')['default']
+    RankingCardMobile: typeof import('./src/components/board/RankingCardMobile.vue')['default']
+    RankItemMobile: typeof import('./src/components/board/RankItemMobile.vue')['default']
     RegisterCard: typeof import('./src/components/user/RegisterCard.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

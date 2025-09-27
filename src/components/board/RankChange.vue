@@ -1,11 +1,14 @@
 <template>
-  <template v-if="change === 'new'">
-    <span class="new">N E W !!</span>
-  </template>
-  <template v-else>
-    <span :class="changeClass">{{ changeIcon }}</span>
-    <span class="rank_before">{{ rankBefore }}</span>
-  </template>
+  <div class="w-full flex flex-row justify-center gap-2">
+    <template v-if="change === 'new'">
+      <span class="new hidden sm:block ">N E W !!</span>
+      <span class="new sm:hidden">NEW!!</span>
+    </template>
+    <template v-else>
+      <span :class="changeClass">{{ changeIcon }}</span>
+      <span class="rank_before">{{ rankBefore }}</span>
+    </template>
+  </div>
 </template>
 
 <script setup>

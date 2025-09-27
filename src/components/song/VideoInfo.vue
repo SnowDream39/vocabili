@@ -1,30 +1,34 @@
 <template>
-<img :src="video.cover" />
-<a style="color: #A9A9A9;" class="title" :href="video.link" target="_blank">{{ video.title }}</a>
-<ul>
-  <li>作者：<ArtistList :artists="song.producer" type="producer" /></li>
-  <li>歌手：<ArtistList :artists="song.vocalist" type="vocalist" /></li>
-  <li>引擎：<ArtistList :artists="song.synthesizer" type="synthesizer" /></li>
-  <li>投稿：<ArtistList :artists="video.uploader" type="uploader" />（{{ video.copyrightString }}）</li>
-  <li>投稿日期：{{ video.upload }}</li>
-  <li>时长：{{ video.length }}<span v-if="video.page !== 1">/{{ video.page }}P</span></li>
-</ul>
-<el-button type="primary" @click="showStat">最新数据</el-button>
-<el-dialog
-  title="最新数据"
-  v-model="statVisible"
-  append-to-body
-  :modal-append-to-body="false"
-  custom-class="video-stats-modal"
-  >
-  <VideoStat
-    :bvid="video.link.split('/').slice(-1)[0]"
-    :songId="song.id"
-    :videoId="video.id"
-    :copyright="video.copyright"
-    :upload="video.upload"
-  />
-</el-dialog>
+  <div class="flex flex-col items-center h-[450px]">
+    <img :src="video.cover" />
+    <div class="flex flex-col flex-nowrap h-60 justify-between items-center">
+      <a class="text-xl font-bold text-center" :href="video.link" target="_blank">{{ video.title }}</a>
+      <div><ArtistList :artists="song.producer" type="producer" /></div>
+      <div><ArtistList :artists="song.vocalist" type="vocalist" /></div>
+      <div><ArtistList :artists="song.synthesizer" type="synthesizer" /></div>
+      <div><ArtistList :artists="video.uploader" type="uploader" />（{{ video.copyrightString }}）</div>
+      <div>{{ video.upload }}</div>
+      <div>{{ video.length }}<span v-if="video.page !== 1">/{{ video.page }}P</span></div>
+      <el-button type="primary" @click="showStat">最新数据</el-button>
+    </div>
+
+    <el-dialog
+      title="最新数据"
+      v-model="statVisible"
+      append-to-body
+      :modal-append-to-body="false"
+      custom-class="video-stats-modal"
+      >
+      <VideoStat
+        :bvid="video.link.split('/').slice(-1)[0]"
+        :songId="song.id"
+        :videoId="video.id"
+        :copyright="video.copyright"
+        :upload="video.upload"
+      />
+    </el-dialog>
+  </div>
+
 </template>
 
 <script setup>
@@ -46,27 +50,13 @@ function showStat() {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.video {
-  height: 100%;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 15px;
-  background-color: #fff;
+
+img {
+  height: 180px;
+  width: 320px;
   border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-
-  img {
-    height: 180px;
-    width: 320px;
-    border-radius: 8px;
-    object-fit: cover;
-  }
-
+  object-fit: cover;
 }
-
 :deep(.el-carousel__button) {
   background-color: grey !important;
 }
