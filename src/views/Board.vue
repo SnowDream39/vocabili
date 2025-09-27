@@ -15,13 +15,15 @@
         <el-button @click="toggleBoardStyle" class="float-right sm:hidden!" type="primary">切换外观</el-button>
       </div>
       <div class="w-auto grid grid-cols-1 lg:grid-cols-2 gap-4" ref="boardList">
-        <RankingCard
-          v-for="data in rawData.board"
-          :board="data"
-          :metadata="rawData.metadata"
-          v-if="rawData && rawData.board.length > 0"
-          :key="data.target.metadata.id"
-        />
+        <TransitionGroup name="list">
+          <RankingCard
+            v-for="data in boards"
+            v-if="metadata && boards && boards.length > 0"
+            :board="data"
+            :metadata="metadata"
+            :key="data.target.metadata.id"
+          />
+        </TransitionGroup>
       </div>
       <div class="boardpagination">
       <el-pagination
@@ -64,7 +66,7 @@ import CommentFrame from '../components/user/CommentFrame.vue';
 import { useStatusStore } from '@/store/status.ts';
 import RankingCard from '@/components/board/RankingCard.vue';
 import { ElPagination, ElButton } from 'element-plus';
-import type { BoardData } from '@/utils/boardData.ts';
+import type { DataMetadata, Board as DataBoard } from '@/utils/boardData.ts';
 import QRCode from 'qrcode'
 const route = useRoute()
 const statusStore = useStatusStore()
@@ -72,7 +74,8 @@ const statusStore = useStatusStore()
 // 响应式数据
 const page = ref(Number(route.query.page) || 1)
 const total = ref(1000)
-const rawData = ref<BoardData>();
+const metadata = ref<DataMetadata>();
+const boards = ref<DataBoard[]>([]);
 const board = ref<Board>(new Board('vocaloid-daily-main', -1))
 
 const lastIssueStatus = ref(false)
@@ -88,13 +91,19 @@ const issueName = computed(() => board.value.getBoardName())
 const boardList = ref<HTMLElement | null>(null)
 // =============== 交互事件 ===============
 async function handleSearch() {
+  boards.value = []
   let data
   if (board.value.issue === -1){
     data = await requester.get_board(board.value, undefined, page.value)
   } else {
     data = await requester.get_board(board.value, undefined, page.value)
   }
-  rawData.value = data as BoardData;
+  data.board.forEach((item: DataBoard, index: number) => {
+    setTimeout(() => {
+      boards.value.push(item)
+    }, index*150);
+  });
+  metadata.value = data.metadata
   total.value = data.metadata.count
   board.value.issue = data.metadata.issue
   statusStore.articleId = `${board.value.id}-${board.value.issue}`
@@ -153,7 +162,6 @@ async function init() {
   }
   QRCode.toCanvas(document.getElementById('qrcode'), window.location.href, function (error) {
     if (error) console.error(error)
-    console.log('成功生成二维码！')
   })
 }
 
@@ -220,6 +228,20 @@ h1 {
     display: none;
   }
 }
+// 过渡
+.list-move, /* 对移动中的元素应用的过渡 */
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.15s ease;
+}
+
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(60px);
+}
+
+
 @media (max-width: 630px) {
   .boardpagination {
     padding: 10px 5px;

@@ -35,11 +35,15 @@
           <InfoItem name="硬币" :value="String(board.change.coin)" :append="`${board.rank.coin}位`" />
           <InfoItem name="点赞" :value="String(board.change.like)" :append="`${board.rank.like}位`" />
         </div>
-        <div class="[&>*]:m-2">
-          <el-link underline="always" type="default" :href="board.target.platform.link" target="_blank">视频链接</el-link>
-          <el-link underline="always" type="default" :href="'/song/' + board.target.metadata.id" target="_blank">历史数据</el-link>
-          <el-link underline="always" type="default" @click="showData">详细信息</el-link>
-          <el-link underline="always" type="default" @click="showCalculator">分数计算器</el-link>
+        <div class="space-x-4 my-1">
+          <a :href="board.target.platform.link" target="_blank">
+            <button class="glass-button-sm" >视频链接</button>
+          </a>
+          <a :href="'/song/' + board.target.metadata.id" target="_blank">
+            <button class="glass-button-sm" >历史数据</button>
+          </a>
+          <button class="glass-button-sm" @click="showData">详细信息</button>
+          <button class="glass-button-sm" @click="showCalculator">分数计算器</button>
         </div>
       </div>
     </div>
@@ -47,31 +51,32 @@
     <div class="h-full absolute inset-0">
       <img class="w-full h-full object-cover" :src="board.target.platform.thumbnail" alt="thumbnail" />
     </div>
+    <el-dialog v-model="dialogVisible" :title="board.target.metadata.name" style="min-width: min(90%, 300px);">
+      <div class="*:mt-4">
+        <div>第{{ board.rank.board }}位（{{ change === "new" ? "NEW" : `上期${props.board.last ? props.board.last.rank : ''}` }}）</div>
+        <div>{{ board.target.platform.title }}</div>
+        <div class="text-sm *:mr-1">
+          <span>P主：<ListItem :items="board.target.metadata.target.producer" type="producer" /></span>
+          <span v-if="[1, 4].includes(board.target.platform.copyright)">本家投稿</span>
+          <span v-else>搬运：<el-link>{{ board.target.platform.uploader[0].name }}</el-link></span>
+          <span>{{ board.target.metadata.type }}</span>
+        </div>
+        <div class="text-sm">歌手：<ListItem :items="board.target.metadata.target.vocalist" type="vocalist" /></div>
+        <div class="text-sm">引擎：<ListItem :items="board.target.metadata.target.synthesizer" type="synthesizer" /></div>
+        <div class="text-sm">投稿时间：{{ DateTime.fromISO(board.target.platform.publish).toFormat('yyyy-LL-dd HH:mm:ss') }}</div>
+        <div>得分：{{ board.point }}</div>
+        <div>上期：{{ board.last?.point }}</div>
+        <div>RATE：{{ board.last ? ((board.point - board.last.point) / board.last.point * 100).toFixed(2) + '%' : '' }}</div>
+      </div>
+
+    </el-dialog>
+
+    <el-dialog v-model="calculatorVisible" title="分数计算器" style="min-width: min(90%, 500px);">
+      <Calculator v-bind="form" :key="form.view" />
+    </el-dialog>
   </div>
 
-  <el-dialog v-model="dialogVisible" :title="board.target.metadata.name" style="min-width: min(90%, 300px);">
-    <div class="*:mt-4">
-      <div>第{{ board.rank.board }}位（{{ change === "new" ? "NEW" : `上期${props.board.last ? props.board.last.rank : ''}` }}）</div>
-      <div>{{ board.target.platform.title }}</div>
-      <div class="text-sm *:mr-1">
-        <span>P主：<ListItem :items="board.target.metadata.target.producer" type="producer" /></span>
-        <span v-if="[1, 4].includes(board.target.platform.copyright)">本家投稿</span>
-        <span v-else>搬运：<el-link>{{ board.target.platform.uploader[0].name }}</el-link></span>
-        <span>{{ board.target.metadata.type }}</span>
-      </div>
-      <div class="text-sm">歌手：<ListItem :items="board.target.metadata.target.vocalist" type="vocalist" /></div>
-      <div class="text-sm">引擎：<ListItem :items="board.target.metadata.target.synthesizer" type="synthesizer" /></div>
-      <div class="text-sm">投稿时间：{{ DateTime.fromISO(board.target.platform.publish).toFormat('yyyy-LL-dd HH:mm:ss') }}</div>
-      <div>得分：{{ board.point }}</div>
-      <div>上期：{{ board.last?.point }}</div>
-      <div>RATE：{{ board.last ? ((board.point - board.last.point) / board.last.point * 100).toFixed(2) + '%' : '' }}</div>
-    </div>
 
-  </el-dialog>
-
-  <el-dialog v-model="calculatorVisible" title="分数计算器" style="min-width: min(90%, 500px);">
-    <Calculator v-bind="form" :key="form.view" />
-  </el-dialog>
 </template>
 
 <script lang="ts" setup>

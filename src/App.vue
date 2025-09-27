@@ -1,6 +1,5 @@
 <template>
   <el-config-provider :locale="zhCn">
-    <!-- <SideAdvertisement/> -->
     <Header/>
     <main>
       <router-view />
@@ -12,12 +11,10 @@
 
 <script setup>
 import Header from './components/header/Header.vue';
+import Footer from './components/Footer.vue';
 import ScrollToTop from './components/misc/ScrollToTop.vue';
-import SideAdvertisement from './components/misc/SideAdvertisement.vue';
 import { ElConfigProvider } from 'element-plus'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
-
-
 </script>
 
 <style lang="scss" scoped>

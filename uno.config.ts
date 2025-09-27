@@ -22,6 +22,7 @@ export default defineConfig({
   shortcuts: [
     ['big-title', ['text-2xl', 'font-bold']],
     ['small-title', ['text-xl', 'font-bold']],
+    ['glass-button-sm', ['text-sm', 'border-1', 'border-white', 'hover:bg-white/30', 'active:bg-white/40', 'shadow-md', 'shadow-white', 'text-shadow-sm', 'text-shadow-white', 'dark:text-shadow-black', 'backdrop-blur-2', 'rounded-md', 'p-1', 'transition-colors']]
   ],
   content: {
     pipeline: {
