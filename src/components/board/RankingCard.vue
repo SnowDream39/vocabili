@@ -71,7 +71,7 @@
 
     </el-dialog>
 
-    <el-dialog v-model="calculatorVisible" title="分数计算器" style="min-width: min(90%, 500px);">
+    <el-dialog v-model="calculatorVisible" title="分数计算器" :width="250" >
       <Calculator v-bind="form" :key="form.view" />
     </el-dialog>
   </div>
@@ -85,6 +85,7 @@ import InfoItem from './InfoItem.vue';
 import type { Form } from '../song/Calculator.vue';
 import RankChange from './RankChange.vue';
 import ListItem from './ListItem.vue';
+import Calculator from '../song/Calculator.vue';
 import type { Board as DataBoard, DataMetadata } from '@/utils/boardData';
 import { DateTime } from 'luxon';
 import Board from '@/utils/board';

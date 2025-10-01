@@ -1,43 +1,66 @@
 <template>
   <div class="form">
     <div class="form-row">
-      <span>播放</span><el-input v-model.number="form.view" />
-      <span>收藏</span><el-input v-model.number="form.favorite" />
-    </div>
-    <div class="form-row">
-      <span>硬币</span><el-input v-model.number="form.coin" />
-      <span>点赞</span><el-input v-model.number="form.like" />
-    </div>
-    <div class="form-row">
       <span>投稿</span>
-      <el-select v-model="form.copyright">
+      <el-select v-model="form.copyright" >
         <el-option v-for="copyright in copyrights" :value="copyright.value" :label="copyright.label" />
       </el-select>
       <span>规则</span>
       <el-select v-model="form.board.id" placeholder="类型">
         <el-option v-for="board in boards" :value="board.value" :label="board.label" />
       </el-select>
-      <el-input v-model="form.board.issue" />
+      <el-input v-model="form.board.issue"/>
     </div>
   </div>
-
-  <div id="calculator-show">
-    <div>播放：{{ results.counts.view }}</div>
-    <div>播放修正：{{ results.ratios.view.toFixed(2) }}</div>
-    <div>播放分：{{ results.points.view }}</div>
-    <div>fixA：{{ results.fixes.a.toFixed(2) }}</div>
-    <div>收藏：{{ results.counts.favorite }}</div>
-    <div>收藏修正：{{ results.ratios.favorite.toFixed(2) }}</div>
-    <div>收藏分：{{ results.points.favorite }}</div>
-    <div>fixB：{{ results.fixes.b.toFixed(2) }}</div>
-    <div>硬币：{{ results.counts.coin }}</div>
-    <div>硬币修正：{{ results.ratios.coin.toFixed(2) }}</div>
-    <div>硬币分：{{ results.points.coin }}</div>
-    <div>fixC：{{ results.fixes.c.toFixed(2) }}</div>
-    <div>点赞：{{ results.counts.like }}</div>
-    <div>点赞修正：{{ results.ratios.like.toFixed(2) }}</div>
-    <div>点赞分：{{ results.points.like }}</div>
-    <div>总分：{{ results.points.total }}</div>
+  <div class="my-5"></div>
+  <div id="calculator-1">
+    <div>播放</div>
+    <el-input v-model="results.counts.view" class="w-30!"></el-input>
+    <div>×{{ results.ratios.view.toFixed(2) }}</div>
+    <div>{{ results.points.view }}</div>
+    <div>收藏</div>
+    <el-input v-model="results.counts.favorite" class="w-30!"></el-input>
+    <div>×{{ results.ratios.favorite.toFixed(2) }}</div>
+    <div>{{ results.points.favorite }}</div>
+    <div>硬币</div>
+    <div class="flex flex-row items-end">
+      <el-input v-model="results.counts.coin" class="w-30!"></el-input>
+      <span class="text-xs"> ×{{ results.fixes.a.toFixed(2) }}</span>
+    </div>
+    <div>×{{ results.ratios.coin.toFixed(2) }}</div>
+    <div>{{ results.points.coin }}</div>
+    <div>点赞</div>
+    <el-input v-model="results.counts.like" class="w-30!"></el-input>
+    <div>×{{ results.ratios.like.toFixed(2) }}</div>
+    <div>{{ results.points.like }}</div>
+  </div>
+  <hr/>
+  <div>
+    <div class="grid grid-cols-4 gap-2">
+      <div></div>
+      <div></div>
+      <div>基础分</div>
+      <div>{{ results.points.basis }}</div>
+    </div>
+    <div class="grid grid-cols-4 gap-2">
+      <div></div>
+      <div></div>
+      <div>高播放补正</div>
+      <div>×{{ results.fixes.b.toFixed(2) }}</div>
+    </div>
+    <div class="grid grid-cols-4 gap-2">
+      <div></div>
+      <div></div>
+      <div>小电视补正</div>
+      <div>×{{ results.fixes.c.toFixed(2) }}</div>
+    </div>
+  </div>
+  <hr/>
+  <div class="grid grid-cols-4 gap-2">
+    <div></div>
+    <div></div>
+    <div>总分</div>
+    <div>{{ results.points.total }}</div>
   </div>
 </template>
 
@@ -45,6 +68,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { Calculator } from '@/utils/calculator'
 import Board from '@/utils/board';
+import { ElSelect, ElInput, ElOption } from 'element-plus';
 
 export interface Form {
   view: number
@@ -96,6 +120,8 @@ onMounted(init)
 <style lang="scss" scoped>
 .form {
 
+  width: auto;
+
   .form-row {
     display: flex;
     flex-direction: row;
@@ -117,15 +143,12 @@ onMounted(init)
 
 
 
-#calculator-show {
+#calculator-1 {
   display: grid;
   grid-auto-flow: row;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: 1fr 3fr 2fr 2fr;
   grid-template-rows: repeat(4, 1fr);
-
-  div {
-    box-sizing: border-box;
-    padding: 5px 5px;
-  }
 }
+
+
 </style>

@@ -195,6 +195,7 @@ export class Calculator {
       favorite: this.favoriteP,
       coin: this.coinP,
       like: this.likeP,
+      basis: this.viewP + this.favoriteP + this.coinP + this.likeP,
       total: this.point
     }
   }
