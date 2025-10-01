@@ -15,22 +15,22 @@
   <div class="my-5"></div>
   <div id="calculator-1">
     <div>播放</div>
-    <el-input v-model="results.counts.view" class="w-30!"></el-input>
+    <el-input v-model="form.view" class="w-30!"></el-input>
     <div>×{{ results.ratios.view.toFixed(2) }}</div>
     <div>{{ results.points.view }}</div>
     <div>收藏</div>
-    <el-input v-model="results.counts.favorite" class="w-30!"></el-input>
+    <el-input v-model="form.favorite" class="w-30!"></el-input>
     <div>×{{ results.ratios.favorite.toFixed(2) }}</div>
     <div>{{ results.points.favorite }}</div>
     <div>硬币</div>
     <div class="flex flex-row items-end">
-      <el-input v-model="results.counts.coin" class="w-30!"></el-input>
+      <el-input v-model="form.coin" class="w-30!"></el-input>
       <span class="text-xs"> ×{{ results.fixes.a.toFixed(2) }}</span>
     </div>
     <div>×{{ results.ratios.coin.toFixed(2) }}</div>
     <div>{{ results.points.coin }}</div>
     <div>点赞</div>
-    <el-input v-model="results.counts.like" class="w-30!"></el-input>
+    <el-input v-model="form.like" class="w-30!"></el-input>
     <div>×{{ results.ratios.like.toFixed(2) }}</div>
     <div>{{ results.points.like }}</div>
   </div>
@@ -45,13 +45,13 @@
     <div class="grid grid-cols-4 gap-2">
       <div></div>
       <div></div>
-      <div>高播放补正</div>
+      <div>小电视补正</div>
       <div>×{{ results.fixes.b.toFixed(2) }}</div>
     </div>
     <div class="grid grid-cols-4 gap-2">
       <div></div>
       <div></div>
-      <div>小电视补正</div>
+      <div>梗曲补正</div>
       <div>×{{ results.fixes.c.toFixed(2) }}</div>
     </div>
   </div>
