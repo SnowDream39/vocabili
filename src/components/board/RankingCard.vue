@@ -20,30 +20,36 @@
           <span v-for="color in []" class="text-lg leading-none inline text-shadow-none" :style="{ color: color }">●</span>
         </div>
       </div>
-      <div name="right" class="block items-center w-[350px] z-10  ">
+      <div name="right" class="block items-center w-[350px] z-10">
         <div class="info-row inline-block w-full text-3xl overflow-hidden text-ellipsis whitespace-nowrap"
           :title="board.target.metadata.name">{{ board.target.metadata.name }}</div>
-        <div class="w-full grid grid-flow-col grid-cols-[1fr_1fr] grid-rows-[repeat(5,20px)]">
-          <InfoItem name="P主" :value="board.target.metadata.target.producer.map(item => item.name).join('、')" />
-          <InfoItem name="歌手" :value="board.target.metadata.target.vocalist.map(item => item.name).join('、')" />
-          <InfoItem name="类型" :value="board.target.metadata.type" />
-          <InfoItem name="时间" :value="DateTime.fromISO(board.target.platform.publish).toFormat('yyyy-LL-dd HH:mm')" />
-          <InfoItem name="上榜" :value="String(board.count)" />
-          <InfoItem name="得点" :value="String(board.point)" />
-          <InfoItem name="播放" :value="String(board.change.view)" :append="`${board.rank.view}位`" />
-          <InfoItem name="收藏" :value="String(board.change.favorite)" :append="`${board.rank.favorite}位`" />
-          <InfoItem name="硬币" :value="String(board.change.coin)" :append="`${board.rank.coin}位`" />
-          <InfoItem name="点赞" :value="String(board.change.like)" :append="`${board.rank.like}位`" />
+        <div class="w-full flex" >
+          <div class="basis-0 grow-2 whitespace-nowrap overflow-hidden">
+            <div>{{ board.target.metadata.target.producer.map(item => item.name).join('、') }}</div>
+            <div>{{ board.target.metadata.target.vocalist.map(item => item.name).join('、') }}</div>
+            <div>{{ DateTime.fromISO(board.target.platform.publish).toFormat('yyyy-LL-dd HH:mm') }}</div>
+            <div>
+              <span>{{ board.point }}pts</span>
+              <span> / </span>
+              <span>{{ board.count }}回</span>
+            </div>
+          </div>
+          <div class="basis-0 grow-1 flex flex-col justify-center items-start text-shadow-none  bg-white/70 dark:bg-black/50 rounded-lg overflow-hidden">
+            <RankItem icon="i-material-symbols-play-arrow-outline-rounded" :stat="board.change.view" :rank="board.rank.view" :minRank="minRank"/>
+            <RankItem icon="i-material-symbols-star-outline-rounded" :stat="board.change.favorite" :rank="board.rank.favorite" :minRank="minRank"/>
+            <RankItem icon="i-material-symbols-counter-1-outline-rounded" :stat="board.change.coin" :rank="board.rank.coin" :minRank="minRank"/>
+            <RankItem icon="i-material-symbols-thumb-up-outline-rounded" :stat="board.change.like" :rank="board.rank.like" :minRank="minRank"/>
+          </div>
         </div>
-        <div class="space-x-4 my-1">
+        <div class="flex justify-around">
           <a :href="board.target.platform.link" target="_blank">
-            <button class="glass-button-sm" >视频链接</button>
+            <button class="glass-button button-lg" ><div class="i-material-symbols-play-circle-outline-rounded"></div></button>
           </a>
           <a :href="'/song/' + board.target.metadata.id" target="_blank">
-            <button class="glass-button-sm" >历史数据</button>
+            <button class="glass-button button-lg" ><div class="i-material-symbols-calendar-month-outline-rounded"></div></button>
           </a>
-          <button class="glass-button-sm" @click="showData">详细信息</button>
-          <button class="glass-button-sm" @click="showCalculator">分数计算器</button>
+          <button class="glass-button button-lg" @click="showData"><div class="i-material-symbols-text-snippet-outline-rounded"></div></button>
+          <button class="glass-button button-lg" @click="showCalculator"><div class="i-material-symbols-calculate-outline-rounded"></div></button>
         </div>
       </div>
     </div>
@@ -51,22 +57,52 @@
     <div class="h-full absolute inset-0">
       <img class="w-full h-full object-cover" :src="board.target.platform.thumbnail" alt="thumbnail" />
     </div>
+
     <el-dialog v-model="dialogVisible" :title="board.target.metadata.name" style="min-width: min(90%, 300px);">
-      <div class="*:mt-4">
-        <div>第{{ board.rank.board }}位（{{ change === "new" ? "NEW" : `上期${props.board.last ? props.board.last.rank : ''}` }}）</div>
-        <div>{{ board.target.platform.title }}</div>
-        <div class="text-sm *:mr-1">
-          <span>P主：<ListItem :items="board.target.metadata.target.producer" type="producer" /></span>
-          <span v-if="[1, 4].includes(board.target.platform.copyright)">本家投稿</span>
-          <span v-else>搬运：<el-link>{{ board.target.platform.uploader[0].name }}</el-link></span>
-          <span>{{ board.target.metadata.type }}</span>
+      <div class="flex flex-between text-shadow-none">
+        <div class="flex-1 self-stretch flex flex-col justify-between">
+          <div>
+            <div class="text-lg text-center">
+              <span>第{{ board.rank.board }}位</span>
+              <RankChangeSpan :rank-before="board.last?.rank" :change="change" />
+            </div>
+            <div class="text-center">
+              <div class="text-lg">{{ board.point }} pts</div>
+              <div v-if="board.last">
+                <span>
+                  上期：{{ board.last.point }}
+                </span>
+                <span>
+                  RATE：{{((board.point - board.last.point) / board.last.point * 100).toFixed(2) + '%'}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="italic">
+              <div><ListItem :items="board.target.metadata.target.producer" type="producer" /></div>
+              <div><ListItem :items="board.target.metadata.target.vocalist" type="vocalist" /></div>
+              <div><ListItem :items="board.target.metadata.target.synthesizer" type="synthesizer" /></div>
+            </div>
+            <div class="space-x-2">
+              <span v-if="[1, 4].includes(board.target.platform.copyright)">本家投稿</span>
+              <span v-else>搬运</span>
+              <span>{{ board.target.metadata.type }}</span>
+            </div>
+            <div>上榜次数：{{ board.count }}</div>
+          </div>
         </div>
-        <div class="text-sm">歌手：<ListItem :items="board.target.metadata.target.vocalist" type="vocalist" /></div>
-        <div class="text-sm">引擎：<ListItem :items="board.target.metadata.target.synthesizer" type="synthesizer" /></div>
-        <div class="text-sm">投稿时间：{{ DateTime.fromISO(board.target.platform.publish).toFormat('yyyy-LL-dd HH:mm:ss') }}</div>
-        <div>得分：{{ board.point }}</div>
-        <div>上期：{{ board.last?.point }}</div>
-        <div>RATE：{{ board.last ? ((board.point - board.last.point) / board.last.point * 100).toFixed(2) + '%' : '' }}</div>
+
+
+        <a :href="`/song/${board.target.metadata.id}`" target="_blank" class="w-50 self-start rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all">
+          <img class="w-full" :src="board.target.platform.thumbnail" alt="thumbnail" />
+          <div class="bg-zinc-200 pb-2">
+            <div class="font-900">{{ board.target.platform.title }}</div>
+            <el-link :href="`/artist/uploader/${board.target.platform.uploader[0].id}`" >{{ board.target.platform.uploader[0].name }}</el-link>
+            <div>{{ DateTime.fromISO(board.target.platform.publish).toFormat('yyyy-LL-dd HH:mm:ss') }}</div>
+          </div>
+        </a>
       </div>
 
     </el-dialog>
@@ -81,16 +117,17 @@
 
 <script lang="ts" setup>
 import { ref, watch, computed } from 'vue'
-import InfoItem from './InfoItem.vue';
 import type { Form } from '../song/Calculator.vue';
 import RankChange from './RankChange.vue';
+import RankChangeSpan from './RankChangeSpan.vue';
 import ListItem from './ListItem.vue';
 import Calculator from '../song/Calculator.vue';
+import RankItem from './RankItem.vue';
 import type { Board as DataBoard, DataMetadata } from '@/utils/boardData';
 import { DateTime } from 'luxon';
 import Board from '@/utils/board';
 import { compareRank } from '@/utils/dataConverter';
-import { ElLink } from 'element-plus';
+import { ElLink, ElDialog } from 'element-plus';
 
 const props = defineProps<{
   board: DataBoard,
@@ -106,7 +143,9 @@ const form = computed<Form>(() => {
 })
 
 const change = ref<string>(compareRank(props.board.rank.board, props.board.last ? props.board.last.rank : undefined))
-
+const minRank = computed(() => {
+  return Math.min(props.board.rank.view, props.board.rank.favorite, props.board.rank.coin, props.board.rank.like)
+})
 function showData() {
   dialogVisible.value = true
 }

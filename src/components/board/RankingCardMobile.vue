@@ -2,7 +2,7 @@
   <div class="ranking-card relative w-full max-w-[474px] overflow-hidden rounded-xl border-2 border-gray-800 text-zinc-800 dark:text-zinc-200  shadow-xl shadow-gray-300 flex flex-col flex-nowrap *:align-self-center"
     style="font-family: '思源黑体', '思源黑体 CN', sans-serif;
   font-weight: 500;">
-    <div name="omote" class="z-1 bg-white/50 dark:bg-black/70 text-shadow-md text-shadow-white dark:text-shadow-black">
+    <div name="omote" class="z-1 bg-white/50 dark:bg-black/60 text-shadow-md text-shadow-white dark:text-shadow-black">
       <div name="top" class="px-2 pt-2 flex flex-row flex-nowrap">
         <div name="top-left" class="w-12 shrink-1 inline-block m-2 relative" :title="board.target.platform.title">
           <div class="w-12 h-12 text-2xl text-shadow-none font-900 flex justify-center items-center bg-white/20 dark:bg-black/20 backdrop-blur-2 rounded-sm border-1 border-white">{{ board.rank.board }}</div>
@@ -13,7 +13,7 @@
           <div>{{ board.target.metadata.target.producer.map(item => item.name).join('、') }}</div>
           <div class="flex flex-row justify-between items-center">
             <div class="text-sm">{{ DateTime.fromISO(board.target.platform.publish).toFormat('yyyy-LL-dd') }}</div>
-            <div class="flex flex-row justify-end gap-2 text-lg text-shadow-none">
+            <div class="flex flex-row justify-end gap-4 text-xl text-shadow-none">
               <a :href="board.target.platform.link" target="_blank">
                 <div class="i-material-symbols-play-circle-outline-rounded"></div>
               </a>
@@ -30,7 +30,7 @@
           </div>
         </div>
       </div>
-      <div name="bottom" class="flex flex-row flex- justify-center gap-2 items-center">
+      <div name="bottom" class="flex flex-row flex- justify-center gap-2 items-center text-sm">
         <RankItemMobile icon="i-material-symbols-play-arrow-outline-rounded" :stat="board.change.view" :rank="board.rank.view" :minRank="minRank"/>
         <RankItemMobile icon="i-material-symbols-star-outline-rounded" :stat="board.change.favorite" :rank="board.rank.favorite" :minRank="minRank"/>
         <RankItemMobile icon="i-material-symbols-counter-1-outline-rounded" :stat="board.change.coin" :rank="board.rank.coin" :minRank="minRank"/>

@@ -1,14 +1,15 @@
 <template>
-  <div class="w-full flex flex-row justify-center gap-2">
+  <span :class="changeClass">
+    <span>（</span>
     <template v-if="change === 'new'">
-      <span class="new hidden sm:block ">N E W !!</span>
-      <span class="new sm:hidden">NEW!!</span>
+      <span>NEW!!</span>
     </template>
     <template v-else>
-      <span :class="changeClass">{{ changeIcon }}</span>
-      <span class="rank_before">{{ rankBefore }}</span>
+      <span>{{ changeIcon }}</span>
+      <span>{{ rankBefore }}</span>
     </template>
-  </div>
+    <span>）</span>
+  </span>
 </template>
 
 <script setup>
@@ -18,14 +19,14 @@ const props = defineProps(['rankBefore', 'change']);
 
 const changeClass = computed(() => props.change);
 const changeIcon = computed(() => ({
-  up: "▲",
-  cont: "◆",
-  down: "▼"
+  up: "↑",
+  cont: "→",
+  down: "↓"
 })[props.change]);
 </script>
 
 
-<style scoped>
+<style>
 .new {
   color: red;
 }

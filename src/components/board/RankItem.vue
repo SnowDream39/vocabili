@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row flex-nowrap items-center text-sm" :class="highlight ? 'text-red-500' : ''">
+  <div class="flex flex-row flex-nowrap items-center" :class="highlight ? 'text-red-500' : ''">
     <div :class="icon" class="text-lg"></div>
     <div>{{ stat }}</div>
     <div class="i-material-symbols-crown-outline-rounded"></div>
