@@ -101,10 +101,8 @@ function showData() {
   max-width: 90%;
   margin: 10px 0; /* 添加卡片之间的间距 */
   padding: 20px;
-  background: #fff;
   border-radius: 12px;
   border: #e4e4e4 1px solid;
-  color: #455670;
   font-family: "思源黑体", "思源黑体 CN", sans-serif;
   font-weight: 500;
 

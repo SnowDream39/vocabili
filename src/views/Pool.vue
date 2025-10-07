@@ -39,6 +39,8 @@ import { poolToPlain } from '../utils/dataConverter.ts'
 import { requester } from '../utils/api/requester.ts'
 import CommentFrame from '@/components/user/CommentFrame.vue';
 import { useStatusStore } from '@/store/status.ts';
+import PoolCard from '@/components/PoolCard.vue';
+
 const route = useRoute()
 const statusStore = useStatusStore()
 

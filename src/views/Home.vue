@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-zinc-50 shadow-lg md:flex md:flex-row md:items-start">
+  <div class="md:flex md:flex-row md:items-start">
     <NoticeBoard />
     <RankingCalendar />
   </div>

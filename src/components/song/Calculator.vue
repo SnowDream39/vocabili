@@ -2,35 +2,35 @@
   <div class="form">
     <div class="form-row">
       <span>投稿</span>
-      <el-select v-model="form.copyright" >
+      <el-select v-model="stats.copyright" >
         <el-option v-for="copyright in copyrights" :value="copyright.value" :label="copyright.label" />
       </el-select>
       <span>规则</span>
-      <el-select v-model="form.board.id" placeholder="类型">
+      <el-select v-model="stats.board.id" placeholder="类型">
         <el-option v-for="board in boards" :value="board.value" :label="board.label" />
       </el-select>
-      <el-input v-model="form.board.issue"/>
+      <el-input v-model="stats.board.issue"/>
     </div>
   </div>
   <div class="my-5"></div>
   <div id="calculator-1">
     <div>播放</div>
-    <el-input v-model="form.view" class="w-30!"></el-input>
+    <el-input type="number" v-model.number="stats.view" class="w-30!"></el-input>
     <div>×{{ results.ratios.view.toFixed(2) }}</div>
     <div>{{ results.points.view }}</div>
     <div>收藏</div>
-    <el-input v-model="form.favorite" class="w-30!"></el-input>
+    <el-input type="number" v-model.number="stats.favorite" class="w-30!"></el-input>
     <div>×{{ results.ratios.favorite.toFixed(2) }}</div>
     <div>{{ results.points.favorite }}</div>
     <div>硬币</div>
     <div class="flex flex-row items-end">
-      <el-input v-model="form.coin" class="w-30!"></el-input>
+      <el-input type="number" v-model.number="stats.coin" class="w-30!"></el-input>
       <span class="text-xs"> ×{{ results.fixes.a.toFixed(2) }}</span>
     </div>
     <div>×{{ results.ratios.coin.toFixed(2) }}</div>
     <div>{{ results.points.coin }}</div>
     <div>点赞</div>
-    <el-input v-model="form.like" class="w-30!"></el-input>
+    <el-input type="number" v-model.number="stats.like" class="w-30!"></el-input>
     <div>×{{ results.ratios.like.toFixed(2) }}</div>
     <div>{{ results.points.like }}</div>
   </div>
@@ -65,7 +65,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, reactive } from 'vue';
 import { Calculator } from '@/utils/calculator'
 import Board from '@/utils/board';
 import { ElSelect, ElInput, ElOption } from 'element-plus';
@@ -80,14 +80,13 @@ export interface Form {
 }
 
 const props = defineProps<Form>()
-
-const form = ref<Form>({
-  view: 1,
-  favorite: 1,
-  coin: 1,
-  like: 1,
-  copyright: 1,
-  board: new Board('vocaloid-daily-main'),
+const stats = reactive({
+  view: props.view,
+  favorite: props.favorite,
+  coin: props.coin,
+  like: props.like,
+  copyright: props.copyright,
+  board: props.board,
 })
 
 const boards = ref([
@@ -102,18 +101,11 @@ const copyrights = ref([
 ])
 
 const results = computed(() => {
-  const { view, favorite, coin, like, copyright } = form.value
+  const { view, favorite, coin, like, copyright } = stats
   const count = { view, favorite, coin, like, copyright }
-  const calc = new Calculator(count, copyright, form.value.board)
+  const calc = new Calculator(count, copyright, stats.board)
   return calc.getResults()
 })
-
-async function init() {
-  const { view, favorite, coin, like, copyright, board } = props
-  form.value = { view, favorite, coin, like, copyright, board }
-}
-
-onMounted(init)
 
 </script>
 

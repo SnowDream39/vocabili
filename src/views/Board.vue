@@ -1,7 +1,7 @@
 <template>
   <div class="max-w-full flex flex-row flex-nowrap gap-4 items-start">
     <div class="flex flex-col items-center w-full lg:w-[964px]" >
-      <div class="board-header w-full">
+      <div class="w-full text-center mb-4">
         <div id="last-next-issues" v-if="!isSpecial">
           <el-link type="primary" :href="`/board/${board.fullId}/${board.issue-1}?page=1`" id="last-issue" :disabled="!lastIssueStatus">&lt;&lt;上一期</el-link>
           <el-link type="info" @click="changeBoard" id="change-board">切换总榜/新曲榜</el-link>
@@ -182,12 +182,7 @@ h1 {
   font-weight: bold;
   margin: 10px 0px;
 }
-.board-header {
-  padding: 0px 0px;
-  margin: 0px 0px 20px 0px;
-  text-align: center;
-  background: rgba(255, 255, 255, 0.8);
-}
+
 #last-next-issues {
 
   padding: 10px;

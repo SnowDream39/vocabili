@@ -1,19 +1,15 @@
 <template>
   <el-menu
     :default-active="activeIndex"
-    class="el-menu-demo"
     mode="horizontal"
     :ellipsis="false"
     :router="true"
     @select="handleSelect"
   >
     <el-menu-item index="/">
-      <span @click="router.push('/')" id="logoheader">
-        <img
-          style="width: 40px"
-          src="/vocabili.png"
-          alt="Vocabili Logo"
-        /><span>术力口数据库</span>
+      <span @click="router.push('/')" class="flex items-center gap-4 text-2xl text-onSurface">
+        <img style="width: 40px" src="/vocabili.png" alt="Vocabili Logo"/>
+        <span>术力口数据库</span>
       </span>
     </el-menu-item>
     <el-sub-menu index="1">
@@ -65,32 +61,10 @@ const handleSelect = () => {
   --el-menu-horizontal-height: 50px;
 }
 
-.el-menu-demo {
+.el-menu {
   width: 100%;
-  --el-menu-bg-color: rgba(46, 196, 255, 0.6); /* 主背景色 */
-  --el-menu-text-color: white;
   --el-menu-item-font-size: 18px;
   --el-menu-base-level-padding: 10px;
 }
 
-
-#logoheader {
-  font-family: 'Arial', sans-serif; /* 使用现代无衬线字体 */
-  font-size: 24px;
-  font-weight: bold;
-  color: #fcfcfc;
-  padding: 10px 20px; /* 内边距 */
-  display: inline flex;
-  height: 50px;
-  padding: 0px 10px;
-
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
-
-
-  img {
-    height: 40px;
-  }
-}
 </style>

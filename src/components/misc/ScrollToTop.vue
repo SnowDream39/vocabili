@@ -1,7 +1,6 @@
 <template>
   <button v-if="showButton" @click="scrollToTop" class="scroll-to-top">
-    <!-- 使用 Element Plus 图标组件 -->
-    <el-icon><ArrowUp /></el-icon>
+    <div class="i-material-symbols-keyboard-arrow-up text-4xl"></div>
   </button>
 </template>
 
@@ -39,7 +38,7 @@ onUnmounted(() => {
   right: 30px;
   width: 50px;
   height: 50px;
-  background-color: #007BFF; /* 背景色 */
+  background-color: var(--md-sys-color-primary); /* 背景色 */
   color: white;
   border: none;
   border-radius: 12px;
@@ -55,10 +54,6 @@ onUnmounted(() => {
 .scroll-to-top:hover {
   opacity: 1;
   transform: scale(1.03); /* 鼠标悬停时放大 */
-}
-
-.scroll-to-top i {
-  font-size: 24px; /* 图标大小 */
 }
 
 /* 移动端优化，按钮位置和大小适应不同屏幕 */

@@ -1,7 +1,7 @@
 <template>
   <div class="calendar grid grid-cols-1 max-h-[80vh] overflow-y-scroll md:max-h-none lg:grid-cols-2">
     <div v-for="month in months" class="calendar-month">
-      <button @click="month.disabled ? undefined : jumpToBoard('monthly', month.issueNum)" class="month-btn">{{ month.dateString }}</button>
+      <button @click="month.disabled ? undefined : jumpToBoard('monthly', month.issueNum)" class="month-btn btn-tertiary">{{ month.dateString }}</button>
       <div class="calendar-body">
         <div class="week">
           <div class="day" v-for="day in weekDays">{{ day }}</div>
@@ -18,7 +18,7 @@
           >
             {{ week.issueNum }}
           </button>
-          <div
+          <di
             v-for="day in week.days"
             class="day"
             :class="day.disabled ? 'day-disabled' : 'day-enabled'"
@@ -26,7 +26,8 @@
             @click="day.disabled ? undefined : jumpToBoard('daily', day.issueNum)"
           >
             {{ day.dateString }}
-          </div>
+          </di
+          v>
         </div>
       </div>
 
@@ -159,6 +160,7 @@ onMounted(init)
 .calendar {
   box-sizing: border-box;
   padding: 20px;
+  scrollbar-width: none;
 }
 
 .calendar-month {
@@ -176,8 +178,7 @@ onMounted(init)
   padding: 8px 16px;
   font-size: 16px;
   font-weight: 500;
-  background-color: #80ceff; /* 按钮背景 */
-  color: white;
+  background-color: var(--md-sys-color-tertiary); /* 按钮背景 */
   border: none;
   border-radius: 8px; /* 圆角按钮 */
   cursor: pointer;
@@ -185,7 +186,7 @@ onMounted(init)
 }
 
 .month-btn:hover {
-  background-color: #66b8e3; /* 悬停效果 */
+  background-color: color-mix(in srgb, var(--md-sys-color-tertiary) 80%, white); /* 悬停效果 */
 }
 
 .calendar-header {
@@ -217,8 +218,8 @@ onMounted(init)
 .week-button {
   width: 30px;
   height: 30px;
-  background-color: #f0f0f0; /* 按钮背景 */
-  color: #333; /* 按钮字体颜色 */
+  background-color: var(--md-sys-color-surface-container); /* 按钮背景 */
+  color: var(--md-sys-color-on-surface); /* 按钮字体颜色 */
   border: none;
   border-radius: 8px; /* 圆角 */
   cursor: pointer;
@@ -234,7 +235,7 @@ onMounted(init)
 }
 
 .week-button-enabled:hover {
-  background-color: #e1e1e1; /* 悬停时背景色变化 */
+  background-color: color-mix(in srgb, var(--md-sys-color-surface-container) 80%, black); /* 悬停时背景色变化 */
 }
 
 .day {
@@ -261,6 +262,9 @@ onMounted(init)
 }
 
 @media (prefers-color-scheme: dark) {
+  .day {
+    color: #e1e1e1;
+  }
   .day-enabled {
     color: #e1e1e1;
 
@@ -270,7 +274,7 @@ onMounted(init)
   }
 
   .day-disabled {
-    color: pink;
+    color: gray;
   }
 }
 

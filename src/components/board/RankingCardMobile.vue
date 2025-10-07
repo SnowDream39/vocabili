@@ -1,8 +1,8 @@
 <template>
-  <div class="ranking-card relative w-full max-w-[474px] overflow-hidden rounded-xl border-2 border-gray-800 text-zinc-800 dark:text-zinc-200  shadow-xl shadow-gray-300 flex flex-col flex-nowrap *:align-self-center"
+  <div class="ranking-card relative w-full max-w-[474px] overflow-hidden rounded-xl border-2 border-gray-800 text-zinc-800 dark:text-zinc-200  shadow-xl shadow-gray-300 dark:shadow-none flex flex-col flex-nowrap *:align-self-center"
     style="font-family: '思源黑体', '思源黑体 CN', sans-serif;
   font-weight: 500;">
-    <div name="omote" class="z-1 bg-white/50 dark:bg-black/60 text-shadow-md text-shadow-white dark:text-shadow-black">
+    <div name="omote" class="z-1 bg-white/60 dark:bg-black/60 text-shadow-md text-shadow-white dark:text-shadow-black">
       <div name="top" class="px-2 pt-2 flex flex-row flex-nowrap">
         <div name="top-left" class="w-12 shrink-1 inline-block m-2 relative" :title="board.target.platform.title">
           <div class="w-12 h-12 text-2xl text-shadow-none font-900 flex justify-center items-center bg-white/20 dark:bg-black/20 backdrop-blur-2 rounded-sm border-1 border-white">{{ board.rank.board }}</div>
