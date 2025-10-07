@@ -59,51 +59,7 @@
     </div>
 
     <el-dialog v-model="dialogVisible" :title="board.target.metadata.name" style="min-width: min(90%, 300px);">
-      <div class="flex flex-between text-shadow-none">
-        <div class="flex-1 self-stretch flex flex-col justify-between">
-          <div>
-            <div class="text-lg text-center">
-              <span>第{{ board.rank.board }}位</span>
-              <RankChangeSpan :rank-before="board.last?.rank" :change="change" />
-            </div>
-            <div class="text-center">
-              <div class="text-lg">{{ board.point }} pts</div>
-              <div v-if="board.last">
-                <span>
-                  上期：{{ board.last.point }}
-                </span>
-                <span>
-                  RATE：{{((board.point - board.last.point) / board.last.point * 100).toFixed(2) + '%'}}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <div class="italic">
-              <div><ListItem :items="board.target.metadata.target.producer" type="producer" /></div>
-              <div><ListItem :items="board.target.metadata.target.vocalist" type="vocalist" /></div>
-              <div><ListItem :items="board.target.metadata.target.synthesizer" type="synthesizer" /></div>
-            </div>
-            <div class="space-x-2">
-              <span v-if="[1, 4].includes(board.target.platform.copyright)">本家投稿</span>
-              <span v-else>搬运</span>
-              <span>{{ board.target.metadata.type }}</span>
-            </div>
-            <div>上榜次数：{{ board.count }}</div>
-          </div>
-        </div>
-
-
-        <a :href="`/song/${board.target.metadata.id}`" target="_blank" class="w-50 self-start rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all">
-          <img class="w-full" :src="board.target.platform.thumbnail" alt="thumbnail" />
-          <div class="bg-zinc-200 pb-2">
-            <div class="font-900">{{ board.target.platform.title }}</div>
-            <el-link :href="`/artist/uploader/${board.target.platform.uploader[0].id}`" >{{ board.target.platform.uploader[0].name }}</el-link>
-            <div>{{ DateTime.fromISO(board.target.platform.publish).toFormat('yyyy-LL-dd HH:mm:ss') }}</div>
-          </div>
-        </a>
-      </div>
+      <RankingDialog :board="board" />
 
     </el-dialog>
 
@@ -119,15 +75,14 @@
 import { ref, watch, computed } from 'vue'
 import type { Form } from '../song/Calculator.vue';
 import RankChange from './RankChange.vue';
-import RankChangeSpan from './RankChangeSpan.vue';
-import ListItem from './ListItem.vue';
 import Calculator from '../song/Calculator.vue';
 import RankItem from './RankItem.vue';
 import type { Board as DataBoard, DataMetadata } from '@/utils/boardData';
 import { DateTime } from 'luxon';
 import Board from '@/utils/board';
 import { compareRank } from '@/utils/dataConverter';
-import { ElLink, ElDialog } from 'element-plus';
+import { ElDialog } from 'element-plus';
+import RankingDialog from './RankingDialog.vue';
 
 const props = defineProps<{
   board: DataBoard,

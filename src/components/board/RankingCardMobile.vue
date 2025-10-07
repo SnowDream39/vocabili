@@ -42,23 +42,7 @@
     </div>
 
     <el-dialog v-model="dialogVisible" :title="board.target.metadata.name" style="min-width: min(90%, 300px);">
-      <div class="*:mt-4">
-        <div>第{{ board.rank.board }}位（{{ change === "new" ? "NEW" : `上期${props.board.last ? props.board.last.rank : ''}` }}）</div>
-        <div>{{ board.target.platform.title }}</div>
-        <div class="text-sm *:mr-1">
-          <span>P主：<ListItem :items="board.target.metadata.target.producer" type="producer" /></span>
-          <span v-if="[1, 4].includes(board.target.platform.copyright)">本家投稿</span>
-          <span v-else>搬运：<el-link>{{ board.target.platform.uploader[0].name }}</el-link></span>
-          <span>{{ board.target.metadata.type }}</span>
-        </div>
-        <div class="text-sm">歌手：<ListItem :items="board.target.metadata.target.vocalist" type="vocalist" /></div>
-        <div class="text-sm">引擎：<ListItem :items="board.target.metadata.target.synthesizer" type="synthesizer" /></div>
-        <div class="text-sm">投稿时间：{{ DateTime.fromISO(board.target.platform.publish).toFormat('yyyy-LL-dd HH:mm:ss') }}</div>
-        <div>得分：{{ board.point }}</div>
-        <div>上期：{{ board.last?.point }}</div>
-        <div>RATE：{{ board.last ? ((board.point - board.last.point) / board.last.point * 100).toFixed(2) + '%' : '' }}</div>
-        <div>上榜次数：{{ board.count }}</div>
-      </div>
+      <RankingDialog :board="board" />
 
     </el-dialog>
 
@@ -73,14 +57,15 @@
 <script lang="ts" setup>
 import { ref, watch, computed } from 'vue'
 import type { Form } from '../song/Calculator.vue';
-import ListItem from './ListItem.vue';
 import type { Board as DataBoard, DataMetadata } from '@/utils/boardData';
 import { DateTime } from 'luxon';
 import Board from '@/utils/board';
 import { compareRank } from '@/utils/dataConverter';
-import { ElLink } from 'element-plus';
+import { ElDialog } from 'element-plus';
 import RankItemMobile from './RankItemMobile.vue';
 import RankChange from './RankChange.vue';
+import RankingDialog from './RankingDialog.vue';
+import Calculator from '../song/Calculator.vue';
 
 const props = defineProps<{
   board: DataBoard,
