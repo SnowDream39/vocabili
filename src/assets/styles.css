@@ -86,7 +86,7 @@ el-link {
 
 /*  Element Plus 变量 */
 
-:root {
+:root.dark {
   --el-color-primary: var(--md-sys-color-primary);
   --el-color-primary-light-3: color-mix(in srgb, var(--md-sys-color-primary) 70%, white);
   --el-text-color-primary: var(--md-sys-color-on-surface);

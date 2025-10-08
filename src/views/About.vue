@@ -16,14 +16,17 @@
     <p>Ace_Bligh（数据、收录）</p>
     <p>太稽化近视铁包袱（收录）</p>
     <p>Sayonzei（收录）</p>
+    <p>白板（收录）</p>
+    <p>是非成败转头空（收录）</p>
     <p>菱角lenjow（美工）</p>
     <p>若汐ミク（歌曲截取）</p>
     <p>ETeyondLitle（网站后端）</p>
-    <p>李慕路（网页样式）</p>
+    <p>李慕路（网站前端）</p>
+    <p>周某不是轴某（账号运营）</p>
     </div>
     <h2>相关站点</h2>
     <ul>
-      <li><el-link type="primary" href="https://moegirl.vocabili.top/" target="_blank">萌娘百科条目生成工具</el-link></li>
+      <li><el-link type="primary" href="https://tool.vocabili.top/" target="_blank">术力口 wiki 工具</el-link></li>
     </ul>
     <h2>友情链接</h2>
     <ul>
