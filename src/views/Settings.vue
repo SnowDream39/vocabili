@@ -1,8 +1,8 @@
 <template>
+  <BackgroundImageController/>
 </template>
 
-<script>
-import Header from '../components/Header.vue'
-
+<script setup lang="ts">
+import BackgroundImageController from '@/components/misc/BackgroundImageController.vue';
 
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="ranking-card shadow-box">
+  <div class="ranking-card suspend-panel">
     <div class="portrait">
       <div class="image-container" :title="title">
         <el-image
@@ -165,7 +165,6 @@ function showData() {
 .info-row {
   .el-link {
     margin: 5px 5px;
-    color: #8a8a8a;
   }
 }
 

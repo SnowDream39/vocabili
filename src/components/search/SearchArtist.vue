@@ -9,13 +9,9 @@
     <el-table-column prop="name" label="名称" />
     <el-table-column label="操作" width="120" align="center">
         <template #default="{ row }">
-          <el-button
-            type="primary"
-            size="small"
-            :icon="InfoFilled"
-            @click="handleDetail(type, row.id)"
-            class="detail-btn"
-          />
+          <el-button class="btn-primary" @click="handleDetail(type, row.id)" >
+            <div class="i-material-symbols-calendar-month-outline-rounded"></div>
+          </el-button>
         </template>
       </el-table-column>
   </el-table>
@@ -23,7 +19,6 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { InfoFilled } from '@element-plus/icons-vue'
 
 defineProps(['type','data','loading'])
 

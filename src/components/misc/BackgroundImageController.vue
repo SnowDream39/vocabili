@@ -1,5 +1,5 @@
 <template>
-  <div id="background-image-controller">
+  <div id="background-image-controller" class="w-[400px] max-w-8/9 flex flex-row items-center">
     <el-select
       v-model="currentImageSetName"
       id="background-image-selecter"
@@ -20,18 +20,19 @@
 
 <script lang="ts" setup>
 import { onBeforeUnmount, onMounted, ref } from 'vue';
+import { ElSelect, ElOption, ElButton } from 'element-plus';
+import { bgManager } from '@/main';
 
 var verticalPicture: string;
 var horizontalPicture: string;
 var currentImageSetName = ref<string>("daidou");
-var currentMode: "vertical" | "horizontal" = "vertical"
 const imageSets = ref<{ [key: string]: any}>({});
 
 /** 返回"url(...)"的形式
  * */
 function selectRandomPicture(pictures: string[]) {
   const originalPicture = pictures[Math.floor(Math.random() * pictures.length)]
-  const picture = String(originalPicture).includes('/') ? originalPicture : `url("https://pixiv.re/${originalPicture}.jpg")` // 默认是pixiv id，也可以输入别的
+  const picture = String(originalPicture).includes('/') ? originalPicture : `url("https://h.pixiv.ddns-ip.net/${originalPicture}")` // 默认是pixiv id，也可以输入别的
   return picture
 }
 
@@ -48,27 +49,10 @@ async function loadImageSets() {
 function refreshPicture() {
   const data = imageSets.value[currentImageSetName.value]
   verticalPicture = selectRandomPicture(data.verticalPictures)
+  localStorage.setItem("verticalPicture", verticalPicture)
   horizontalPicture = selectRandomPicture(data.horizontalPictures)
-  changePicture()
-}
-
-function changePicture() {
-  const body = document.body;
-  if (currentMode === "vertical") {
-    body.style.backgroundImage = verticalPicture;
-    localStorage.setItem("verticalPicture", verticalPicture)
-  } else {
-    body.style.backgroundImage = horizontalPicture;
-  }
-  console.log("已切换背景图片");
-}
-
-function resize() {
-  const newMode = window.innerWidth < innerHeight ? "vertical" : "horizontal"
-  if (newMode !== currentMode) {
-    currentMode = newMode
-    changePicture()
-  }
+  localStorage.setItem("horizontalPicture", horizontalPicture)
+  bgManager.refreshPicture()
 }
 
 loadImageSets()
@@ -76,7 +60,6 @@ loadImageSets()
 onMounted(async () => {
   currentImageSetName.value = localStorage.getItem("backgroundImageSetName") ?? "vocaloid-daidou";
   await loadImageSets()
-  window.addEventListener('resize', resize)
 })
 
 onBeforeUnmount(() => {
@@ -85,9 +68,5 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="scss" scoped>
-div#background-image-controller {
-  width: 400px;
-  max-width: 100%;
-  display: flex;
-}
+
 </style>

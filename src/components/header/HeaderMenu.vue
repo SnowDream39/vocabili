@@ -5,6 +5,7 @@
     :ellipsis="false"
     :router="true"
     @select="handleSelect"
+    class="fixed"
   >
     <el-menu-item index="/">
       <span @click="router.push('/')" class="flex items-center gap-4 text-2xl text-onSurface">
@@ -27,22 +28,21 @@
     <el-menu-item index="/work">打标</el-menu-item>
     <el-menu-item index="/about">关于</el-menu-item>
     <el-menu-item index="/search">
-      <el-icon>
-        <component :is="Search" />
-      </el-icon>
+      <div class="i-eva-search-outline"></div>
     </el-menu-item>
-    <el-menu-item index="/user">
-      <el-icon>
-        <component :is="User" />
-      </el-icon>
-    </el-menu-item>
+    <el-sub-menu  index="3">
+      <template #title>
+        <div class="i-material-symbols-account-circle-full"></div>
+      </template>
+      <el-menu-item index="/user">用户</el-menu-item>
+      <el-menu-item index="/settings">设置</el-menu-item>
+    </el-sub-menu>
   </el-menu>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue'
 import router from '../../router'
-import { Search, User } from '@element-plus/icons-vue'
 
 const activeIndex = ref('1')
 const handleSelect = () => {

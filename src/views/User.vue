@@ -19,7 +19,6 @@ const isLoginMode = ref(true)
 .login-container {
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(to right, #74ebd5, #acb6e5);
   display: flex;
   justify-content: center;
   align-items: center;

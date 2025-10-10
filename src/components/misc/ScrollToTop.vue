@@ -6,7 +6,6 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
-import { ArrowUp } from '@element-plus/icons-vue'; // 导入箭头图标
 
 const showButton = ref(false);
 

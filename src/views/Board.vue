@@ -44,20 +44,24 @@
         @current-change="handlePageChanged"
       />
       </div>
-      <CommentFrame/>
+      <CommentFrame class="2xl:hidden"/>
     </div>
     <!-- 开发中内容，只有大屏可见 -->
-    <div class="hidden 2xl:block bg-cyan-200 w-[400px] my-4 p-4">
-      <canvas id="qrcode"></canvas>
-      <h2 class="big-title">本期看点</h2>
-      <h3 class="small-title">统计</h3>
-      <h3 class="small-title">火箭</h3>
-      <ul>
-        <li></li>
-      </ul>
-      <h3 class="small-title">跳水</h3>
-      <div>该部分开发中</div>
+    <div class="hidden 2xl:block">
+      <div class="suspend-panel w-[400px] my-4 p-4">
+        <canvas id="qrcode"></canvas>
+        <h2 class="big-title">本期看点</h2>
+        <h3 class="small-title">统计</h3>
+        <h3 class="small-title">火箭</h3>
+        <ul>
+          <li></li>
+        </ul>
+        <h3 class="small-title">跳水</h3>
+        <div>该部分开发中</div>
+      </div>
+      <CommentFrame/>
     </div>
+
   </div>
 
 </template>
@@ -196,11 +200,7 @@ h1 {
     color: #8a8a8a;
     width: auto;
   }
-  .boardpagination {
-    display: flex;
-    justify-content: center;
-    padding: 15px 10px;
-  }
+
  .pagination {
     max-width: 100%;
     font-size: 14px; // 减小默认字体大小
@@ -227,7 +227,12 @@ h1 {
     display: none;
   }
 }
-
+.boardpagination {
+  display: flex;
+  justify-content: center;
+  padding: 15px 10px;
+  z-index: 100;
+}
 @media (max-width: 630px) {
   .boardpagination {
     padding: 10px 5px;

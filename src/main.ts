@@ -10,6 +10,7 @@ import 'virtual:uno.css'
 import '@unocss/reset/normalize.css'
 
 import { createPinia } from 'pinia';
+import BackgroundImageManager from './plugins/BackgroundImageManager';
 
 const app = createApp(App);
 
@@ -42,3 +43,7 @@ function updateTheme() {
 
 updateTheme() // 初始化一次
 media.addEventListener('change', updateTheme)
+
+// 处理背景图片
+
+export const bgManager = new BackgroundImageManager()

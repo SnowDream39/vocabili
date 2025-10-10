@@ -1,5 +1,5 @@
 <template>
-  <div class="max-x-[600px] w-[90%] p-4 bg-paper rounded shadow">
+  <div class="suspend-panel max-x-[600px] w-full p-4">
     <h2 class="text-xl font-semibold mb-4">评论区</h2>
 
     <!-- 新评论输入 -->

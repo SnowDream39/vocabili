@@ -9,6 +9,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     ArtistList: typeof import('./src/components/search/ArtistList.vue')['default']
+    Background: typeof import('./src/components/Background.vue')['default']
     BackgroundImageController: typeof import('./src/components/misc/BackgroundImageController.vue')['default']
     CalcChart: typeof import('./src/components/CalcChart.vue')['default']
     Calculator: typeof import('./src/components/song/Calculator.vue')['default']
@@ -30,7 +31,6 @@ declare module 'vue' {
     ElEmpty: typeof import('element-plus/es')['ElEmpty']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
-    ElIcon: typeof import('element-plus/es')['ElIcon']
     ElImage: typeof import('element-plus/es')['ElImage']
     ElInput: typeof import('element-plus/es')['ElInput']
     ElLink: typeof import('element-plus/es')['ElLink']

@@ -13,12 +13,9 @@
       label="计算器"
     >
       <template #default="{ row }">
-          <el-button
-            type="primary"
-            size="small"
-            :icon="InfoFilled"
-            @click="showCalculator(row)"
-          />
+        <button class="btn-primary" @click="showCalculator(row)" >
+          <div class="i-material-symbols-calendar-month-outline-rounded"></div>
+        </button>
         </template>
     </el-table-column>
   </el-table>
@@ -32,7 +29,6 @@ import axios from 'axios'
 import { onMounted, ref } from 'vue';
 import { requester } from '../../utils/api/requester';
 import Board, { currentIssue, type BasicSection } from '../../utils/board';
-import { InfoFilled } from '@element-plus/icons-vue'
 import { issueNow, startTimeOf } from '../../utils/date';
 import { DateTime } from 'luxon';
 

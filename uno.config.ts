@@ -41,14 +41,10 @@ export default defineConfig({
     'small-title': 'text-xl font-bold',
     'glass-button': 'border-white hover:bg-white/30 active:bg-white/40 text-shadow-sm text-shadow-white dark:text-shadow-black backdrop-blur-2 rounded-md p-1 transition-colors cursor-pointer',
     'button-lg': 'text-lg border-2 rounded-md p-1',
+    'suspend-panel': 'bg-surfaceContainer/70 rounded-2xl shadow-xl',
     'btn': 'px-4 py-2 rounded-full font-medium transition-colors',
     'btn-primary': 'btn bg-primary text-onPrimary hover:bg-[color-mix(in_srgb,_var(--md-sys-color-primary)_90%,_white)]',
     'btn-secondary': 'btn bg-secondary text-onSecondary hover:bg-[color-mix(in_srgb,_var(--md-sys-color-secondary)_90%,_white)]',
     'btn-tertiary': 'btn bg-tertiary text-onTertiary hover:bg-[color-mix(in_srgb,_var(--md-sys-color-tertiary)_90%,_white)]',
-  },
-  content: {
-    pipeline: {
-      include: ['src/**/*.{vue,ts,js}'],
-    },
-  },
+  }
 })

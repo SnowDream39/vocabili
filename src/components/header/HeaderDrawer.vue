@@ -1,16 +1,12 @@
 <template>
-  <header class="w-full text-onSurface bg-[var(--md-sys-color-surface-container)]">
-    <nav class="w-full h-[50px] flex justify-between items-center text-2xl *:px-2">
-      <span @click="logoClicked">
-        ☰
-      </span>
-      <div @click="router.push('/')" class="flex h-full">
-        <img src="/vocabili.png" class="h-full" />
+  <header class="w-full text-onSurface bg-surfaceContainer">
+    <nav class="w-full h-[50px] flex justify-between items-center text-2xl *:mx-2 *:cursor-pointer">
+      <div @click="logoClicked" class="i-eva-menu-outline"></div>
+      <div @click="router.push('/')" class="flex h-full items-center">
+        <img src="/vocabili.png" class="h-4/5" />
         <span class="p-2">术力口数据库</span>
       </div>
-      <span @click="router.push('/search')">
-        🔍
-      </span>
+      <div @click="router.push('/search')" class="i-eva-search-outline"></div>
     </nav>
   </header>
     <el-drawer direction="ltr" v-model="asideVisible" :with-header="false" style="background: rgba(255,255,255,0.2);backdrop-filter: blur(12px);">
@@ -100,7 +96,7 @@ nav li:not(#logoheader) {
 }
 
 #logoheader {
-  height: 100%;
+  height: 80%;
   display: block;
   align-items: center;
   margin: 0 auto;

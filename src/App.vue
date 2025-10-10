@@ -1,5 +1,6 @@
 <template>
   <el-config-provider :locale="zhCn">
+    <Background/>
     <Header/>
     <main>
       <router-view />
@@ -15,6 +16,7 @@ import Footer from './components/Footer.vue';
 import ScrollToTop from './components/misc/ScrollToTop.vue';
 import { ElConfigProvider } from 'element-plus'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
+import Background from './components/Background.vue';
 </script>
 
 <style lang="scss" scoped>

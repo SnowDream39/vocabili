@@ -5,7 +5,9 @@
     <div class="search-container">
       <el-input v-model="searchWord" placeholder="请输入标题或关键词" clearable class="search-input" @keyup.enter="handleSearch">
         <template #append>
-          <el-button type="primary" class="search-btn" @click="handleSearch" :icon="Search" />
+          <el-button @click="handleSearch" >
+             <div class="i-eva-search-outline" ></div>
+          </el-button>
         </template>
       </el-input>
 
@@ -48,11 +50,10 @@
 import { computed, ref, toRaw } from 'vue';
 import router from '../router/index.ts';
 import { requester } from '../utils/api/requester.ts';
-import { Search } from '@element-plus/icons-vue'
 import SearchMusicCard from '@/components/search/SearchMusicCard.vue';
 import SearchArtistBlocks from '@/components/search/SearchArtistBlocks.vue';
 import SearchMusicCards from '@/components/search/SearchMusicCards.vue';
-
+import { ElSelect, ElOption, ElInput, ElButton, ElPagination } from 'element-plus';
 
 // 响应式数据
 const searchWord = ref('')

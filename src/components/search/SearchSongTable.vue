@@ -28,7 +28,6 @@
           <el-button
             type="primary"
             size="small"
-            :icon="InfoFilled"
             @click="handleDetail(row.id)"
             class="detail-btn"
           />
@@ -39,7 +38,6 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { InfoFilled } from '@element-plus/icons-vue'
 
 defineProps(['data', 'loading'])
 

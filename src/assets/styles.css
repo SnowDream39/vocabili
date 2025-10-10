@@ -12,7 +12,6 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center;
-  background-color: var(--md-sys-color-background);
 
   color: var(--md-sys-color-on-surface);
 }
@@ -85,6 +84,10 @@ el-link {
 }
 
 /*  Element Plus 变量 */
+
+:root {
+  --el-menu-bg-color: var(--md-sys-color-surface-container);
+}
 
 :root.dark {
   --el-color-primary: var(--md-sys-color-primary);
