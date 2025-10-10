@@ -5,7 +5,7 @@
     :ellipsis="false"
     :router="true"
     @select="handleSelect"
-    class="fixed"
+    class="fixed z-9999"
   >
     <el-menu-item index="/">
       <span @click="router.push('/')" class="flex items-center gap-4 text-2xl text-onSurface">

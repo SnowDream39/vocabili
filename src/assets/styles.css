@@ -64,6 +64,26 @@ el-link {
   border-radius: 12px !important;
 }
 
+.el-drawer__body {
+  padding: 0 !important;
+  scrollbar-width: none;
+}
+
+.el-menu--vertical {
+  background-color: var(--md-sys-color-surface); /* 奇数行 */
+  & > :nth-child(odd) {
+    background-color: var(--md-sys-color-surface); /* 奇数行 */
+  }
+
+  & > :nth-child(even) {
+    background-color: var(--md-sys-color-surface-container); /* 偶数行 */
+  }
+
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+}
+
 @media (max-width: 630px) {
   .boardpagination {
     padding: 10px 5px;

@@ -26,7 +26,8 @@ app.config.errorHandler = (err: any) => {
     message: err.message,
     type: 'error',
     duration: 3000, // 3秒后自动消失
-    showClose: true
+    showClose: true,
+    offset: 66
   })
 }
 

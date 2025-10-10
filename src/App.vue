@@ -22,6 +22,7 @@ import Background from './components/Background.vue';
 <style lang="scss" scoped>
 main {
   box-sizing: border-box;
+  margin-top: 50px;
   width: 100%;
   max-width: 100%;
   display: flex;

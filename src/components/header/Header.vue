@@ -20,16 +20,11 @@ onMounted(() => {
     // 你可以在这里执行你想要的逻辑
     if (width <= 768) {
       isDesktop.value = false
-      main.style.marginTop = '';
     } else {
       isDesktop.value = true
-      main.style.marginTop = '50px';
     }
   })
-  const main = document.querySelector('main') as HTMLElement;
-  if (isDesktop.value) {
-    main.style.marginTop = '50px';
-  }
+
 
 })
 
