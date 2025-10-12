@@ -4,7 +4,7 @@ import { getImageSet } from "@/utils/api/image"
  * */
 function selectRandomPicture(pictures: string[]) {
   const originalPicture = pictures[Math.floor(Math.random() * pictures.length)]
-  const picture = String(originalPicture).includes('/') ? originalPicture : `url("https://h.pixiv.ddns-ip.net/${originalPicture}")` // 默认是pixiv id，也可以输入别的
+  const picture = String(originalPicture).includes('/') ? `url("${originalPicture}")` : `url("https://h.pixiv.ddns-ip.net/${originalPicture}")` // 默认是pixiv id，也可以输入别的
   return picture
 }
 
@@ -61,9 +61,7 @@ class BackgroundImageManager {
     localStorage.setItem("verticalPicture", this.verticalPicture)
     this.horizontalPicture = selectRandomPicture(this.horizontalPictures)
     localStorage.setItem("horizontalPicture", this.horizontalPicture)
-
-    this.verticalPicture = localStorage.getItem('verticalPicture') ?? this.defaultPicture
-    this.horizontalPicture = localStorage.getItem('horizontalPicture') ?? this.defaultPicture
+    console.log(this.verticalPicture, this.horizontalPicture)
     this.changePicture()
     this.resize()
   }

@@ -1,22 +1,22 @@
 <template>
-  <form @submit.prevent="submitComment" class="space-y-2 mb-4">
+  <form @submit.prevent="submitComment" class="space-y-2">
     <textarea
       v-model="content"
       placeholder="写下你的评论..."
       rows="3"
-      class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none"
+      class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-primary resize-none"
       required
     ></textarea>
 
     <div class="flex justify-between items-center">
       <button
         type="submit"
-        class="bg-blue-600 text-white py-1 px-3 rounded hover:bg-blue-700 transition disabled:opacity-50 text-sm"
+        class="btn-primary transition disabled:opacity-50 text-sm"
         :disabled="loading"
       >
         {{ loading ? '提交中...' : (props.parent_id ? '回复' : '发表评论') }}
       </button>
-      <span v-if="error" class="text-red-500 text-sm">{{ error }}</span>
+      <span v-if="error" class="text-onError text-sm">{{ error }}</span>
     </div>
   </form>
 </template>
