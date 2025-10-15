@@ -4,7 +4,6 @@
     mode="horizontal"
     :ellipsis="false"
     :router="true"
-    @select="handleSelect"
     class="fixed z-9999"
   >
     <el-menu-item index="/">
@@ -30,12 +29,19 @@
     <el-menu-item index="/search">
       <div class="i-eva-search-outline"></div>
     </el-menu-item>
-    <el-sub-menu  index="3">
+    <el-sub-menu index="3">
       <template #title>
         <div class="i-material-symbols-account-circle-full"></div>
       </template>
-      <el-menu-item index="/user">用户</el-menu-item>
-      <el-menu-item index="/settings">设置</el-menu-item>
+      <el-menu-item index="/user" class="with-icon">
+        <span class="i-material-symbols-account-circle-full"></span>
+        <span>用户中心</span>
+      </el-menu-item>
+      <el-menu-item index="/settings" class="with-icon">
+        <span class="i-material-symbols-settings"></span>
+        <span>个性设置</span>
+      </el-menu-item>
+      <el-menu-item @click="changeBackground">刷新背景图片</el-menu-item>
     </el-sub-menu>
   </el-menu>
 </template>
@@ -44,11 +50,14 @@
 import { ref } from 'vue'
 import router from '../../router'
 
-const activeIndex = ref('1')
-const handleSelect = () => {
+import { useBgManager } from '@/plugins/BackgroundImagePlugin'
 
+const bgManager = useBgManager()
+function changeBackground() {
+  bgManager.refreshPicture()
+  bgManager.setPicture()
 }
-
+const activeIndex = ref('1')
 
 </script>
 
@@ -65,6 +74,12 @@ const handleSelect = () => {
   width: 100%;
   --el-menu-item-font-size: 18px;
   --el-menu-base-level-padding: 10px;
+}
+
+.with-icon {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 </style>

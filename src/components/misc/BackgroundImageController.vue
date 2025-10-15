@@ -21,9 +21,10 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
 import { ElSelect, ElOption, ElButton } from 'element-plus';
-import { bgManager } from '@/main';
+import { useBgManager } from '@/plugins/BackgroundImagePlugin'
 import { getImageSet, getImageSets } from '@/utils/api/image';
 
+const bgManager = useBgManager()
 var currentImageSetName = ref<string>("vocaloid-daidou");
 const imageSets = ref<{ [key: string]: any}>({});
 
@@ -41,6 +42,7 @@ async function refreshPicture() {
     await bgManager.loadImageSet()
   }
   bgManager.refreshPicture()
+  bgManager.setPicture()
 }
 
 onMounted(async () => {
