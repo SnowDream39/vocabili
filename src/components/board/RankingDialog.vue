@@ -8,7 +8,7 @@
       </div>
       <div class="text-center">
         <div class="text-lg">{{ board.point.toLocaleString() }} pts</div>
-        <div v-if="board.last" class="flex flex-row justify-center gap-2">
+        <div v-if="board.last" class="flex flex-row flex-wrap justify-center space-x-2">
           <div>
             上期：{{ board.last.point.toLocaleString() }} pts
           </div>

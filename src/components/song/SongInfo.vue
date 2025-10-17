@@ -136,9 +136,6 @@ ul li {
   margin: 5px 0;
 }
 
-.el-button {
-  margin-top: 10px;
-}
 
 @media (max-width: 768px) {
   .song-info {

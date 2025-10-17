@@ -1,10 +1,10 @@
 <template>
   <div class="artists-container suspend-panel">
-    <el-button
-      type="primary"
+    <button
+      class="btn-primary"
       v-for="artist in data"
       @click="handleDetail(type, artist.id)"
-    >{{ artist.name }}</el-button>
+    >{{ artist.name }}</button>
   </div>
 </template>
 
@@ -35,7 +35,4 @@ const handleDetail = (type: string, id: string) => {
 
 }
 
-:deep(.el-button+.el-button) {
-  margin-left: 0;
-}
 </style>

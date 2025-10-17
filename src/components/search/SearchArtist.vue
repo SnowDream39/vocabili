@@ -9,9 +9,9 @@
     <el-table-column prop="name" label="名称" />
     <el-table-column label="操作" width="120" align="center">
         <template #default="{ row }">
-          <el-button class="btn-primary" @click="handleDetail(type, row.id)" >
+          <button class="btn-primary" @click="handleDetail(type, row.id)" >
             <div class="i-material-symbols-calendar-month-outline-rounded"></div>
-          </el-button>
+          </button>
         </template>
       </el-table-column>
   </el-table>

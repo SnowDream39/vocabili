@@ -5,9 +5,9 @@
     <div class="search-container">
       <el-input v-model="searchWord" placeholder="请输入标题或关键词" clearable class="search-input" @keyup.enter="handleSearch">
         <template #append>
-          <el-button @click="handleSearch" >
+          <button @click="handleSearch" >
              <div class="i-eva-search-outline" ></div>
-          </el-button>
+          </button>
         </template>
       </el-input>
 
@@ -20,7 +20,7 @@
         <el-option v-for="item in searchSortOptions" :key="item.value" :value="item.value" :label="item.label" />
       </el-select>
 
-      <el-button @click="searchAscending = !searchAscending" >{{ searchAscending ? '升序' : '降序' }}</el-button>
+      <button @click="searchAscending = !searchAscending" >{{ searchAscending ? '升序' : '降序' }}</button>
     </div>
 
 
@@ -29,7 +29,7 @@
     <SearchArtistBlocks v-if="tableData[0] && ['vocalist', 'uploader', 'producer', 'synthesizer'].includes(searchTarget)"
       :type="searchTarget" :data="tableData" :loading="loading" />
 
-    <el-button type="primary" @click="expandSearch" id="expand-search" >扩大搜索</el-button>
+    <button class="btn-primary" @click="expandSearch" id="expand-search" >扩大搜索</button>
 
     <!-- 分页器 -->
     <el-pagination

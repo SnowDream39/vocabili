@@ -16,9 +16,9 @@
           <el-input v-model="form.confirm" type="password" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onRegister">注册</el-button>
-          <el-button @click="resetForm">重置</el-button>
-          <el-button text @click="$emit('switch')">已有账号？返回登录</el-button>
+          <button class="btn-primary" @click="onRegister">注册</button>
+          <button @click="resetForm">重置</button>
+          <button @click="$emit('switch')">已有账号？返回登录</button>
         </el-form-item>
       </el-form>
     </el-card>

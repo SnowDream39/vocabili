@@ -1,6 +1,6 @@
 <template>
   <template v-for="[index, item] in items.entries()">
-    <el-link :href="`/artist/${type}/${item.id}`" target="_blank">{{ item.name }}</el-link>
+    <el-link underline="always" :href="`/artist/${type}/${item.id}`" target="_blank">{{ item.name }}</el-link>
     <span v-if="index < items.length - 1">、</span>
   </template>
 </template>

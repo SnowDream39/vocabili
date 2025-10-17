@@ -29,7 +29,7 @@
       </el-table-column>
       <template #append>
         <div class="table-append" v-if="!end" >
-          <el-button type="primary" @click="fetchData">继续加载</el-button>
+          <button class="btn-primary" @click="fetchData">继续加载</button>
         </div>
       </template>
     </el-table>

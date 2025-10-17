@@ -12,8 +12,8 @@
         <el-checkbox v-model="form.remember">记住我</el-checkbox>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">登录</el-button>
-        <el-button text @click="$emit('switch')">还没有账号？点此注册</el-button>
+        <button class="btn-rimary" @click="onSubmit">登录</button>
+        <button @click="$emit('switch')">还没有账号？点此注册</button>
       </el-form-item>
     </el-form>
   </el-card>

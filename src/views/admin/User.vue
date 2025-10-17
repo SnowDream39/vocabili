@@ -17,13 +17,12 @@
       </el-table-column>
       <el-table-column label="操作" width="80">
         <template #default="{ row }">
-          <el-button
-            size="small"
-            type="primary"
+          <button
+            class="btn-primary"
             @click="handleCharge(row.id)"
           >
             充值
-          </el-button>
+          </button>
         </template>
       </el-table-column>
     </el-table>

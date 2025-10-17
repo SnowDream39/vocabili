@@ -9,7 +9,7 @@
       <div><ArtistList :artists="video.uploader" type="uploader" />（{{ video.copyrightString }}）</div>
       <div>{{ video.upload }}</div>
       <div>{{ video.length }}<span v-if="video.page !== 1">/{{ video.page }}P</span></div>
-      <el-button type="primary" @click="showStat">最新数据</el-button>
+      <button class="btn-primary" @click="showStat">最新数据</button>
     </div>
 
     <el-dialog
@@ -82,9 +82,7 @@ ul {
   color: #333;
 }
 
-.el-button {
-  margin-top: 10px;
-}
+
 
 @media (max-width: 768px) {
 

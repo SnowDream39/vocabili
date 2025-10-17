@@ -14,7 +14,7 @@
         :title="value.description"
       />
     </el-select>
-    <el-button id="background-image-refresh-button" type="primary" @click="refreshPicture">随机图片</el-button>
+    <button id="background-image-refresh-button" class="btn-primary" @click="refreshPicture">随机图片</button>
   </div>
 </template>
 

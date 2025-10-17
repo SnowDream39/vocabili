@@ -12,7 +12,7 @@
         </div>
         <h1 v-if="!isSpecial">{{ issueName }}</h1>
         <div v-if="!isSpecial">{{ rankDateString }}</div>
-        <el-button @click="toggleBoardStyle" class="float-right sm:hidden!" type="primary">切换外观</el-button>
+        <button @click="toggleBoardStyle" class="btn-primary float-right sm:hidden!">切换外观</button>
       </div>
       <div class="w-full grid grid-cols-1 lg:grid-cols-2 gap-4" ref="boardList">
         <RankingCard
