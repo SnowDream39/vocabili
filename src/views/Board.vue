@@ -77,7 +77,7 @@ import CommentFrame from '../components/user/CommentFrame.vue';
 import { useStatusStore } from '@/store/status.ts';
 import RankingCard from '@/components/board/RankingCard.vue';
 import RankingCardMobile from '@/components/board/RankingCardMobile.vue';
-import { ElPagination, ElButton } from 'element-plus';
+import { ElPagination } from 'element-plus';
 import type { DataMetadata, Board as DataBoard } from '@/utils/boardData.ts';
 import QRCode from 'qrcode'
 const route = useRoute()

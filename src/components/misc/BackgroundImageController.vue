@@ -20,7 +20,7 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
-import { ElSelect, ElOption, ElButton } from 'element-plus';
+import { ElSelect, ElOption } from 'element-plus';
 import { useBgManager } from '@/plugins/BackgroundImagePlugin'
 import { getImageSet, getImageSets } from '@/utils/api/image';
 
