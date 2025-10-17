@@ -1,5 +1,5 @@
 <template>
-  <div class="ranking-card relative w-full max-w-[474px] overflow-hidden rounded-xl border-2 border-gray-800 text-zinc-800 dark:text-zinc-200  shadow-xl shadow-gray-300 dark:shadow-none flex flex-col flex-nowrap *:align-self-center"
+  <div class="ranking-card relative w-full max-w-[474px] overflow-hidden rounded-xl border-2  shadow-xl  dark:shadow-none flex flex-col flex-nowrap items-center [&:hover_.back-thumbnail]:scale-120"
     style="font-family: '思源黑体', '思源黑体 CN', sans-serif;
   font-weight: 500;">
     <div name="omote" class="z-1 bg-white/60 dark:bg-black/60 text-shadow-md text-shadow-white dark:text-shadow-black">
@@ -38,7 +38,7 @@
       </div>
     </div>
     <div class="h-full absolute inset-0">
-      <img class="w-full h-full object-cover" :src="board.target.platform.thumbnail" alt="thumbnail" />
+      <img class="back-thumbnail w-full h-full object-cover transition" :src="board.target.platform.thumbnail" alt="thumbnail" />
     </div>
 
     <el-dialog v-model="dialogVisible" :title="board.target.metadata.name" style="min-width: min(90%, 300px);">

@@ -18,10 +18,10 @@
         <InfoItem name="歌手" :value="vocal" />
         <InfoItem name="类型" :value="type" />
         <InfoItem name="时间" :value="pubdate.slice(0,16)" />
-        <InfoItem name="播放" :value="String(view)"/>
-        <InfoItem name="收藏" :value="String(favorite)" />
-        <InfoItem name="硬币" :value="String(coin)"/>
-        <InfoItem name="点赞" :value="String(like)"/>
+        <InfoItem name="播放" :value="view.toLocaleString()"/>
+        <InfoItem name="收藏" :value="favorite.toLocaleString()" />
+        <InfoItem name="硬币" :value="coin.toLocaleString()"/>
+        <InfoItem name="点赞" :value="like.toLocaleString()"/>
       </div>
       <div class="info-row">
         <el-link type="primary" :href="link" target="_blank">视频链接</el-link>

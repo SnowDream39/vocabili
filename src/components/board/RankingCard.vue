@@ -1,5 +1,5 @@
 <template>
-  <div class="ranking-card relative max-w-[474px] overflow-hidden rounded-xl border-2 border-gray-800 text-zinc-800 dark:text-zinc-200 text-shadow-md text-shadow-white dark:text-shadow-black shadow-xl shadow-gray-300 dark:shadow-none grid grid-flow-row gap-4 *:align-self-center"
+  <div class="ranking-card relative max-w-[474px] overflow-hidden rounded-xl border-2 text-shadow-md text-shadow-white dark:text-shadow-black shadow-xl  dark:shadow-none grid grid-flow-row gap-4 items-center [&:hover_.back-thumbnail]:scale-120"
     style="font-family: '思源黑体', '思源黑体 CN', sans-serif;
   font-weight: 500;">
     <div class="z-1 p-3 bg-white/60 dark:bg-black/70 flex flex-col sm:flex-row! flex-nowrap justify-center items-center gap-0 sm:gap-4 overflow-hidden ">
@@ -25,9 +25,9 @@
             <div>{{ board.target.metadata.target.vocalist.map(item => item.name).join('、') }}</div>
             <div>{{ DateTime.fromISO(board.target.platform.publish).toFormat('yyyy-LL-dd HH:mm') }}</div>
             <div>
-              <span>{{ board.point }}pts</span>
+              <span>{{ board.point.toLocaleString() }}pts</span>
               <span> / </span>
-              <span>{{ board.count }}回</span>
+              <span>{{ board.count.toLocaleString() }}回</span>
             </div>
           </div>
           <div class="basis-0 grow-1 flex flex-col justify-center items-start text-shadow-none  bg-white/70 dark:bg-black/50 rounded-lg overflow-hidden">
@@ -51,7 +51,7 @@
     </div>
 
     <div class="h-full absolute inset-0">
-      <img class="w-full h-full object-cover" :src="board.target.platform.thumbnail" alt="thumbnail" />
+      <img class="back-thumbnail w-full h-full object-cover transition" :src="board.target.platform.thumbnail" alt="thumbnail" />
     </div>
 
     <el-dialog v-model="dialogVisible" :title="board.target.metadata.name" style="min-width: min(90%, 300px);">

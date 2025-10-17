@@ -1,6 +1,6 @@
 <template>
   <header class="w-full text-onSurface">
-    <nav class="fixed bg-surfaceContainer z-100 w-full h-[50px] flex justify-between items-center text-2xl *:mx-2 *:cursor-pointer">
+    <nav class="fixed bg-surface-container z-100 w-full h-[50px] flex justify-between items-center text-2xl *:mx-2 *:cursor-pointer">
       <div @click="logoClicked" class="i-eva-menu-outline"></div>
       <div @click="router.push('/')" class="flex h-full items-center">
         <img src="/vocabili.png" class="h-4/5" />
