@@ -3,9 +3,9 @@
     <div class="flex flex-col items-center w-full lg:w-[964px]" >
       <div class="w-full text-center mb-4">
         <div id="last-next-issues" v-if="!isSpecial">
-          <el-link type="primary" :href="`/board/${board.fullId}/${board.issue-1}?page=1`" id="last-issue" :disabled="!lastIssueStatus">&lt;&lt;上一期</el-link>
-          <el-link type="primary" @click="changeBoard" id="change-board">切换总榜/新曲榜</el-link>
-          <el-link type="primary" :href="`/board/${board.fullId}/${Number(board.issue)+1}?page=1`" id="next-issue" :disabled="!nextIssueStatus">下一期 &gt;&gt;</el-link>
+          <el-router-link :to="`/board/${board.fullId}/${board.issue-1}?page=1`" type="primary" id="last-issue" :disabled="!lastIssueStatus">&lt;&lt;上一期</el-router-link>
+          <button class="text-primary" @click="changeBoard" id="change-board">切换总榜/新曲榜</button>
+          <el-router-link :to="`/board/${board.fullId}/${Number(board.issue)+1}?page=1`" type="primary" id="next-issue" :disabled="!nextIssueStatus">下一期 &gt;&gt;</el-router-link>
         </div>
         <div v-else>
           <SpecialSelector @updateData="handleIssueChanged" />
@@ -14,6 +14,17 @@
         <div v-if="!isSpecial">{{ rankDateString }}</div>
         <button @click="toggleBoardStyle" class="btn-primary float-right sm:hidden!">切换外观</button>
       </div>
+      <el-pagination
+        background
+        hide-on-single-page
+        layout="prev, pager, next, jumper"
+        :pager-count="5"
+        :page-size="20"
+        :total="total"
+        v-model:current-page="page"
+        class="pagination"
+        @current-change="handlePageChanged"
+      />
       <div class="w-full grid grid-cols-1 lg:grid-cols-2 gap-4" ref="boardList">
         <RankingCard
           v-for="data in boards"
@@ -35,6 +46,7 @@
       <div class="boardpagination">
       <el-pagination
         background
+        hide-on-single-page
         layout="prev, pager, next, jumper"
         :pager-count="5"
         :page-size="20"
@@ -78,6 +90,7 @@ import { useStatusStore } from '@/store/status.ts';
 import RankingCard from '@/components/board/RankingCard.vue';
 import RankingCardMobile from '@/components/board/RankingCardMobile.vue';
 import { ElPagination } from 'element-plus';
+import ElRouterLink from '@/components/misc/ElRouterLink.vue';
 import type { DataMetadata, Board as DataBoard } from '@/utils/boardData.ts';
 import QRCode from 'qrcode'
 const route = useRoute()
@@ -85,7 +98,7 @@ const statusStore = useStatusStore()
 
 // 响应式数据
 const page = ref(Number(route.query.page) || 1)
-const total = ref(1000)
+const total = ref(0)
 const metadata = ref<DataMetadata>();
 const boards = ref<DataBoard[]>([]);
 const board = ref<Board>(new Board('vocaloid-daily-main', -1))
@@ -199,11 +212,6 @@ h1 {
     font-size: 15px;
     width: auto;
   }
-
- .pagination {
-    max-width: 100%;
-    font-size: 14px; // 减小默认字体大小
-  }
 }
 .mini {
   width: 90%;
@@ -226,11 +234,9 @@ h1 {
     display: none;
   }
 }
-.boardpagination {
-  display: flex;
-  justify-content: center;
-  padding: 15px 10px;
-  z-index: 100;
+.pagination {
+  font-size: 14px; // 减小默认字体大小
+  margin: 10px 0 10px 0;
 }
 @media (max-width: 630px) {
   .boardpagination {
