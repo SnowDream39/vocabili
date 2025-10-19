@@ -1,5 +1,8 @@
 <template>
-  <div class="flex flex-row flex-nowrap items-center" :class="highlight ? 'text-red-500' : ''">
+  <div class="flex flex-row flex-nowrap items-center" :class="{
+    'text-red-500': highlight,
+    'text-sm': isMobile
+  }">
     <div :class="icon" class="text-lg"></div>
     <div>{{ stat.toLocaleString() }}</div>
     <div class="i-material-symbols-crown-outline-rounded"></div>
@@ -16,6 +19,7 @@ const props = defineProps<{
   stat: any
   rank: number
   minRank?: number
+  isMobile?: boolean
 }>()
 
 const highlight = computed(() => {

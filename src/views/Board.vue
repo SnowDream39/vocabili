@@ -12,7 +12,6 @@
         </div>
         <h1 v-if="!isSpecial">{{ issueName }}</h1>
         <div v-if="!isSpecial">{{ rankDateString }}</div>
-        <button @click="toggleBoardStyle" class="btn-primary float-right sm:hidden!">切换外观</button>
       </div>
       <el-pagination
         background
@@ -29,15 +28,7 @@
         <RankingCard
           v-for="data in boards"
           v-if="metadata && boards && boards.length > 0"
-          class="hidden sm:grid"
-          :board="data"
-          :metadata="metadata"
-          :key="data.target.metadata.id"
-        />
-        <RankingCardMobile
-          v-for="data in boards"
-          v-if="metadata && boards && boards.length > 0"
-          class="grid sm:hidden"
+          class="grid"
           :board="data"
           :metadata="metadata"
           :key="data.target.metadata.id"
@@ -88,7 +79,6 @@ import SpecialSelector from '../components/board/SpecialSelector.vue';
 import CommentFrame from '../components/user/CommentFrame.vue';
 import { useStatusStore } from '@/store/status.ts';
 import RankingCard from '@/components/board/RankingCard.vue';
-import RankingCardMobile from '@/components/board/RankingCardMobile.vue';
 import { ElPagination } from 'element-plus';
 import ElRouterLink from '@/components/misc/ElRouterLink.vue';
 import type { DataMetadata, Board as DataBoard } from '@/utils/boardData.ts';
@@ -164,12 +154,6 @@ watch(board, async () => {
   }
 }, {immediate: false})
 
-function toggleBoardStyle() {
-  if (boardList.value) {
-    boardList.value.classList.toggle('mini')
-  }
-}
-
 // =============== 生命周期 ===============
 
 async function init() {
@@ -213,32 +197,12 @@ h1 {
     width: auto;
   }
 }
-.mini {
-  width: 90%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-around;
 
-  :deep(.ranking-card) {
-    width: 45%;
-    aspect-ratio: 2 / 1;
-  }
-  :deep([name="right"]) {
-    display: none;
-  }
-  :deep(.current-rank) {
-    font-size: 250%;
-  }
-  :deep(.vocal-colors) {
-    display: none;
-  }
-}
 .pagination {
   font-size: 14px; // 减小默认字体大小
   margin: 10px 0 10px 0;
 }
-@media (max-width: 630px) {
+@media (max-width: 640px) {
   .boardpagination {
     padding: 10px 5px;
   }

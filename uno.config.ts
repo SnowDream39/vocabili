@@ -21,6 +21,15 @@ export default defineConfig({
       error: 'var(--md-sys-color-error)',
       'on-error': 'var(--md-sys-color-on-error)',
     },
+    zIndex: {
+      base: '0',
+      floating: '10',
+      overlay: '100',
+      modal: '1000',
+      toast: '1500',
+      nav: '1800',
+      system: '2000',
+    },
   },
   safelist: [
     'i-material-symbols-thumb-up-outline',
