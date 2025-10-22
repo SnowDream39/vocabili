@@ -43,6 +43,7 @@ api.interceptors.response.use(
 class Requester {
   static endpoint = {
     get_song_info: "/info/song",
+    get_artist_info: (type: string) => `/info/${type}`,
     get_board: "/info/board",
     get_board_metadata: "/metadata/board",
     get_current_board: "/info/board/_latest",
@@ -67,18 +68,24 @@ class Requester {
     return response.data.data
   }
 
+  async get_artist_info(type: string, target: string) {
+    const response = await api.get(Requester.endpoint.get_artist_info(type), {
+      params: { target: target }
+    })
+    return response.data.data
+  }
   /**
    * 如果不填写issue，默认最新期
    */
-  async get_board(board = new Board("vocaloid-daily-main", -1), count = 20, index = 1 ) {
+  async get_board(board = new Board("vocaloid-daily-main", -1), count = 20, index = 1, field = 'score.total' ) {
     if (board.issue !== -1) {
       const response = await api.get(Requester.endpoint.get_board, {
-        params: { board: board.id, part: board.part, issue: board.issue, count, index }
+        params: { board: board.id, part: board.part, issue: board.issue, count, index, field }
       })
       return response.data.data
     } else {
       const response = await api.get(Requester.endpoint.get_current_board, {
-        params: { board: board.id, part: board.part, count, index }
+        params: { board: board.id, part: board.part, count, index, field }
       })
       return response.data.data
     }

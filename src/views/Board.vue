@@ -2,10 +2,27 @@
   <div class="max-w-full flex flex-row flex-nowrap gap-4 items-start">
     <div class="flex flex-col items-center w-full lg:w-[964px]" >
       <div class="w-full text-center mb-4">
-        <div id="last-next-issues" v-if="!isSpecial">
-          <el-router-link :to="`/board/${board.fullId}/${board.issue-1}?page=1`" type="primary" id="last-issue" :disabled="!lastIssueStatus">&lt;&lt;上一期</el-router-link>
-          <button class="text-primary" @click="changeBoard" id="change-board">切换总榜/新曲榜</button>
-          <el-router-link :to="`/board/${board.fullId}/${Number(board.issue)+1}?page=1`" type="primary" id="next-issue" :disabled="!nextIssueStatus">下一期 &gt;&gt;</el-router-link>
+        <div v-if="!isSpecial">
+          <div id="last-next-issues">
+            <el-router-link :to="`/board/${board.fullId}/${board.issue-1}?page=1`" type="primary" id="last-issue" :disabled="!lastIssueStatus">&lt;&lt;上一期</el-router-link>
+            <button class="text-primary" @click="changeBoard" id="change-board">切换总榜/新曲榜</button>
+            <el-router-link :to="`/board/${board.fullId}/${Number(board.issue)+1}?page=1`" type="primary" id="next-issue" :disabled="!nextIssueStatus">下一期 &gt;&gt;</el-router-link>
+          </div>
+          <div class="flex flex-start gap-4">
+            <div>排序方式</div>
+            <el-select
+              class="w-20!"
+              v-model="orderType"
+              @change="changeOrder"
+            >
+              <el-option
+                v-for="(value, key) in orderTypes"
+                :key="key"
+                :value="key"
+                :label="value"
+              />
+            </el-select>
+          </div>
         </div>
         <div v-else>
           <SpecialSelector @updateData="handleIssueChanged" />
@@ -79,17 +96,26 @@ import SpecialSelector from '../components/board/SpecialSelector.vue';
 import CommentFrame from '../components/user/CommentFrame.vue';
 import { useStatusStore } from '@/store/status.ts';
 import RankingCard from '@/components/board/RankingCard.vue';
-import { ElPagination } from 'element-plus';
+import { ElPagination, ElSelect, ElOption } from 'element-plus';
 import ElRouterLink from '@/components/misc/ElRouterLink.vue';
 import type { DataMetadata, Board as DataBoard } from '@/utils/boardData.ts';
 import QRCode from 'qrcode'
 const route = useRoute()
 const statusStore = useStatusStore()
 
+const orderTypes = {
+  'score.total': '总分',
+  'offset.view': '播放',
+  'offset.favorite': '收藏',
+  'offset.coin': '投币',
+  'offset.like': '点赞',
+}
+
 // 响应式数据
 const page = ref(Number(route.query.page) || 1)
 const total = ref(0)
 const metadata = ref<DataMetadata>();
+const orderType = ref<string>('score.total')
 const boards = ref<DataBoard[]>([]);
 const board = ref<Board>(new Board('vocaloid-daily-main', -1))
 
@@ -105,13 +131,18 @@ const issueName = computed(() => board.value.getBoardName())
 
 const boardList = ref<HTMLElement | null>(null)
 // =============== 交互事件 ===============
+function changeOrder() {
+  console.log(orderType.value)
+}
+
+
 async function handleSearch() {
   boards.value = []
   let data
   if (board.value.issue === -1){
-    data = await requester.get_board(board.value, undefined, page.value)
+    data = await requester.get_board(board.value, undefined, page.value, orderType.value)
   } else {
-    data = await requester.get_board(board.value, undefined, page.value)
+    data = await requester.get_board(board.value, undefined, page.value, orderType.value)
   }
   boards.value = data.board
   metadata.value = data.metadata

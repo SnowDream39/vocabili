@@ -1,5 +1,6 @@
 <template>
-  <h1>{{ artistName }}</h1>
+  <h1 class="text-2xl font-bold">{{ artistName }}</h1>
+  <div>歌曲数：{{ total }}</div>
   <SearchMusicCards v-if="artistSongs[0]" :data="artistSongs"  />
   <el-pagination
     background
@@ -54,9 +55,15 @@ async function searchSong() {
   artistSongs.value = data.result.map((item: any) => converted(item))
 }
 
+async function fetchArtistInfo() {
+  const data = await requester.get_artist_info(type, id)
+  artistName.value = data[0].name
+}
+
 
 onMounted(async () => {
   await searchSong()
+  await fetchArtistInfo()
 })
 
 </script>
