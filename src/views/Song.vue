@@ -2,55 +2,84 @@
   <div class="w-full m-4 flex flex-nowrap flex-col justify-center items-center xl:flex-row xl:items-start">
     <!-- 歌曲信息 -->
     <div class="w-full max-w-[600px] mx-10 xl:w-auto xl-basis-lg xl:grow-1 flex flex-col flex-nowrap items-center gap-4" >
-      <SongInfo v-if="songInfo" v-bind="songInfo" class="w-full" />
+      <SongInfo :songId="songId" class="w-full" />
       <CommentFrame class="hidden xl:block" />
     </div>
 
     <!-- 排行数据 -->
-    <div class="board-data max-w-full">
-      <h3 class="board-title">日刊数据</h3>
-      <SongHistoryTable :songId="songId" boardId="vocaloid-daily" class="board-table" />
+    <div class="max-w-full">
+      <div class="relative">
+        <SongChart v-if="chartData" :data="chartData" />
+        <div class="absolute top-4 w-full flex justify-center">
+          <el-select
+            class="w-30!"
+            v-model="chartBoardId"
+            @change="selectChart"
+          >
+            <el-option
+              v-for="{title, boardId} of options"
+              :key="boardId"
+              :value="boardId"
+              :label="title"
+            />
+          </el-select>
+        </div>
+      </div>
 
-      <h3 class="board-title">周刊数据</h3>
-      <SongHistoryTable :songId="songId" boardId="vocaloid-weekly" class="board-table" />
-
-      <h3 class="board-title">月刊数据</h3>
-      <SongHistoryTable :songId="songId" boardId="vocaloid-monthly" class="board-table" />
+      <template v-for="option of options">
+        <h3 class="text-xl font-bold m-y-4">{{ option.title }}</h3>
+        <SongHistoryTable :songId="songId" :boardId="option.boardId" class="rounded-xl" @send-data="handleData" />
+      </template>
     </div>
+
   </div>
   <CommentFrame class="xl:hidden" />
 </template>
 
 <script lang="ts" setup>
 import { useRoute } from 'vue-router';
-import { requester } from '../utils/api/requester';
 import { onMounted, ref } from 'vue';
 import { useStatusStore } from '@/store/status';
 import SongHistoryTable from '@/components/song/SongHistoryTable.vue';
 import CommentFrame from '@/components/user/CommentFrame.vue';
 import SongInfo from '@/components/song/SongInfo.vue';
-
+import SongChart from '@/components/song/SongChart.vue';
+import { ElSelect, ElOption } from 'element-plus';
 const statusStore = useStatusStore()
 
-const songInfo = ref<any>()
+const options = [
+  { title: '日刊数据', boardId: 'vocaloid-daily', },
+  { title: '周刊数据', boardId: 'vocaloid-weekly', },
+  { title: '月刊数据', boardId: 'vocaloid-monthly', },
+]
+
 const songId = ref<string>();
+const chartData = ref<any>()
+const chartBoardId = ref<string>('vocaloid-daily')
+const chartDataMap: Record<string, any> = {}
 
+function hasKeys<T extends Record<string, any>>(
+  obj: T,
+  keys: (keyof T)[]
+): boolean {
+  return keys.every(k => k in obj);
+}
 
-async function fetchSongInfo(songId: string) {
-  console.log(songId)
-  try {
-    const data = await requester.get_song_info(songId);
-    return data[0];
-  } catch (error) {
-    console.log('获取数据失败：', error);
-    return null;
-  }
+function selectChart(value: string) {
+  console.log(chartDataMap)
+  if (chartBoardId.value)
+    chartData.value = chartDataMap[value]
+}
+
+function handleData(props: any) {
+  chartDataMap[props.boardId] = props
+  if (hasKeys(chartDataMap, ['vocaloid-daily', 'vocaloid-weekly', 'vocaloid-monthly']))
+    chartData.value = chartDataMap[chartBoardId.value]
 }
 
 onMounted(async () => {
   const route = useRoute(); // 在生命周期钩子中调用 useRoute
   songId.value = route.params.id as string ; // 更新 songId
-  songInfo.value = await fetchSongInfo(songId.value);
   statusStore.articleId = songId.value;
 })
 </script>
@@ -70,30 +99,6 @@ body {
 
 a {
   text-decoration: none;
-}
-
-
-.board-data {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  /* 增加板块之间的间距 */
-}
-
-.board-title {
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 10px;
-}
-
-.board-table {
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  padding: 10px;
-  width: 100%;
-  /* 确保表格自适应 */
 }
 
 /* 表格优化：禁止表格产生水平滚动 */

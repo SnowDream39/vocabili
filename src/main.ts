@@ -12,7 +12,6 @@ import { BackgroundImagePlugin } from './plugins/BackgroundImagePlugin'
 import { createPinia } from 'pinia';
 
 
-
 const app = createApp(App);
 
 
@@ -46,5 +45,9 @@ function updateTheme() {
 updateTheme() // 初始化一次
 media.addEventListener('change', updateTheme)
 
-// 处理背景图片
-
+// 注册 ECharts 主题
+import { registerTheme } from 'echarts/core'
+import westeros from '@/assets/echarts-themes/westeros.json'
+import shine from '@/assets/echarts-themes/shine.json'
+registerTheme('westeros', westeros)
+registerTheme('shine', shine)

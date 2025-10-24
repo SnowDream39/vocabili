@@ -38,10 +38,12 @@
 <script lang="ts" setup>
 import { ref, useTemplateRef, watch } from 'vue'
 import { requester } from '../../utils/api/requester';
-
+import { ElTable, ElTableColumn } from 'element-plus';
 const table = useTemplateRef<any>('table');
 
-// configs
+const emit = defineEmits(['send-data'])
+
+// =========== 配置 ============
 const props = defineProps<{
   songId?: string;
   boardId: string;
@@ -53,12 +55,20 @@ const columns = [
   {key: "like", label: "点赞"},
 ]
 
-// data
+// =========== 响应式数据 ===========
 const data = ref<any[]>([]);
 const index = ref(0);
 const end = ref(true);
 
-// methods
+// ========= 方法 ===================
+function emitData() {
+  emit('send-data', {
+    dataset: data.value,
+    boardId: props.boardId
+  })
+}
+
+
 async function fetchData() {
   if (!props.songId) return[]
   try {
@@ -70,6 +80,7 @@ async function fetchData() {
     } else {
       end.value = false;
     }
+    emitData()
   } catch (error) {
     console.log('获取数据失败：', error);
     return [];
@@ -78,9 +89,7 @@ async function fetchData() {
 
 // template methods
 const rankin = (data: any) => {
-  if (data.row.rank.board <= 20) {
-    return 'rankin-row'
-  }
+  return data.row.rank.board <= 20 ? 'rankin-row' : ''
 }
 
 function sortChange(key: string) {
@@ -94,8 +103,6 @@ function sortChange(key: string) {
   };
 }
 
-
-
 // hook
 watch(() => props.songId, fetchData, { immediate: true })
 
@@ -103,7 +110,7 @@ watch(() => props.songId, fetchData, { immediate: true })
 
 <style lang="scss">
 .el-table .rankin-row {
-  --el-table-tr-bg-color: var(--el-color-primary-light-7);
+  --el-table-tr-bg-color: var(--md-sys-color-surface-variant);
 }
 
 .table-append {

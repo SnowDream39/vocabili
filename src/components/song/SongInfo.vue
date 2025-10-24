@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div v-if="data">
     <h2>{{ data.name }} <span v-for="color in data.color" :style="{ color: color }">●</span></h2>
     <el-carousel
       height="450px"
       :autoplay="!statVisible"
-      interval="5000"
+      :interval="5000"
       :arrow="data.length === 1 ? 'never' : 'always'"
     >
       <el-carousel-item class="video" v-for="video of data" :key="video.video.link">
@@ -12,15 +12,29 @@
       </el-carousel-item>
     </el-carousel>
   </div>
+  <div v-else>
+    <div>加载中</div>
+  </div>
 </template>
 
-<script setup>
-import { onMounted, ref } from 'vue';
+<script setup lang="ts">
+import { ref, watch } from 'vue';
 import { DateTime, Duration } from 'luxon'
 import VideoInfo from './VideoInfo.vue';
+import { requester } from '@/utils/api/requester';
+import { ElCarousel, ElCarouselItem } from 'element-plus';
+async function fetchSongInfo(songId: string) {
+  try {
+    const data = await requester.get_song_info(songId);
+    return data[0];
+  } catch (error) {
+    console.log('获取数据失败：', error);
+    return null;
+  }
+}
 
 // 不处理为最终文本
-function converted(data) {
+function converted(data: any) {
   const { metadata, platform } = data
   const { id, name, type, target: staff } = metadata
   const { vocalist, producer, synthesizer } = staff
@@ -46,7 +60,7 @@ function converted(data) {
     name,
     type,
     vocalist,
-    color: vocalist.map(item => '#' + item.color.toString(16).toUpperCase().padStart(6, "0")),
+    color: vocalist.map((item: any) => '#' + item.color.toString(16).toUpperCase().padStart(6, "0")),
     producer,
     synthesizer,
     videos
@@ -54,7 +68,7 @@ function converted(data) {
   return plainData
 }
 
-function toVideosData(plainData) {
+function toVideosData(plainData: any) {
   let videosData = [];
   for (let i in plainData.videos) {
     let songData = Object.assign({}, plainData);
@@ -68,15 +82,21 @@ function toVideosData(plainData) {
   return videosData;
 }
 
-const props = defineProps(['metadata', 'platform'])
-const plainData = converted(props)
-const videosData = toVideosData(plainData)
-const data = ref(videosData)
+const props = defineProps(['songId'])
+
+const data = ref<any>()
 const statVisible = ref(false)
 
-function showStat() {
-  statVisible.value = ! statVisible.value
-}
+
+watch(() => props.songId, async () => {
+  if (props.songId) {
+
+    const originalData = await fetchSongInfo(props.songId)
+    const plainData = converted(originalData)
+    const videosData = toVideosData(plainData)
+    data.value = videosData
+  }
+})
 
 </script>
 
