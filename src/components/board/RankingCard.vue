@@ -26,7 +26,7 @@
                 <span>{{ board.count.toLocaleString() }}回</span>
               </div>
             </div>
-            <div class="basis-0 grow-1 flex flex-col justify-center items-start text-shadow-none  bg-white/70 dark:bg-black/50 rounded-lg overflow-hidden">
+            <div class="basis-0 grow flex flex-col justify-center items-start text-shadow-none  bg-white/70 dark:bg-black/50 rounded-lg overflow-hidden">
               <RankItem icon="i-material-symbols-play-arrow-outline-rounded" :stat="board.change.view" :rank="board.rank.view" :minRank="minRank"/>
               <RankItem icon="i-material-symbols-star-outline-rounded" :stat="board.change.favorite" :rank="board.rank.favorite" :minRank="minRank"/>
               <RankItem icon="i-material-symbols-counter-1-outline-rounded" :stat="board.change.coin" :rank="board.rank.coin" :minRank="minRank"/>
@@ -48,8 +48,8 @@
     </template>
     <template #front>
       <div name="top" class="px-2 pt-2 flex flex-row flex-nowrap">
-        <div name="top-left" class="w-12 shrink-1 inline-block m-2 relative" :title="board.target.platform.title">
-          <div class="w-12 h-12 text-2xl text-shadow-none font-900 flex justify-center items-center bg-white/20 dark:bg-black/20 backdrop-blur-2 rounded-sm border-1 border-white">{{ board.rank.board }}</div>
+        <div name="top-left" class="w-12 shrink inline-block m-2 relative" :title="board.target.platform.title">
+          <div class="w-12 h-12 text-2xl text-shadow-none font-900 flex justify-center items-center bg-white/20 dark:bg-black/20 backdrop-blur-2 rounded-sm border border-white">{{ board.rank.board }}</div>
           <RankChange :rank-before="board.last ? board.last.rank : 0" :change="change" />
         </div>
         <div name="top-right" class="w-0 grow-3 inline-block m-2 relative *:text-nowrap *:truncate text-shadow-md">
@@ -89,7 +89,7 @@
     </el-dialog>
 
     <el-dialog v-model="calculatorVisible" title="分数计算器" :width="250" >
-      <Calculator v-bind="form" :key="form.view" />
+      <Calculator v-model="form" :key="form.view" />
     </el-dialog>
   </CardCoverThumbnail>
 

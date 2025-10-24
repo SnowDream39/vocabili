@@ -8,9 +8,9 @@
 
     <!-- 排行数据 -->
     <div class="max-w-full">
-      <div class="relative">
-        <SongChart v-if="chartData" :data="chartData" />
-        <div class="absolute top-4 w-full flex justify-center">
+      <div v-if="chartData" class="relative">
+        <SongChart :data="chartData" />
+        <div class="absolute top-2 w-full flex justify-center">
           <el-select
             class="w-30!"
             v-model="chartBoardId"

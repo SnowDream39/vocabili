@@ -1,53 +1,61 @@
 <template>
-  <Line :data="chartData" :options="chartOptions" />
+  <VChart class="h-auto rounded-xl" :autoresize="true" :option="option" />
 </template>
 
-<script setup>
-import { ref } from 'vue';
-import { Line } from 'vue-chartjs';
-import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale, PointElement } from 'chart.js';
+<script setup lang="ts">
+import { use } from 'echarts/core'
+import { PieChart } from 'echarts/charts'
+import { CanvasRenderer } from 'echarts/renderers'
 
-// 注册Chart.js插件
-ChartJS.register(Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale, PointElement);
+use([PieChart, CanvasRenderer])
 
-// 生成100个数据点
-const generateData = () => {
-  return Array.from({ length: 100 }, (_, index) => Math.floor(Math.random() * 100)); // 随机数据
-};
 
-// 响应式数据
-const chartData = ref({
-  labels: Array.from({ length: 100 }, (_, index) => index + 1), // x轴标签 1到100
-  datasets: [
+//  ===========  以上是工具生成部分   ===============
+
+import VChart, { THEME_KEY } from "vue-echarts";
+import { ref, provide, computed, watch } from "vue";
+import { useDark } from "@vueuse/core";
+
+// 自动切换主题
+const dark = useDark()
+const theme = computed(() => {
+  return dark.value ? 'dark' : 'shine'
+})
+provide(THEME_KEY, theme);
+
+export interface Stats {
+  view: number
+  favorite: number
+  coin: number
+  like: number
+}
+
+const props = defineProps<{
+  data: Stats
+}>()
+
+const option = ref({
+
+
+  series: [
     {
-      label: 'Sample Data',
-      data: generateData(),
-      borderColor: '#42A5F5',
-      backgroundColor: 'transparent', // 背景色透明
-      fill: false, // 不填充区域
-      tension: 0.4, // 平滑曲线
-      pointRadius: 0, // 不显示点
-    },
+      type: 'pie',
+      data: [{ value: 1, name: '全部' }]
+    }
   ],
-});
 
-// 配置选项
-const chartOptions = ref({
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top',
-    },
-  },
-  scales: {
-    x: {
-      ticks: {
-        stepSize: 10, // 每10个标签一个刻度
-      },
-    },
-    y: {
-      beginAtZero: true, // y轴从零开始
-    },
-  },
-});
+})
+
+watch(() => props.data, (value) => {
+  if (value) {
+    console.log(value.view)
+    option.value.series[0].data = [
+      { value: value.view, name: '播放分' },
+      { value: value.favorite, name: '收藏分' },
+      { value: value.coin, name: '投币分' },
+      { value: value.like, name: '点赞分' },
+    ]
+  }
+}, { immediate: true })
+
 </script>
