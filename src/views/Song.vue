@@ -43,7 +43,7 @@ import { useStatusStore } from '@/store/status';
 import SongHistoryTable from '@/components/song/SongHistoryTable.vue';
 import CommentFrame from '@/components/user/CommentFrame.vue';
 import SongInfo from '@/components/song/SongInfo.vue';
-import SongChart from '@/components/song/SongChart.vue';
+import SongChart from '@/components/chart/SongChart.vue';
 import { ElSelect, ElOption } from 'element-plus';
 const statusStore = useStatusStore()
 

@@ -2,7 +2,7 @@
   <div class="flex flex-col items-center h-[450px]">
     <img :src="video.cover" />
     <div class="flex flex-col flex-nowrap h-60 justify-between items-center">
-      <a class="text-xl font-bold text-center" :href="video.link" target="_blank">{{ video.title }}</a>
+      <a class="text-xl font-bold text-center text-link" :href="video.link" target="_blank">{{ video.title }}</a>
       <div><ArtistList :artists="song.producer" type="producer" /></div>
       <div><ArtistList :artists="song.vocalist" type="vocalist" /></div>
       <div><ArtistList :artists="song.synthesizer" type="synthesizer" /></div>
@@ -45,7 +45,8 @@ function showStat() {
 
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
+
 .el-carousel {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }

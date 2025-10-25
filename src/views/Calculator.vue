@@ -1,7 +1,9 @@
 <template>
   <div class="suspend-panel p-4">
-    <Calculator v-bind="form" @send-points="handlePoints" />
-    <CalcChart :data="chartData" ></CalcChart>
+    <Calculator :form="form" :hide-button="true" @send-points="handlePoints" />
+  </div>
+  <div class="px-4 w-full max-w-200">
+    <PointChart :data="form" ></PointChart>
   </div>
 </template>
 
@@ -10,7 +12,7 @@ import Board from '@/utils/board';
 import { useRoute } from 'vue-router';
 import Calculator, { type Form } from '@/components/song/Calculator.vue';
 import { ref } from 'vue';
-import CalcChart from '@/components/CalcChart.vue';
+import PointChart from '@/components/chart/PointChart.vue';
 
 /**
  * 如果URL给出了完整的一个表，那么就返回。否则给一个默认的

@@ -85,7 +85,7 @@
     </el-dialog>
 
     <el-dialog v-model="calculatorVisible" title="分数计算器" :width="250" >
-      <Calculator v-bind="form" :key="form.view" />
+      <Calculator :form="form" :key="form.view" />
     </el-dialog>
   </CardCoverThumbnail>
 

@@ -2,35 +2,35 @@
   <div class="form">
     <div class="form-row">
       <span>投稿</span>
-      <el-select v-model="props.copyright" >
+      <el-select v-model="props.form.copyright" >
         <el-option v-for="copyright in copyrights" :value="copyright.value" :label="copyright.label" />
       </el-select>
       <span>规则</span>
-      <el-select v-model="props.board.id" placeholder="类型">
+      <el-select v-model="props.form.board.id" placeholder="类型">
         <el-option v-for="board in boards" :value="board.value" :label="board.label" />
       </el-select>
-      <el-input v-model="props.board.issue"/>
+      <el-input v-model="props.form.board.issue"/>
     </div>
   </div>
   <div class="my-5"></div>
   <div id="calculator-1">
     <div>播放</div>
-    <el-input type="number" v-model.number="props.view" class="w-30!"></el-input>
+    <el-input type="number" v-model.number="props.form.view" class="w-30!"></el-input>
     <div>×{{ results.ratios.view.toFixed(2) }}</div>
     <div>{{ results.points.view.toLocaleString() }}</div>
     <div>收藏</div>
-    <el-input type="number" v-model.number="props.favorite" class="w-30!"></el-input>
+    <el-input type="number" v-model.number="props.form.favorite" class="w-30!"></el-input>
     <div>×{{ results.ratios.favorite.toFixed(2) }}</div>
     <div>{{ results.points.favorite.toLocaleString() }}</div>
     <div>硬币</div>
     <div class="flex flex-row items-end">
-      <el-input type="number" v-model.number="props.coin" class="w-30!"></el-input>
+      <el-input type="number" v-model.number="props.form.coin" class="w-30!"></el-input>
       <span class="text-xs"> ×{{ results.fixes.a.toFixed(2) }}</span>
     </div>
     <div>×{{ results.ratios.coin.toFixed(2) }}</div>
     <div>{{ results.points.coin.toLocaleString() }}</div>
     <div>点赞</div>
-    <el-input type="number" v-model.number="props.like" class="w-30!"></el-input>
+    <el-input type="number" v-model.number="props.form.like" class="w-30!"></el-input>
     <div>×{{ results.ratios.like.toFixed(2) }}</div>
     <div>{{ results.points.like.toLocaleString() }}</div>
   </div>
@@ -60,7 +60,7 @@
     </div>
   </div>
 
-  <a :href="`/calculator?view=${props.view}&favorite=${props.favorite}&coin=${props.coin}&like=${props.like}&copyright=${props.copyright}&boardId=${props.board.id}&issue=${props.board.issue}`">
+  <a v-if="!props.hideButton" :href="`/calculator?view=${props.form.view}&favorite=${props.form.favorite}&coin=${props.form.coin}&like=${props.form.like}&copyright=${props.form.copyright}&boardId=${props.form.board.id}&issue=${props.form.board.issue}`">
     <button class="btn-primary">打开计算器页</button>
   </a>
 
@@ -71,7 +71,7 @@ import { ref, computed } from 'vue';
 import { Calculator } from '@/utils/calculator'
 import Board from '@/utils/board';
 import { ElSelect, ElInput, ElOption } from 'element-plus';
-import CalcChart from '../CalcChart.vue';
+import CalcChart from '@/components/chart/CalcChart.vue';
 
 export interface Form {
   view: number
@@ -83,7 +83,10 @@ export interface Form {
   [key: string]: any
 }
 
-const props = defineProps<Form>()
+const props = defineProps<{
+  form: Form,
+  hideButton?: boolean
+}>()
 
 const boards = ref([
   { value: 'vocaloid-daily', label: '日刊' },
@@ -97,9 +100,9 @@ const copyrights = ref([
 ])
 
 const results = computed(() => {
-  const { view, favorite, coin, like, copyright } = props
+  const { view, favorite, coin, like, copyright } = props.form
   const count = { view, favorite, coin, like, copyright }
-  const calc = new Calculator(count, copyright, props.board)
+  const calc = new Calculator(count, copyright, props.form.board)
   return calc.getResults()
 })
 

@@ -35,8 +35,23 @@ h1 {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 轻微阴影，增加层次感 */
 }
 
-a {
-  text-decoration: underline;
+a.text-link {
+  position: relative;
+
+  &:hover {
+    color: var(--md-sys-color-primary)
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px; /* 控制距离 */
+    width: 100%;
+    height: 1px;
+    background: var(--md-sys-color-on-surface);
+
+  }
 }
 
 a, button {

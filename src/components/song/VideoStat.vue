@@ -20,7 +20,7 @@
     </el-table-column>
   </el-table>
   <el-dialog v-model="calculatorVisible" >
-    <Calculator v-bind="form" :key="form.board.issue"/>
+    <Calculator :form="form" :key="form.board.issue"/>
   </el-dialog>
 </template>
 

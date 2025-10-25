@@ -46,7 +46,7 @@
     </div>
     <div class="bg-surface-container pb-2">
       <div class="font-900">{{ board.target.platform.title }}</div>
-      <el-link :href="`/artist/uploader/${board.target.platform.uploader[0].id}`" >{{ board.target.platform.uploader[0].name }}</el-link>
+      <el-link underline="always" :href="`/artist/uploader/${board.target.platform.uploader[0].id}`" >{{ board.target.platform.uploader[0].name }}</el-link>
       <div>{{ DateTime.fromISO(board.target.platform.publish).toFormat('yyyy-LL-dd HH:mm:ss') }}</div>
     </div>
   </a>
