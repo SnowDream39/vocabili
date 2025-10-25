@@ -49,5 +49,7 @@ media.addEventListener('change', updateTheme)
 import { registerTheme } from 'echarts/core'
 import westeros from '@/assets/echarts-themes/westeros.json'
 import shine from '@/assets/echarts-themes/shine.json'
+import dark from '@/assets/echarts-themes/dark.json'
 registerTheme('westeros', westeros)
 registerTheme('shine', shine)
+registerTheme('dark', dark)

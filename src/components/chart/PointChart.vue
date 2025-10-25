@@ -11,7 +11,6 @@ import {
   LegendComponent,
   DatasetComponent,
   GridComponent,
-  DataZoomComponent,
   MarkLineComponent
 } from 'echarts/components'
 import { CanvasRenderer } from 'echarts/renderers'
@@ -22,7 +21,6 @@ use([
   LegendComponent,
   DatasetComponent,
   GridComponent,
-  DataZoomComponent,
   MarkLineComponent,
   LineChart,
   CanvasRenderer
@@ -82,6 +80,10 @@ const option = ref<any>({
     { name: '分数', type: 'line', yAxisIndex: 0, smooth: true, showSymbol: false, encode: { x: 'view', y: 'point' },
       markLine: {
         symbol: 'none', // 去掉箭头
+        label: {
+          show: true,
+          position: 'start',
+        },
         lineStyle: {
           color: '#ff6666',
           width: 1.5,
@@ -97,18 +99,14 @@ const option = ref<any>({
     { name: '硬币分补正', type: 'line', yAxisIndex: 3, smooth: true, showSymbol: false, encode: { x: 'view', y: 'coinR' } },
     { name: '点赞分补正', type: 'line', yAxisIndex: 4, smooth: true, showSymbol: false, encode: { x: 'view', y: 'likeR' } }
   ],
-  dataZoom: [
-    { type: 'slider', xAxisIndex: 0 },
-    { type: 'inside', xAxisIndex: 0 }
-  ]
 })
 
 watch(() => props.data, (form) => {
   const chartData: any[] = []
   const {view, favorite, coin, like, copyright, board} = form
-  const basis = favorite + coin + like
-  for (let i=0.1; i<10; i+=0.1) {
-    const view = Math.floor(basis*i)
+  const step = Math.max(favorite + coin + like, view / 9) / 10
+  for (let i=1; i<100; i++) {
+    const view = Math.floor(step*i)
     const calc = new Calculator(
       {view, favorite, coin, like},
       copyright,
