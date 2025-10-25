@@ -1,6 +1,6 @@
 <template>
   <div class="suspend-panel p-4">
-    <Calculator v-model="form" @send-points="handlePoints" />
+    <Calculator v-bind="form" @send-points="handlePoints" />
     <CalcChart :data="chartData" ></CalcChart>
   </div>
 </template>

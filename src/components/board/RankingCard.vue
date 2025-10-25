@@ -1,8 +1,8 @@
 <template>
   <CardCoverThumbnail class="max-w-[474px]">
     <template #front v-if="!isMobile">
-      <div class="p-3 flex justify-center items-center gap-4 overflow-hidden ">
-        <div name="left" class="w-20 h-40 flex flex-col flex-wrap justify-center items-center ">
+      <div class="p-3 flex justify-center items-center gap-4 overflow-hidden cursor-pointer "  @click="showData">
+        <div name="left" class="w-20 h-40 flex flex-col flex-wrap justify-center items-center "  >
           <div class="justify-center items-center gap-4">
             <div class="w-20 flex-none flex flex-col items-center gap-2 z-1">
               <div class="current-rank text-[300%]">{{ board.rank.board }}</div>
@@ -33,21 +33,20 @@
               <RankItem icon="i-material-symbols-thumb-up-outline-rounded" :stat="board.change.like" :rank="board.rank.like" :minRank="minRank"/>
             </div>
           </div>
-          <div class="flex justify-around">
+          <div class="flex justify-around" @click.stop >
             <a :href="board.target.platform.link" target="_blank">
               <button class="glass-button button-lg" ><div class="i-material-symbols-play-circle-outline-rounded"></div></button>
             </a>
             <a :href="'/song/' + board.target.metadata.id" target="_blank">
               <button class="glass-button button-lg" ><div class="i-material-symbols-calendar-month-outline-rounded"></div></button>
             </a>
-            <button class="glass-button button-lg" @click="showData"><div class="i-material-symbols-text-snippet-outline-rounded"></div></button>
             <button class="glass-button button-lg" @click="showCalculator"><div class="i-material-symbols-calculate-outline-rounded"></div></button>
           </div>
         </div>
       </div>
     </template>
-    <template #front>
-      <div name="top" class="px-2 pt-2 flex flex-row flex-nowrap">
+    <template #front v-else>
+      <div name="top" class="px-2 pt-2 flex flex-row flex-nowrap cursor-pointer"  @click="showData" >
         <div name="top-left" class="w-12 shrink inline-block m-2 relative" :title="board.target.platform.title">
           <div class="w-12 h-12 text-2xl text-shadow-none font-900 flex justify-center items-center bg-white/20 dark:bg-black/20 backdrop-blur-2 rounded-sm border border-white">{{ board.rank.board }}</div>
           <RankChange :rank-before="board.last ? board.last.rank : 0" :change="change" />
@@ -57,16 +56,13 @@
           <div>{{ board.target.metadata.target.producer.map(item => item.name).join('、') }}</div>
           <div class="flex flex-row justify-between items-center">
             <div class="text-sm">{{ DateTime.fromISO(board.target.platform.publish).toFormat('yyyy-LL-dd') }}</div>
-            <div class="flex flex-row justify-end gap-4 text-xl text-shadow-none">
+            <div class="flex flex-row justify-end gap-4 text-xl text-shadow-none"  @click.stop >
               <a :href="board.target.platform.link" target="_blank">
                 <div class="i-material-symbols-play-circle-outline-rounded"></div>
               </a>
               <a :href="'/song/' + board.target.metadata.id" target="_blank">
                 <div class="i-material-symbols-calendar-month-outline-rounded" >历史数据</div>
               </a>
-              <button @click="showData" class="cursor-pointer">
-                <div class="i-material-symbols-text-snippet-outline-rounded"></div>
-              </button>
               <button @click="showCalculator" class="cursor-pointer">
                 <div class="i-material-symbols-calculate-outline-rounded"></div>
               </button>
@@ -89,7 +85,7 @@
     </el-dialog>
 
     <el-dialog v-model="calculatorVisible" title="分数计算器" :width="250" >
-      <Calculator v-model="form" :key="form.view" />
+      <Calculator v-bind="form" :key="form.view" />
     </el-dialog>
   </CardCoverThumbnail>
 

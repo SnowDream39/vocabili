@@ -113,7 +113,6 @@ const option = ref({
 })
 
 watch(() => props.data, (value) => {
-  console.log(startTimeOf(value.dataset[0].issue, value.boardId.split('-')[1]).toISODate())
   const sortedData = value.dataset
     .map((item: any) => ({
       issue: item.issue,

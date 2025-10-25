@@ -35,20 +35,16 @@ const props = defineProps<{
 }>()
 
 const option = ref({
-
-
   series: [
     {
       type: 'pie',
       data: [{ value: 1, name: '全部' }]
     }
   ],
-
 })
 
 watch(() => props.data, (value) => {
   if (value) {
-    console.log(value.view)
     option.value.series[0].data = [
       { value: value.view, name: '播放分' },
       { value: value.favorite, name: '收藏分' },

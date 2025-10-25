@@ -14,7 +14,7 @@
     >
       <template #default="{ row }">
         <button class="btn-primary" @click="showCalculator(row)" >
-          <div class="i-material-symbols-calendar-month-outline-rounded"></div>
+          <div class="i-material-symbols-calculate-outline-rounded"></div>
         </button>
         </template>
     </el-table-column>
@@ -31,6 +31,8 @@ import { requester } from '../../utils/api/requester';
 import Board, { currentIssue, type BasicSection } from '../../utils/board';
 import { issueNow, startTimeOf } from '../../utils/date';
 import { DateTime } from 'luxon';
+import { ElTable, ElTableColumn, ElDialog } from 'element-plus';
+import Calculator from './Calculator.vue';
 
 const props = defineProps(['bvid','songId','videoId','copyright','upload'])
 

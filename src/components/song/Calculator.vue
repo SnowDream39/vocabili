@@ -2,35 +2,35 @@
   <div class="form">
     <div class="form-row">
       <span>投稿</span>
-      <el-select v-model="model.copyright" >
+      <el-select v-model="props.copyright" >
         <el-option v-for="copyright in copyrights" :value="copyright.value" :label="copyright.label" />
       </el-select>
       <span>规则</span>
-      <el-select v-model="model.board.id" placeholder="类型">
+      <el-select v-model="props.board.id" placeholder="类型">
         <el-option v-for="board in boards" :value="board.value" :label="board.label" />
       </el-select>
-      <el-input v-model="model.board.issue"/>
+      <el-input v-model="props.board.issue"/>
     </div>
   </div>
   <div class="my-5"></div>
   <div id="calculator-1">
     <div>播放</div>
-    <el-input type="number" v-model.number="model.view" class="w-30!"></el-input>
+    <el-input type="number" v-model.number="props.view" class="w-30!"></el-input>
     <div>×{{ results.ratios.view.toFixed(2) }}</div>
     <div>{{ results.points.view.toLocaleString() }}</div>
     <div>收藏</div>
-    <el-input type="number" v-model.number="model.favorite" class="w-30!"></el-input>
+    <el-input type="number" v-model.number="props.favorite" class="w-30!"></el-input>
     <div>×{{ results.ratios.favorite.toFixed(2) }}</div>
     <div>{{ results.points.favorite.toLocaleString() }}</div>
     <div>硬币</div>
     <div class="flex flex-row items-end">
-      <el-input type="number" v-model.number="model.coin" class="w-30!"></el-input>
+      <el-input type="number" v-model.number="props.coin" class="w-30!"></el-input>
       <span class="text-xs"> ×{{ results.fixes.a.toFixed(2) }}</span>
     </div>
     <div>×{{ results.ratios.coin.toFixed(2) }}</div>
     <div>{{ results.points.coin.toLocaleString() }}</div>
     <div>点赞</div>
-    <el-input type="number" v-model.number="model.like" class="w-30!"></el-input>
+    <el-input type="number" v-model.number="props.like" class="w-30!"></el-input>
     <div>×{{ results.ratios.like.toFixed(2) }}</div>
     <div>{{ results.points.like.toLocaleString() }}</div>
   </div>
@@ -60,14 +60,14 @@
     </div>
   </div>
 
-  <a :href="`/calculator?view=${model.view}&favorite=${model.favorite}&coin=${model.coin}&like=${model.like}&copyright=${model.copyright}&boardId=${model.board.id}&issue=${model.board.issue}`">
+  <a :href="`/calculator?view=${props.view}&favorite=${props.favorite}&coin=${props.coin}&like=${props.like}&copyright=${props.copyright}&boardId=${props.board.id}&issue=${props.board.issue}`">
     <button class="btn-primary">打开计算器页</button>
   </a>
 
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 import { Calculator } from '@/utils/calculator'
 import Board from '@/utils/board';
 import { ElSelect, ElInput, ElOption } from 'element-plus';
@@ -83,11 +83,7 @@ export interface Form {
   [key: string]: any
 }
 
-const model = defineModel<Form>({
-  required: true
-})
-
-const emit = defineEmits(['send-points'])
+const props = defineProps<Form>()
 
 const boards = ref([
   { value: 'vocaloid-daily', label: '日刊' },
@@ -101,16 +97,14 @@ const copyrights = ref([
 ])
 
 const results = computed(() => {
-  const { view, favorite, coin, like, copyright } = model.value
+  const { view, favorite, coin, like, copyright } = props
   const count = { view, favorite, coin, like, copyright }
-  const calc = new Calculator(count, copyright, model.value.board)
+  const calc = new Calculator(count, copyright, props.board)
   return calc.getResults()
 })
 
-watch(() => results.value, (value) => {
-  console.log(value)
-  emit('send-points', value.points)
-}, {immediate: true})
+
+
 </script>
 
 <style lang="scss" scoped>
