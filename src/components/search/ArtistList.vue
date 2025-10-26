@@ -3,7 +3,6 @@
     <el-link
       underline="always"
       :href="`/artist/${type}/${artist.id}`"
-      target="_blank"
     >{{ artist.name }}</el-link><span v-if="index < artists.length-1">、</span>
   </template>
 </template>

@@ -1,7 +1,9 @@
 <template>
   <h1 class="text-2xl font-bold">{{ artistName }}</h1>
   <div>歌曲数：{{ total }}</div>
-  <SearchMusicCards v-if="artistSongs[0]" :data="artistSongs"  />
+  <a v-for="item in artistSongs" class="flex flex-wrap flex-row justify-center gap-4" :href="'/song/' + item.id">
+    <SearchMusicCard :key="item.id" v-bind="item"/>
+  </a>
   <el-pagination
     background
     layout="prev, pager, next"
@@ -17,14 +19,13 @@
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { requester } from '../utils/api/requester';
-import SearchMusicCards from '@/components/search/SearchMusicCards.vue';
 
 
 const route = useRoute()
 const artistName = ref('')
 const page = ref(1)
 const total = ref(0)
-const artistSongs = ref([])
+const artistSongs = ref<any[]>([])
 
 
 

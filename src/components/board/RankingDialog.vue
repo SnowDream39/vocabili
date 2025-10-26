@@ -35,7 +35,7 @@
   </div>
 
 
-  <a :href="`/song/${board.target.metadata.id}`" target="_blank" class="w-50 max-w-1/2 self-start rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all">
+  <a :href="`/song/${board.target.metadata.id}`" class="w-50 max-w-1/2 self-start rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all">
     <div class="center-container relative">
       <img class="w-full aspect-video object-cover" :src="board.target.platform.thumbnail" alt="thumbnail" />
       <div class="absolute right-0 bottom-0 bg-black/60 font-normal px-1 rounded-tl-sm text-white">

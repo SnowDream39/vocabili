@@ -25,9 +25,18 @@
 
 
     <!-- 搜索结果 -->
-    <SearchMusicCards :data="tableData" v-if="tableData[0] && ['name', 'platform'].includes(searchTarget)" />
-    <SearchArtistBlocks v-if="tableData[0] && ['vocalist', 'uploader', 'producer', 'synthesizer'].includes(searchTarget)"
-      :type="searchTarget" :data="tableData" :loading="loading" />
+    <template v-if="tableData[0] && ['name', 'platform'].includes(searchTarget)">
+      <a v-for="item in tableData" class="flex flex-wrap flex-row justify-center gap-4" :href="'/song/' + item.id">
+        <SearchMusicCard :key="item.id" v-bind="item"/>
+      </a>
+    </template>
+    <template v-if="tableData[0] && ['vocalist', 'uploader', 'producer', 'synthesizer'].includes(searchTarget)">
+      <div class="flex flex-wrap p-4 gap-2 suspend-panel w-9/10 max-w-112">
+        <a v-for="artist in tableData" class="block" :href="`/artist/${type}/${artist.id}`">
+          <el-button>{{ artist.name }}</el-button>
+        </a>
+      </div>
+    </template>
 
     <button class="btn-primary" @click="expandSearch" id="expand-search" >扩大搜索</button>
 
@@ -51,8 +60,6 @@ import { computed, ref, toRaw } from 'vue';
 import router from '../router/index.ts';
 import { requester } from '../utils/api/requester.ts';
 import SearchMusicCard from '@/components/search/SearchMusicCard.vue';
-import SearchArtistBlocks from '@/components/search/SearchArtistBlocks.vue';
-import SearchMusicCards from '@/components/search/SearchMusicCards.vue';
 import { ElSelect, ElOption, ElInput, ElButton, ElPagination } from 'element-plus';
 
 // 响应式数据

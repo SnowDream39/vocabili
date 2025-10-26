@@ -1,34 +1,38 @@
 <template>
-  <!-- 范围限定区域 -->
+  <div class="flex flex-col items-center">
+    <!-- 范围限定区域 -->
+    <div class="search-container">
+      <el-select v-model="stat" class="search-select" @change="handleSearch">
+        <el-option v-for="item in statOptions" :key="item.value" :value="item.value" :label="item.label" />
+      </el-select>
+      <el-select v-model="level" class="search-select" @change="handleSearch">
+        <el-option v-for="item in levelOptions" :key="item.value" :value="item.value" :label="item.label" />
+      </el-select>
+    </div>
 
-  <div class="search-container">
-    <el-select v-model="stat" class="search-select" @change="handleSearch">
-      <el-option v-for="item in statOptions" :key="item.value" :value="item.value" :label="item.label" />
-    </el-select>
-    <el-select v-model="level" class="search-select" @change="handleSearch">
-      <el-option v-for="item in levelOptions" :key="item.value" :value="item.value" :label="item.label" />
-    </el-select>
+    <!-- 展示区域 -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-center justify-center">
+      <PoolCard
+        v-for="data in plainData"
+        v-bind="data"
+        v-if="plainData && plainData.length > 0"
+        :key="data.point"
+      />
+    </div>
+    <div class="boardpagination">
+      <el-pagination
+        background
+        layout="prev, pager, next, jumper"
+        :pager-count="5"
+        :page-size="20"
+        :total="total"
+        v-model:current-page="page"
+        class="pagination"
+        @current-change="handlePageChanged"
+      />
+    </div>
   </div>
 
-  <!-- 展示区域 -->
-  <PoolCard
-    v-for="data in plainData"
-    v-bind="data"
-    v-if="plainData && plainData.length > 0"
-    :key="data.point"
-  />
-  <div class="boardpagination">
-  <el-pagination
-    background
-    layout="prev, pager, next, jumper"
-    :pager-count="5"
-    :page-size="20"
-    :total="total"
-    v-model:current-page="page"
-    class="pagination"
-    @current-change="handlePageChanged"
-  />
-</div>
 <CommentFrame />
 </template>
 
@@ -40,6 +44,7 @@ import { requester } from '../utils/api/requester.ts'
 import CommentFrame from '@/components/user/CommentFrame.vue';
 import { useStatusStore } from '@/store/status.ts';
 import PoolCard from '@/components/PoolCard.vue';
+import { ElPagination } from 'element-plus';
 
 const route = useRoute()
 const statusStore = useStatusStore()

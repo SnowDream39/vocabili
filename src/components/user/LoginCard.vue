@@ -12,8 +12,8 @@
         <el-checkbox v-model="form.remember">记住我</el-checkbox>
       </el-form-item>
       <el-form-item>
-        <button class="btn-rimary" @click="onSubmit">登录</button>
-        <button @click="$emit('switch')">还没有账号？点此注册</button>
+        <el-button class="btn-rimary" @click="onSubmit">登录</el-button>
+        <el-button @click="$emit('switch')">还没有账号？点此注册</el-button>
       </el-form-item>
     </el-form>
   </el-card>
@@ -25,6 +25,7 @@ import LoginCard from './LoginCard.vue'
 import { updateUserInfo, login } from '../../utils/api/user'
 import router from '@/router'
 import { useStatusStore } from '@/store/status'
+import { ElCard, ElForm, ElFormItem, ElCheckbox, ElButton } from 'element-plus'
 const statusStore = useStatusStore()
 
 const form = reactive({

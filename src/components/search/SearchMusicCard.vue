@@ -23,7 +23,6 @@
 <script setup lang="ts">
 import CardCoverThumbnail from '../board/CardCoverThumbnail.vue';
 
-
 defineProps<{
   producer: string;
   vocalist: string;

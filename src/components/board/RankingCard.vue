@@ -37,7 +37,7 @@
             <a :href="board.target.platform.link" target="_blank">
               <button class="glass-button button-lg" ><div class="i-material-symbols-play-circle-outline-rounded"></div></button>
             </a>
-            <a :href="'/song/' + board.target.metadata.id" target="_blank">
+            <a :href="'/song/' + board.target.metadata.id">
               <button class="glass-button button-lg" ><div class="i-material-symbols-calendar-month-outline-rounded"></div></button>
             </a>
             <button class="glass-button button-lg" @click="showCalculator"><div class="i-material-symbols-calculate-outline-rounded"></div></button>
@@ -60,7 +60,7 @@
               <a :href="board.target.platform.link" target="_blank">
                 <div class="i-material-symbols-play-circle-outline-rounded"></div>
               </a>
-              <a :href="'/song/' + board.target.metadata.id" target="_blank">
+              <a :href="'/song/' + board.target.metadata.id">
                 <div class="i-material-symbols-calendar-month-outline-rounded" >历史数据</div>
               </a>
               <button @click="showCalculator" class="cursor-pointer">

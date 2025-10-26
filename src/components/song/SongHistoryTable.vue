@@ -10,7 +10,7 @@
     >
       <el-table-column fixed sortable prop="issue" label="期数" min-width="80" >
         <template #default="scope">
-          <a style="text-decoration: none;" :href="`/board/${scope.row.board}/${scope.row.issue}`" target="_blank">{{ scope.row.issue }}</a>
+          <a style="text-decoration: none;" :href="`/board/${scope.row.board}/${scope.row.issue}`">{{ scope.row.issue }}</a>
         </template>
       </el-table-column>
       <el-table-column sortable prop="rank.board" label="排名" min-width="80" />

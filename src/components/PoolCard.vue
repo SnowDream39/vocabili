@@ -1,61 +1,41 @@
 <template>
-  <div class="ranking-card suspend-panel">
-    <div class="portrait">
-      <div class="image-container" :title="title">
-        <el-image
-          class="cover-image"
-          :src="image_url + '@400w'"
-          alt="封面"
-          :preview-src-list="[image_url]"
-          fit="cover"
-        />
+  <CardCoverThumbnail class="max-w-[300px]">
+    <template #back>
+      <img class="w-full h-full object-cover" :src="image_url" alt="thumbnail" />
+    </template>
+    <template #front>
+      <div class="p-2">
+        <div class="info">
+          <div class="info-row info-title" :title="name">{{ name }}<span v-for="color in colors" :style="{ color: color }">●</span></div>
+          <div class="info-detail">
+            <InfoItem name="P主" :value="author" />
+            <InfoItem name="歌手" :value="vocal" />
+            <InfoItem name="类型" :value="type" />
+            <InfoItem name="日期" :value="pubdate.slice(0,10)" />
+            <InfoItem name="播放" :value="view.toLocaleString()"/>
+            <InfoItem name="收藏" :value="favorite.toLocaleString()" />
+            <InfoItem name="硬币" :value="coin.toLocaleString()"/>
+            <InfoItem name="点赞" :value="like.toLocaleString()"/>
+          </div>
+          <div class="flex justify-around">
+            <a :href="link">
+              <button class="glass-button button-lg" ><div class="i-material-symbols-play-circle-outline-rounded"></div></button>
+            </a>
+            <a :href="'/song/' + id">
+              <button class="glass-button button-lg" ><div class="i-material-symbols-calendar-month-outline-rounded"></div></button>
+            </a>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="info">
-      <div class="info-row info-title" :title="name">{{ name }}<span v-for="color in colors" :style="{ color: color }">●</span></div>
-      <div class="info-detail">
-        <InfoItem name="P主" :value="author" />
-        <InfoItem name="歌手" :value="vocal" />
-        <InfoItem name="类型" :value="type" />
-        <InfoItem name="时间" :value="pubdate.slice(0,16)" />
-        <InfoItem name="播放" :value="view.toLocaleString()"/>
-        <InfoItem name="收藏" :value="favorite.toLocaleString()" />
-        <InfoItem name="硬币" :value="coin.toLocaleString()"/>
-        <InfoItem name="点赞" :value="like.toLocaleString()"/>
-      </div>
-      <div class="info-row">
-        <el-link type="primary" :href="link" target="_blank">视频链接</el-link>
-        <el-link type="primary" :href="'/song/' + id" target="_blank">历史数据</el-link>
-        <el-link type="primary" @click="showData" >详细信息</el-link>
-      </div>
-    </div>
-  </div>
 
-  <el-dialog
-    v-model="dialogVisible"
-    :title="name"
-    style="min-width: min(90%, 300px);"
-  >
-    <div class="dataDialog">
-      <div>{{ title }}</div>
-      <div style="font-size: small;">P主：{{ author }}
-        {{ [1,4].includes(copyright) ? "本家投稿" : `搬运：${uploader}` }}
-        {{ type }}
-      </div>
-      <div style="font-size: small;">歌手：{{ vocal }}</div>
-      <div style="font-size: small;">引擎：{{ synthesizer }}</div>
-      <div style="font-size: small;">投稿时间：{{ pubdate }}</div>
-    </div>
-
-  </el-dialog>
-
+    </template>
+  </CardCoverThumbnail>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
 import InfoItem from '@/components/board/InfoItem.vue';
+import CardCoverThumbnail from './board/CardCoverThumbnail.vue';
 defineProps<VideoData>()
-const dialogVisible = ref(false)
 
 interface VideoData {
   id: string
@@ -81,10 +61,6 @@ interface VideoData {
   vocal_colors: string[]
 }
 
-
-function showData() {
-  dialogVisible.value = true
-}
 
 // 监听 props 的变化，并更新 change
 
@@ -162,11 +138,7 @@ function showData() {
   width: 350px;
 }
 
-.info-row {
-  .el-link {
-    margin: 5px 5px;
-  }
-}
+
 
 .info-title {
   display: inline-block;

@@ -6,7 +6,7 @@
       </a>
       <el-switch v-model="includeEntries[index]" class="mb-2" />
     </div>
-    <div name="right" class="grow-1" >
+    <div name="right" class="grow" >
       <div class="text-lg font-bold">{{ record.title }}</div>
       <div class="grid grid-cols-1 grid-rows-[repeat(8,auto)] lg:grid-cols-2 lg:grid-rows-[repeat(4,auto)]">
         <div v-for="field in fields" class="flex flex-row w-full">
