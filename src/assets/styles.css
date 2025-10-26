@@ -129,6 +129,7 @@ a, button {
 
 :root {
   --el-menu-bg-color: var(--md-sys-color-surface-container);
+  --el-fill-color-blank: transparent
 }
 
 :root.dark {

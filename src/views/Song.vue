@@ -7,29 +7,32 @@
     </div>
 
     <!-- 排行数据 -->
-    <div class="max-w-full">
-      <div v-if="chartData" class="relative">
-        <SongChart :data="chartData" />
-        <div class="absolute top-2 w-full flex justify-center">
-          <el-select
-            class="w-30!"
-            v-model="chartBoardId"
-            @change="selectChart"
-          >
-            <el-option
-              v-for="{title, boardId} of options"
-              :key="boardId"
-              :value="boardId"
-              :label="title"
-            />
-          </el-select>
+    <div class="w-full px-4 xl:w-auto xl:grow">
+      <div v-if="chartCompleted" class="relative">
+        <SongChart
+          :data="chartMap[chartBoardId].data"
+          :board-id="chartBoardId"
+          :log="log"
+        />
+        <div class="absolute top-2 w-full flex justify-between">
+          <ElSwitch v-model="log" activeText="对数y轴"/>
+          <div>
+            <el-button v-if="!chartMap[chartBoardId].end" @click="loadAll(chartBoardId)">加载全部</el-button>
+            <el-select
+              class="w-30!"
+              v-model="chartBoardId"
+            >
+              <el-option
+                v-for="({title, boardId}) in options"
+                :key="boardId"
+                :value="boardId"
+                :label="title"
+              />
+            </el-select>
+          </div>
+
         </div>
       </div>
-
-      <template v-for="option of options">
-        <h3 class="text-xl font-bold m-y-4">{{ option.title }}</h3>
-        <SongHistoryTable :songId="songId" :boardId="option.boardId" class="rounded-xl" @send-data="handleData" />
-      </template>
     </div>
 
   </div>
@@ -38,13 +41,13 @@
 
 <script lang="ts" setup>
 import { useRoute } from 'vue-router';
-import { onMounted, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { useStatusStore } from '@/store/status';
-import SongHistoryTable from '@/components/song/SongHistoryTable.vue';
 import CommentFrame from '@/components/user/CommentFrame.vue';
 import SongInfo from '@/components/song/SongInfo.vue';
 import SongChart from '@/components/chart/SongChart.vue';
-import { ElSelect, ElOption } from 'element-plus';
+import { ElSelect, ElOption, ElSwitch, ElButton } from 'element-plus';
+import { requester } from '@/utils/api/requester';
 const statusStore = useStatusStore()
 
 const options = [
@@ -53,39 +56,60 @@ const options = [
   { title: '月刊数据', boardId: 'vocaloid-monthly', },
 ]
 
-const songId = ref<string>();
-const chartData = ref<any>()
+const songId = ref<string>(initSongId());
+const chartCompleted = ref<boolean>(false)
 const chartBoardId = ref<string>('vocaloid-daily')
-const chartDataMap: Record<string, any> = {}
+const chartMap = reactive<Record<string, {
+  index: number,
+  end: boolean,
+  data: any
+}>>({
+  'vocaloid-daily': {index: 0, end: false, data: []},
+  'vocaloid-weekly': {index: 0, end: false, data: []},
+  'vocaloid-monthly': {index: 0, end: false, data: []},
+})
+const log = ref<boolean>(false)
 
-function hasKeys<T extends Record<string, any>>(
-  obj: T,
-  keys: (keyof T)[]
-): boolean {
-  return keys.every(k => k in obj);
+function initSongId(){
+  const route = useRoute();
+  statusStore.articleId = route.params.id as string;
+  return route.params.id as string
 }
 
-function selectChart(value: string) {
-  console.log(chartDataMap)
-  if (chartBoardId.value)
-    chartData.value = chartDataMap[value]
+async function fetchData(boardId: string) {
+  const chart = chartMap[boardId]
+  chart.index += 1;
+  const response = await requester.get_song_rank_history(songId.value, boardId, 64, chart.index);
+  chart.data.push(...response.result);
+  if (chart.index * 64 >= response.total) {
+    chart.end = true;
+  } else {
+    chart.end = false;
+  }
 }
 
-function handleData(props: any) {
-  chartDataMap[props.boardId] = props
-  if (hasKeys(chartDataMap, ['vocaloid-daily', 'vocaloid-weekly', 'vocaloid-monthly']))
-    chartData.value = chartDataMap[chartBoardId.value]
+async function loadAll(boardId: string) {
+  const chart = chartMap[boardId]
+  chart.end = true
+  while (true) {
+    chart.index += 1;
+    const response = await requester.get_song_rank_history(songId.value, boardId, 64, chart.index);
+    chart.data.push(...response.result);
+    if (chart.index * 64 >= response.total) {
+      break
+    }
+  }
 }
 
 onMounted(async () => {
-  const route = useRoute(); // 在生命周期钩子中调用 useRoute
-  songId.value = route.params.id as string ; // 更新 songId
-  statusStore.articleId = songId.value;
+  await Promise.all([fetchData('vocaloid-daily'), fetchData('vocaloid-weekly'), fetchData('vocaloid-monthly')])
+  chartCompleted.value = true
 })
+
 </script>
 
 
-<style lang="scss" scoped>
+<style scoped>
 /* 保证页面没有横向滚动条 */
 html,
 body {

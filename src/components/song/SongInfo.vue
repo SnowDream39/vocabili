@@ -96,7 +96,7 @@ watch(() => props.songId, async () => {
     const videosData = toVideosData(plainData)
     data.value = videosData
   }
-})
+}, {immediate: true})
 
 </script>
 
