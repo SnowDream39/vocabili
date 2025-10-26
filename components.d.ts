@@ -69,6 +69,7 @@ declare module 'vue' {
     SongHistoryTable: typeof import('./src/components/song/SongHistoryTable.vue')['default']
     SongInfo: typeof import('./src/components/song/SongInfo.vue')['default']
     SpecialSelector: typeof import('./src/components/board/SpecialSelector.vue')['default']
+    TodayCalculator: typeof import('./src/components/song/TodayCalculator.vue')['default']
     VideoInfo: typeof import('./src/components/song/VideoInfo.vue')['default']
     VideoStat: typeof import('./src/components/song/VideoStat.vue')['default']
   }

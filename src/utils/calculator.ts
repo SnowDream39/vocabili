@@ -1,4 +1,6 @@
-import Board from "./board"
+import axios from "axios"
+import Board, { type BasicSection } from "./board"
+import { issueNow, startTimeOf } from "./date"
 
 /*
 copyright的四种类型：
@@ -8,11 +10,50 @@ copyright的四种类型：
 4 自制投搬运
 */
 
-interface Count {
+export interface Count {
   view: number,
   favorite: number,
   coin: number,
   like: number
+}
+
+export async function get_video_current_data(bvid: string) {
+  const response = await axios.get('https://api.vocabili.top/bilibili/get-video/', {
+    params: { bvid },
+
+  })
+  return response.data
+}
+
+export function difference(currentStat: Count, lastStat: Count): Count {
+  return {
+    view: currentStat.view - lastStat.view,
+    favorite: currentStat.favorite - lastStat.favorite,
+    coin: currentStat.coin - lastStat.coin,
+    like: currentStat.like - lastStat.like,
+  }
+}
+
+
+
+/**
+ * 以现在为起点，在一批数据里面找到几天前的数据。
+ * @param historyData 一些日期的总数据
+ * @param section 刊的类别（daily等）
+ * @returns 那天的数据
+ */
+export function searchData(historyData: {date: string, count: Count}[], section: BasicSection): Count | null {
+  // history 里面的日期是那天0点数据的意思
+  const date = startTimeOf(issueNow()[section], section)
+  if (date.isValid) {
+    const data = historyData.find((item: any) => item.date === date.toFormat('yyyy-MM-dd'))
+    if (data) {
+      return data.count
+    }
+    return null
+  } else {
+    throw new Error(`Invalid DateTime: ${date.invalidExplanation || "Unknown reason"}`);
+  }
 }
 
 export class Calculator {

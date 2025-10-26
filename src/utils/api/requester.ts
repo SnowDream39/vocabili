@@ -123,7 +123,7 @@ class Requester {
     return response.data.data
   }
 
-  async get_video_stat_history(target: string, count = 300, index = 1, order = 'newest') {
+  async get_video_stat_history(target: string, count = 64, index = 1, order = 'newest') {
     const response = await api.get(Requester.endpoint.get_video_stat_history, {
       params: {target, count, index, order}
     })

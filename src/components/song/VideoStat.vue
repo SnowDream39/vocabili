@@ -25,7 +25,6 @@
 </template>
 
 <script lang="ts" setup>
-import axios from 'axios'
 import { onMounted, ref } from 'vue';
 import { requester } from '../../utils/api/requester';
 import Board, { currentIssue, type BasicSection } from '../../utils/board';
@@ -33,15 +32,9 @@ import { issueNow, startTimeOf } from '../../utils/date';
 import { DateTime } from 'luxon';
 import { ElTable, ElTableColumn, ElDialog } from 'element-plus';
 import Calculator from './Calculator.vue';
+import { difference, get_video_current_data, searchData } from '@/utils/calculator';
 
 const props = defineProps(['bvid','songId','videoId','copyright','upload'])
-
-interface Count {
-  view: number,
-  favorite: number,
-  coin: number,
-  like: number
-}
 
 const columns = [
   {key: "name", label: "数据"},
@@ -57,37 +50,6 @@ const calculatorVisible = ref(false)
 
 // ==================== 函数 =============================
 
-async function get_video_data(bvid: string) {
-  const response = await axios.get('https://api.vocabili.top/bilibili/get-video/', {
-    params: { bvid },
-
-  })
-  return response.data
-}
-
-function difference(currentStat: Count, lastStat: Count): Count {
-  return {
-    view: currentStat.view - lastStat.view,
-    favorite: currentStat.favorite - lastStat.favorite,
-    coin: currentStat.coin - lastStat.coin,
-    like: currentStat.like - lastStat.like,
-  }
-}
-
-function searchData(historyData: {date: string, count: Count}[], section: BasicSection): Count | null {
-  // history 里面的日期是那天0点数据的意思
-  const date = startTimeOf(issueNow()[section], section)
-  if (date.isValid) {
-    const data = historyData.find((item: any) => item.date === date.toFormat('yyyy-MM-dd'))
-    if (data) {
-      return data.count
-    }
-    return null
-  } else {
-    throw new Error(`Invalid DateTime: ${date.invalidExplanation || "Unknown reason"}`);
-  }
-}
-
 
 /*
  *
@@ -97,7 +59,7 @@ async function init() {
   stat.value = []
 
   // 当前数据
-  let data = await get_video_data(props.bvid)
+  let data = await get_video_current_data(props.bvid)
   const {view,favorite,coin,like} = data.stat
   const currentStat = {view,favorite,coin,like}
   stat.value.push(

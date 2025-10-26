@@ -9,6 +9,7 @@ import { type BasicSection } from './board'
 /**
  * 计算一个时间之前截止的那一期。
  * @param date 一个时间。默认现在。
+ * @return 包括各种刊物的期数
  */
 export function issueBefore(date?: DateTime) {
   const now = date || DateTime.local()
@@ -20,8 +21,9 @@ export function issueBefore(date?: DateTime) {
 }
 
 /**
- * 计算一个时间之前截止的那一期。
+ * 计算一个时间之后截止的那一期。
  * @param date 一个时间。默认现在。
+ * @return 包括各种刊物的期数
  */
 export function issueNow(date?: DateTime) {
   const now = date || DateTime.local()

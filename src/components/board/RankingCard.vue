@@ -41,6 +41,7 @@
               <button class="glass-button button-lg" ><div class="i-material-symbols-calendar-month-outline-rounded"></div></button>
             </a>
             <button class="glass-button button-lg" @click="showCalculator"><div class="i-material-symbols-calculate-outline-rounded"></div></button>
+            <button v-if="props.isToday" class="glass-button button-lg" @click="showToday"><div class="i-material-symbols-today-rounded"></div></button>
           </div>
         </div>
       </div>
@@ -66,6 +67,7 @@
               <button @click="showCalculator" class="cursor-pointer">
                 <div class="i-material-symbols-calculate-outline-rounded"></div>
               </button>
+              <button v-if="props.isToday" class="glass-button button-lg" @click="showToday"><div class="i-material-symbols-today-rounded"></div></button>
             </div>
           </div>
         </div>
@@ -87,6 +89,15 @@
     <el-dialog v-model="calculatorVisible" title="分数计算器" :width="250" >
       <Calculator :form="form" :key="form.view" />
     </el-dialog>
+
+    <TodayCalculator
+      v-model="todayCalculatorVisible"
+      :section="props.section"
+      :bvid="board.target.platform.link.split('/').at(-1)!"
+      :video-id="board.target.platform.id"
+      :copyright="board.target.platform.copyright"
+      :key="board.target.platform.id"
+    />
   </CardCoverThumbnail>
 
 
@@ -107,14 +118,18 @@ import { ElDialog } from 'element-plus';
 import RankingDialog from './RankingDialog.vue';
 import CardCoverThumbnail from './CardCoverThumbnail.vue';
 import { useMediaQuery } from '@vueuse/core';
+import TodayCalculator from '../song/TodayCalculator.vue';
 
 const isMobile = useMediaQuery('(max-width: 640px)')
 const props = defineProps<{
   board: DataBoard,
   metadata: DataMetadata,
+  isToday?: boolean,
+  section?: string
 }>()
 const dialogVisible = ref(false)
 const calculatorVisible = ref(false)
+const todayCalculatorVisible = ref(false)
 const form = computed<Form>(() => {
   const { view, favorite, coin, like } = props.board.change
   const copyright = props.board.target.platform.copyright
@@ -132,6 +147,10 @@ function showData() {
 
 function showCalculator() {
   calculatorVisible.value = true
+}
+
+function showToday() {
+  todayCalculatorVisible.value = true
 }
 
 // 监听 props 的变化，并更新 change

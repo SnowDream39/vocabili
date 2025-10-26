@@ -48,6 +48,8 @@
           class="grid"
           :board="data"
           :metadata="metadata"
+          :is-today="isToday"
+          :section="board.section"
           :key="data.target.metadata.id"
         />
       </div>
@@ -90,7 +92,7 @@
 import { ref, computed, watch, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import router from '../router/index.ts'
-import Board from '../utils/board.ts';
+import Board, { type BasicSection } from '../utils/board.ts';
 import { requester } from '../utils/api/requester.ts'
 import SpecialSelector from '../components/board/SpecialSelector.vue';
 import CommentFrame from '../components/user/CommentFrame.vue';
@@ -100,6 +102,7 @@ import { ElPagination, ElSelect, ElOption } from 'element-plus';
 import ElRouterLink from '@/components/misc/ElRouterLink.vue';
 import type { DataMetadata, Board as DataBoard } from '@/utils/boardData.ts';
 import QRCode from 'qrcode'
+import { issueBefore } from '@/utils/date.ts';
 const route = useRoute()
 const statusStore = useStatusStore()
 
@@ -130,6 +133,7 @@ const rankDateString = computed(() => board.value.getRankDateString())
 const issueName = computed(() => board.value.getBoardName())
 
 const boardList = ref<HTMLElement | null>(null)
+const isToday = ref<boolean>(false)
 // =============== 交互事件 ===============
 function changeOrder() {
   console.log(orderType.value)
@@ -193,8 +197,15 @@ async function init() {
   const issue = params.issue as string
   if (issue !== '') {
     board.value = new Board(boardId, Number(issue))
+    console.log(issueBefore()[boardId.split('-')[1] as BasicSection])
+    if (Number(issue) == issueBefore()[boardId.split('-')[1] as BasicSection]) {
+      isToday.value = true
+    } else {
+      isToday.value = false
+    }
   } else {
     board.value = new Board(boardId, -1)
+    isToday.value = true
   }
   QRCode.toCanvas(document.getElementById('qrcode'), window.location.href, function (error) {
     if (error) console.error(error)
