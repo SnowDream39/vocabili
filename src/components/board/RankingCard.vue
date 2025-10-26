@@ -64,10 +64,12 @@
               <a :href="'/song/' + board.target.metadata.id">
                 <div class="i-material-symbols-calendar-month-outline-rounded" >历史数据</div>
               </a>
-              <button @click="showCalculator" class="cursor-pointer">
+              <button @click="showCalculator">
                 <div class="i-material-symbols-calculate-outline-rounded"></div>
               </button>
-              <button v-if="props.isToday" class="glass-button button-lg" @click="showToday"><div class="i-material-symbols-today-rounded"></div></button>
+              <button v-if="props.isToday" @click="showToday">
+                <div class="i-material-symbols-today-rounded"></div>
+              </button>
             </div>
           </div>
         </div>

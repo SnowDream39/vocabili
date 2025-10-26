@@ -2,7 +2,7 @@
  * 全部整合到Board对象。
  */
 import { DateTime } from 'luxon'
-import { endTimeOf, issueBefore, startTimeOf } from './date'
+import { endTimeOf, issueNow, startTimeOf } from './date'
 
 export type Section = 'daily' | 'weekly' | 'monthly' | 'special'
 export type BasicSection = 'daily' | 'weekly' | 'monthly'
@@ -14,7 +14,7 @@ function isBasicSection(section: Section): section is BasicSection {
 }
 
 // 现在时间已经过了哪一期的截止时间。
-export const currentIssue = issueBefore()
+export const currentIssue = issueNow()
 
 export default class Board {
   name: string = 'vocaloid'
@@ -25,7 +25,7 @@ export default class Board {
   /**
    *
    * @param boardId 可以传入 boardId，也可以只传 name 和 section。
-   * @param issue 如果-1就是向服务器要最新一期，不传就是当天。
+   * @param issue 如果-1就是向服务器要最新一期，不传就是当天（下一期）。
    */
   constructor(boardId: string, issue?: number) {
     const items = boardId.split('-', 3)
