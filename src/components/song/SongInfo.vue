@@ -2,13 +2,18 @@
   <div v-if="data">
     <h2>{{ data.name }} <span v-for="color in data.color" :style="{ color: color }">●</span></h2>
     <el-carousel
-      height="450px"
+      :height="carouselHeight + 'px'"
       :autoplay="!statVisible"
       :interval="5000"
       :arrow="data.length === 1 ? 'never' : 'always'"
+      ref="carousel"
     >
-      <el-carousel-item class="video" v-for="video of data" :key="video.video.link">
-        <VideoInfo v-bind="video"></VideoInfo>
+      <el-carousel-item
+        class="video min-h-[450px]"
+        v-for="video of data"
+        :key="video.video.link"
+      >
+        <VideoInfo v-bind="video" @send-height="handleHeight" ></VideoInfo>
       </el-carousel-item>
     </el-carousel>
   </div>
@@ -18,11 +23,25 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, onMounted } from 'vue';
 import { DateTime, Duration } from 'luxon'
 import VideoInfo from './VideoInfo.vue';
 import { requester } from '@/utils/api/requester';
 import { ElCarousel, ElCarouselItem } from 'element-plus';
+
+// ==============  控制走马灯高度  ===========
+
+const carousel = ref<HTMLElement>()
+const carouselHeight = ref<number>(450)
+
+function handleHeight(value: any) {
+  carouselHeight.value = value + 30
+}
+
+// ==============  处理数据  ==============
+
+
+
 async function fetchSongInfo(songId: string) {
   try {
     const data = await requester.get_song_info(songId);
@@ -88,7 +107,7 @@ const data = ref<any>()
 const statVisible = ref(false)
 
 
-watch(() => props.songId, async () => {
+onMounted(async () => {
   if (props.songId) {
 
     const originalData = await fetchSongInfo(props.songId)
@@ -96,7 +115,7 @@ watch(() => props.songId, async () => {
     const videosData = toVideosData(plainData)
     data.value = videosData
   }
-}, {immediate: true})
+})
 
 </script>
 

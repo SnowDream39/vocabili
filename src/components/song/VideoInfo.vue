@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-col items-center h-[450px]">
+  <div class="flex flex-col items-center video-info" ref="box">
     <img :src="video.cover" />
-    <div class="flex flex-col flex-nowrap h-60 justify-between items-center">
+    <div class="flex flex-col flex-nowrap justify-between items-center">
       <a class="text-xl font-bold text-center text-link" :href="video.link" target="_blank">{{ video.title }}</a>
       <div><ArtistList :artists="song.producer" type="producer" /></div>
       <div><ArtistList :artists="song.vocalist" type="vocalist" /></div>
@@ -32,16 +32,28 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, useTemplateRef } from 'vue';
 import { DateTime, Duration } from 'luxon'
 import VideoStat from './VideoStat.vue';
 import ArtistList from '../search/ArtistList.vue';
+import { ElDialog } from 'element-plus';
+import { nextTick } from 'vue';
 const props = defineProps(['song', 'video'])
 const statVisible = ref(false)
 
 function showStat() {
   statVisible.value = ! statVisible.value
 }
+
+// =========== 回传高度 ===============
+const box = useTemplateRef('box')
+const emits = defineEmits(['send-height'])
+
+onMounted(async () => {
+  console.log(box.value)
+  await nextTick()
+  emits('send-height', box.value.offsetHeight)
+})
 
 </script>
 

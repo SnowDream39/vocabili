@@ -63,7 +63,14 @@ const option = ref({
     // Try 'horizontal'
     orient: 'vertical',
     bottom: 0,
-    right: 0
+    right: 0,
+    selected: {
+      '排名': true,
+      '播放': true,
+      '收藏': true,
+      '投币': true,
+      '点赞': true
+    }
   },
   dataset: {
     source: [{
@@ -97,7 +104,7 @@ const option = ref({
     }
 ],
   yAxis: [
-    { inverse: true, show: false, type: 'value' },
+    { min: 1, inverse: true, show: false, type: 'value' },
     { name: '播放', position: 'left', nameLocation: 'middle' },
     { name: '收/币/赞', position: 'right', nameLocation: 'middle' }
   ],
@@ -130,7 +137,7 @@ const option = ref({
       }
     },
     { name: '播放', type: 'line', yAxisIndex: 1, encode: { x: 'issue', y: 'view' } },
-    { name: '收藏', type: 'line', yAxisIndex: 2, encode: { x: 'issue', y: 'favorite' } },
+    { name: '收藏', type: 'line', yAxisIndex: 2, encode: { x: 'issue', y: 'favorite' }, },
     { name: '投币', type: 'line', yAxisIndex: 2, encode: { x: 'issue', y: 'coin' } },
     { name: '点赞', type: 'line', yAxisIndex: 2, encode: { x: 'issue', y: 'like' } },
   ],
@@ -173,13 +180,12 @@ watch(() => props, (value) => {
         start = item.issue
       } else if (currentIn && item.rank > 20) {
         currentIn = false
-        rankins.push([{xAxis: start}, {xAxis: item.issue-1}])
+        rankins.push([{xAxis: start-0.5}, {xAxis: item.issue-0.5}])
       }
     });
     if (currentIn) {
-      rankins.push([{xAxis: start}, {xAxis: sortedData.at(-1)!.issue}])
+      rankins.push([{xAxis: start-0.5}, {xAxis: sortedData.at(-1)!.issue}])
     }
-    console.log(rankins)
     option.value.series[0].markArea!.data = rankins
   }
 
