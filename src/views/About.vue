@@ -41,7 +41,9 @@
 </template>
 
 <script lang="ts" setup>
+import { useTitle } from '@vueuse/core';
 
+useTitle('关于 | 术力口数据库')
 </script>
 
 

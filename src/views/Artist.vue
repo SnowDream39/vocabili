@@ -16,9 +16,10 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { requester } from '../utils/api/requester';
+import { useTitle } from '@vueuse/core';
 
 
 const route = useRoute()
@@ -27,6 +28,7 @@ const page = ref(1)
 const total = ref(0)
 const artistSongs = ref<any[]>([])
 
+useTitle(computed(() => artistName.value + ' | 术力口数据库'))
 
 
 const {type,id} = route.params as { type: string; id: string };

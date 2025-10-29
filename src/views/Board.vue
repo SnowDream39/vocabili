@@ -103,6 +103,9 @@ import ElRouterLink from '@/components/misc/ElRouterLink.vue';
 import type { DataMetadata, Board as DataBoard } from '@/utils/boardData.ts';
 import QRCode from 'qrcode'
 import { issueBefore } from '@/utils/date.ts';
+import { useTitle } from '@vueuse/core';
+
+
 const route = useRoute()
 const statusStore = useStatusStore()
 
@@ -134,6 +137,9 @@ const issueName = computed(() => board.value.getBoardName())
 
 const boardList = ref<HTMLElement | null>(null)
 const isToday = ref<boolean>(false)
+
+useTitle(computed(() => issueName.value + ' | 术力口数据库'))
+
 // =============== 交互事件 ===============
 function changeOrder() {
   console.log(orderType.value)

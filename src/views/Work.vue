@@ -26,7 +26,9 @@ import { ElPagination } from "element-plus";
 import { ref, computed } from "vue";
 import MarkingCard from "@/components/song/MarkingCard.vue";
 import * as XLSX from "xlsx";
+import { useTitle } from "@vueuse/core";
 
+useTitle('打标工具 | 术力口数据库')
 const allRecords = ref<any[]>([]);       // 全部数据
 const pageSize = 20;                     // 每页显示数量
 const currentPage = ref(1);

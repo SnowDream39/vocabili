@@ -45,7 +45,9 @@ import CommentFrame from '@/components/user/CommentFrame.vue';
 import { useStatusStore } from '@/store/status.ts';
 import PoolCard from '@/components/PoolCard.vue';
 import { ElPagination } from 'element-plus';
+import { useTitle } from '@vueuse/core';
 
+useTitle('歌曲数据列表 | 术力口数据库')
 const route = useRoute()
 const statusStore = useStatusStore()
 

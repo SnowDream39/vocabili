@@ -13,7 +13,9 @@ import { useRoute } from 'vue-router';
 import Calculator, { type Form } from '@/components/song/Calculator.vue';
 import { ref } from 'vue';
 import PointChart from '@/components/chart/PointChart.vue';
+import { useTitle } from '@vueuse/core';
 
+useTitle('分数计算器 | 术力口数据库')
 /**
  * 如果URL给出了完整的一个表，那么就返回。否则给一个默认的
  */

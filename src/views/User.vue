@@ -11,7 +11,9 @@
 import { ref } from 'vue';
 import LoginCard from '../components/user/LoginCard.vue';
 import RegisterCard from '../components/user/RegisterCard.vue';
+import { useTitle } from '@vueuse/core';
 
+useTitle('用户中心 | 术力口数据库')
 const isLoginMode = ref(true)
 </script>
 

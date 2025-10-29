@@ -50,7 +50,6 @@ const box = useTemplateRef('box')
 const emits = defineEmits(['send-height'])
 
 onMounted(async () => {
-  console.log(box.value)
   await nextTick()
   emits('send-height', box.value.offsetHeight)
 })

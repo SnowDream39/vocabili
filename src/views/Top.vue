@@ -28,9 +28,11 @@
 <script lang="ts" setup>
 import { requester } from '@/utils/api/requester';
 import Board from '@/utils/board';
+import { useTitle } from '@vueuse/core';
 import { ElPagination, ElSelect, ElTable } from 'element-plus';
 import { onMounted, ref } from 'vue';
 
+useTitle('前五列表 | 术力口数据库')
 interface IssueData {
   issue: number;
   songs: any[];

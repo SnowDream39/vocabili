@@ -32,7 +32,7 @@
     </template>
     <template v-if="tableData[0] && ['vocalist', 'uploader', 'producer', 'synthesizer'].includes(searchTarget)">
       <div class="flex flex-wrap p-4 gap-2 suspend-panel w-9/10 max-w-112">
-        <a v-for="artist in tableData" class="block" :href="`/artist/${type}/${artist.id}`">
+        <a v-for="artist in tableData" class="block" :href="`/artist/${searchTarget}/${artist.id}`">
           <el-button>{{ artist.name }}</el-button>
         </a>
       </div>
@@ -61,6 +61,7 @@ import router from '../router/index.ts';
 import { requester } from '../utils/api/requester.ts';
 import SearchMusicCard from '@/components/search/SearchMusicCard.vue';
 import { ElSelect, ElOption, ElInput, ElButton, ElPagination } from 'element-plus';
+import { useTitle } from '@vueuse/core';
 
 // 响应式数据
 const searchWord = ref('')
@@ -73,6 +74,8 @@ const page = ref(1)
 const pageSize = ref(10)
 const loading = ref(false)
 const threshold = ref(0.2)
+
+useTitle(computed(() => `搜索：${searchWord.value} | 术力口数据库`))
 
 // 配置项
 const searchTargetOptions = [

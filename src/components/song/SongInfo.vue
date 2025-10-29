@@ -23,11 +23,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { DateTime, Duration } from 'luxon'
 import VideoInfo from './VideoInfo.vue';
 import { requester } from '@/utils/api/requester';
 import { ElCarousel, ElCarouselItem } from 'element-plus';
+import { useTitle } from '@vueuse/core';
 
 // ==============  控制走马灯高度  ===========
 
@@ -106,6 +107,14 @@ const props = defineProps(['songId'])
 const data = ref<any>()
 const statVisible = ref(false)
 
+useTitle(computed(() => {
+  if (data.value) {
+    console.log(data)
+    return data.value[0].song.name + ' | 术力口数据库'
+  } else {
+    return '加载中……'
+  }
+}))
 
 onMounted(async () => {
   if (props.songId) {
