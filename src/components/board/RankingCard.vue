@@ -1,5 +1,5 @@
 <template>
-  <CardCoverThumbnail class="max-w-[474px]">
+  <CardCoverThumbnail v-motion-slide-bottom  class="max-w-[474px]">
     <template #front v-if="!isMobile">
       <div class="p-3 flex justify-center items-center gap-4 overflow-hidden cursor-pointer "  @click="showData">
         <div name="left" class="w-20 h-40 flex flex-col flex-wrap justify-center items-center "  >
@@ -84,25 +84,25 @@
     <template #back>
       <img class="w-full h-full object-cover" :src="board.target.platform.thumbnail" alt="thumbnail" />
     </template>
-    <el-dialog v-model="dialogVisible" :title="board.target.metadata.name">
-      <RankingDialog :board="board" />
-    </el-dialog>
 
-    <el-dialog v-model="calculatorVisible" title="分数计算器" :width="250" >
-      <Calculator :form="form" :key="form.view" />
-    </el-dialog>
-
-    <TodayCalculator
-      v-model="todayCalculatorVisible"
-      :section="props.section"
-      :bvid="board.target.platform.link.split('/').at(-1)!"
-      :video-id="board.target.platform.id"
-      :copyright="board.target.platform.copyright"
-      :key="board.target.platform.id"
-    />
   </CardCoverThumbnail>
 
+  <el-dialog v-model="dialogVisible" :title="board.target.metadata.name">
+    <RankingDialog :board="board" />
+  </el-dialog>
 
+  <el-dialog v-model="calculatorVisible" title="分数计算器" :width="250" >
+    <Calculator :form="form" :key="form.view" />
+  </el-dialog>
+
+  <TodayCalculator
+    v-model="todayCalculatorVisible"
+    :section="props.section"
+    :bvid="board.target.platform.link.split('/').at(-1)!"
+    :video-id="board.target.platform.id"
+    :copyright="board.target.platform.copyright"
+    :key="board.target.platform.id"
+  />
 
 </template>
 

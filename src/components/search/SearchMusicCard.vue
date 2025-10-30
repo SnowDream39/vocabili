@@ -1,5 +1,5 @@
 <template>
-  <CardCoverThumbnail class="w-77 h-32 m-1 border-2 border-solid border-black">
+  <CardCoverThumbnail v-motion-slide-visible-bottom class="w-77 h-32 m-1 border-2 border-solid border-black">
     <template #front>
       <div class="m-1">
         <div class="h-7 flex flex-row justify-between items-center">

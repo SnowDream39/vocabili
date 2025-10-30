@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="flex flex-col items-center">
 
     <!-- 搜索区域 -->
     <div class="search-container">
@@ -23,12 +23,26 @@
       <button @click="searchAscending = !searchAscending" >{{ searchAscending ? '升序' : '降序' }}</button>
     </div>
 
+    <!-- 分页器 -->
+    <el-pagination
+      v-model:current-page="page"
+      :page-size="pageSize"
+      :total="total"
+      :pager-count="5"
+      background
+      layout="prev, pager, next, jumper"
+      class="pagination"
+      @current-change="handlePageChanged"
+    />
+
 
     <!-- 搜索结果 -->
     <template v-if="tableData[0] && ['name', 'platform'].includes(searchTarget)">
-      <a v-for="item in tableData" class="flex flex-wrap flex-row justify-center gap-4" :href="'/song/' + item.id">
-        <SearchMusicCard :key="item.id" v-bind="item"/>
-      </a>
+      <div class="flex flex-wrap justify-center max-w-200">
+        <a v-for="item in tableData" :href="'/song/' + item.id">
+          <SearchMusicCard :key="item.id" v-bind="item"/>
+        </a>
+      </div>
     </template>
     <template v-if="tableData[0] && ['vocalist', 'uploader', 'producer', 'synthesizer'].includes(searchTarget)">
       <div class="flex flex-wrap p-4 gap-2 suspend-panel w-9/10 max-w-112">
@@ -71,7 +85,7 @@ const searchSort = ref('default')
 const searchAscending = ref(false)
 const total = ref(0)
 const page = ref(1)
-const pageSize = ref(10)
+const pageSize = ref(20)
 const loading = ref(false)
 const threshold = ref(0.2)
 
@@ -129,10 +143,10 @@ const handleSearch = async () => {
       sort: searchSort.value
     }
     if (searchTarget.value === 'platform') {
-      options.count = 10
+      options.count = 20
       data = await requester.search_song_by_platform(searchWord.value, options)
     } else if (searchTarget.value === 'name') {
-      options.count = 10
+      options.count = 20
       data = await requester.search_song_by_name(searchWord.value, options)
     } else {
       options.count = 30
@@ -140,6 +154,7 @@ const handleSearch = async () => {
     }
 
     const { result, total: totalCount } = data
+    pageSize.value = options.count
 
     rawData.value = result
     total.value = totalCount
@@ -182,14 +197,6 @@ const expandSearch = async () => {
 }
 
 /* 原有基础样式 */
-.container {
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 24px 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 
 #expand-search {
   margin: 20px;

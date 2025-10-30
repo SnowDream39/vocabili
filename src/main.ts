@@ -10,6 +10,7 @@ import 'virtual:uno.css'
 import '@unocss/reset/normalize.css'
 import { BackgroundImagePlugin } from './plugins/BackgroundImagePlugin'
 import { createPinia } from 'pinia';
+import { MotionPlugin } from '@vueuse/motion'
 
 
 const app = createApp(App);
@@ -18,6 +19,7 @@ const app = createApp(App);
 app.use(router);
 app.use(createPinia());
 app.use(BackgroundImagePlugin)
+app.use(MotionPlugin)
 app.mount('#app');
 
 app.config.errorHandler = (err: any) => {

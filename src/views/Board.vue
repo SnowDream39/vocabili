@@ -45,7 +45,6 @@
         <RankingCard
           v-for="data in boards"
           v-if="metadata && boards && boards.length > 0"
-          class="grid"
           :board="data"
           :metadata="metadata"
           :is-today="isToday"
