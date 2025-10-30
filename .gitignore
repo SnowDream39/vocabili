@@ -1,6 +1,6 @@
 test
 public/*.json
-
+*.ps1
 
 # Logs
 logs

@@ -5,13 +5,13 @@ import 'element-plus/theme-chalk/dark/css-vars.css'
 import { ElMessage } from 'element-plus';
 import App from './App.vue';
 import router from './router';
-import './assets/styles.css'
 import 'virtual:uno.css'
 import '@unocss/reset/normalize.css'
+import './assets/styles.css'
 import { BackgroundImagePlugin } from './plugins/BackgroundImagePlugin'
 import { createPinia } from 'pinia';
 import { MotionPlugin } from '@vueuse/motion'
-
+import Vue3Marquee from 'vue3-marquee'
 
 const app = createApp(App);
 
@@ -20,6 +20,7 @@ app.use(router);
 app.use(createPinia());
 app.use(BackgroundImagePlugin)
 app.use(MotionPlugin)
+app.use(Vue3Marquee)
 app.mount('#app');
 
 app.config.errorHandler = (err: any) => {

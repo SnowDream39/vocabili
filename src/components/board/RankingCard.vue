@@ -13,12 +13,18 @@
           </div>
         </div>
         <div name="right" class="block items-center w-[350px]">
-          <div class="info-row inline-block w-full text-3xl overflow-hidden text-ellipsis whitespace-nowrap"
-            :title="board.target.metadata.name">{{ board.target.metadata.name }}</div>
+            <TextMarquee>
+              <div class="inline-block text-3xl whitespace-nowrap"
+                :title="board.target.metadata.name">{{ board.target.metadata.name }}</div>
+            </TextMarquee>
           <div class="w-full flex" >
             <div class="basis-0 grow-2 whitespace-nowrap overflow-hidden">
-              <div>{{ board.target.metadata.target.producer.map(item => item.name).join('、') }}</div>
+              <TextMarquee>
+                <div>{{ board.target.metadata.target.producer.map(item => item.name).join('、') }}</div>
+              </TextMarquee>
+              <TextMarquee>
               <div>{{ board.target.metadata.target.vocalist.map(item => item.name).join('、') }}</div>
+              </TextMarquee>
               <div>{{ DateTime.fromISO(board.target.platform.publish).toFormat('yyyy-LL-dd HH:mm') }}</div>
               <div>
                 <span>{{ board.point.toLocaleString() }}pts</span>
@@ -53,8 +59,13 @@
           <RankChange :rank-before="board.last ? board.last.rank : 0" :change="change" />
         </div>
         <div name="top-right" class="w-0 grow-3 inline-block m-2 relative *:text-nowrap *:truncate text-shadow-md">
-          <div class="text-xl font-bold">{{ board.target.metadata.name }}</div>
-          <div>{{ board.target.metadata.target.producer.map(item => item.name).join('、') }}</div>
+          <TextMarquee>
+            <div class="inline-block text-xl whitespace-nowrap"
+              :title="board.target.metadata.name">{{ board.target.metadata.name }}</div>
+          </TextMarquee>
+          <TextMarquee>
+            <div>{{ board.target.metadata.target.producer.map(item => item.name).join('、') }}</div>
+          </TextMarquee>
           <div class="flex flex-row justify-between items-center">
             <div class="text-sm">{{ DateTime.fromISO(board.target.platform.publish).toFormat('yyyy-LL-dd') }}</div>
             <div class="flex flex-row justify-end gap-4 text-xl text-shadow-none"  @click.stop >
@@ -121,6 +132,7 @@ import RankingDialog from './RankingDialog.vue';
 import CardCoverThumbnail from './CardCoverThumbnail.vue';
 import { useMediaQuery } from '@vueuse/core';
 import TodayCalculator from '../song/TodayCalculator.vue';
+import TextMarquee from '../misc/TextMarquee.vue';
 
 const isMobile = useMediaQuery('(max-width: 640px)')
 const props = defineProps<{
