@@ -47,6 +47,9 @@ export default class Board {
   get id(): string {
     return [this.name, this.section].join('-');
   }
+  set id(value: string) {
+    [this.name, this.section] = value.split('-') as unknown as [string, Section]
+  }
   get fullId(): string {
     return [this.name, this.section, this.part].join('-');
   }
