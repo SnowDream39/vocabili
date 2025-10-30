@@ -1,5 +1,5 @@
 <template>
-  <CardCoverThumbnail v-motion-slide-bottom  class="max-w-[474px]">
+  <CardCoverThumbnail class="max-w-[474px]">
     <template #front v-if="!isMobile">
       <div class="p-3 flex justify-center items-center gap-4 overflow-hidden cursor-pointer "  @click="showData">
         <div name="left" class="w-20 h-40 flex flex-col flex-wrap justify-center items-center "  >
