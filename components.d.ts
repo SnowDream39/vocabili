@@ -30,6 +30,7 @@ declare module 'vue' {
     ElImage: typeof import('element-plus/es')['ElImage']
     ElInput: typeof import('element-plus/es')['ElInput']
     ElLink: typeof import('element-plus/es')['ElLink']
+    ElLoading: typeof import('element-plus/es')['ElLoading']
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElOption: typeof import('element-plus/es')['ElOption']
@@ -72,5 +73,8 @@ declare module 'vue' {
     TodayCalculator: typeof import('./src/components/song/TodayCalculator.vue')['default']
     VideoInfo: typeof import('./src/components/song/VideoInfo.vue')['default']
     VideoStat: typeof import('./src/components/song/VideoStat.vue')['default']
+  }
+  export interface GlobalDirectives {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }

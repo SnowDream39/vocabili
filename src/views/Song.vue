@@ -1,14 +1,14 @@
 <template>
   <div class="w-full m-4 flex flex-nowrap flex-col justify-center items-center xl:flex-row xl:items-start">
     <!-- 歌曲信息 -->
-    <div class="w-full max-w-[600px] mx-10 xl:w-auto xl-basis-lg xl:grow-1 flex flex-col flex-nowrap items-center gap-4" >
-      <SongInfo :songId="songId" class="w-full" />
+    <div v-loading="loading" class="min-h-50 w-full max-w-[600px] mx-10 xl:w-auto xl-basis-lg xl:grow-1 flex flex-col flex-nowrap items-center gap-4" >
+      <SongInfo :songId="songId" class="w-full" @completed="loading = false" />
       <CommentFrame class="hidden xl:block" />
     </div>
 
     <!-- 排行数据 -->
     <div class="w-full px-4 xl:w-auto xl:grow">
-      <div v-if="chartCompleted" class="relative">
+      <div v-loading="!chartCompleted" class="relative">
         <SongChart
           :data="chartMap[chartBoardId].data"
           :board-id="chartBoardId"
@@ -69,7 +69,7 @@ const chartMap = reactive<Record<string, {
   'vocaloid-monthly': {index: 0, end: false, data: []},
 })
 const log = ref<boolean>(false)
-
+const loading = ref<boolean>(true)
 function initSongId(){
   const route = useRoute();
   statusStore.articleId = route.params.id as string;

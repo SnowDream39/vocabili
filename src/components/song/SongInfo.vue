@@ -17,9 +17,6 @@
       </el-carousel-item>
     </el-carousel>
   </div>
-  <div v-else>
-    <div>加载中</div>
-  </div>
 </template>
 
 <script setup lang="ts">
@@ -29,6 +26,7 @@ import VideoInfo from './VideoInfo.vue';
 import { requester } from '@/utils/api/requester';
 import { ElCarousel, ElCarouselItem } from 'element-plus';
 import { useTitle } from '@vueuse/core';
+
 
 // ==============  控制走马灯高度  ===========
 
@@ -40,8 +38,7 @@ function handleHeight(value: any) {
 }
 
 // ==============  处理数据  ==============
-
-
+const emits = defineEmits(['completed'])
 
 async function fetchSongInfo(songId: string) {
   try {
@@ -123,8 +120,11 @@ onMounted(async () => {
     const plainData = converted(originalData)
     const videosData = toVideosData(plainData)
     data.value = videosData
+    emits('completed')
   }
 })
+
+
 
 </script>
 

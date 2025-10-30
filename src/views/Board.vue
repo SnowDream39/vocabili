@@ -41,7 +41,7 @@
         class="pagination"
         @current-change="handlePageChanged"
       />
-      <div class="w-full grid grid-cols-1 lg:grid-cols-2 gap-4" ref="boardList">
+      <div v-loading="!metadata || !boards || boards.length == 0" class="min-h-50 w-full grid grid-cols-1 lg:grid-cols-2 gap-4" ref="boardList">
         <RankingCard
           v-for="data in boards"
           v-if="metadata && boards && boards.length > 0"
