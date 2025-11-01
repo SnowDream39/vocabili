@@ -4,16 +4,8 @@
   </Vue3Marquee>
 </template>
 
-<script></script>
+<script>
+import { Vue3Marquee } from 'vue3-marquee';
 
-<style>
-:deep(.vue3-marquee) {
-  overflow-y: hidden !important;
-}
+</script>
 
-:deep(.marquee::after) {
-  content: '';
-  width: 1em;
-}
-
-</style>
