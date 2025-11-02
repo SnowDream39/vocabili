@@ -1,5 +1,5 @@
 <template>
-  <div class="w-100 px-2">
+  <div class="w-100 px-2 shrink-0">
     <el-tabs v-model="activeName">
       <el-tab-pane v-for="{name, data} in boardMap" :name="name" :label="name">
         <div v-if="data">

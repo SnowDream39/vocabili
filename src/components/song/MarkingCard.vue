@@ -2,7 +2,7 @@
   <div class="marking-card max-w-150 suspend-panel w-full p-4">
     <div class="flex flex-col sm:flex-row">
       <div name="left" class=" mx-2" :title="record.title" >
-        <a :href="`https://www.bilibili.com/video/${record.bvid}`" target="_blank">
+        <a :href="props.svmode ? `https://www.bilibili.com/video/av${record.aid}` :  `https://www.bilibili.com/video/${record.bvid}`" target="_blank">
           <img :src="record.image_url" alt="thumbnail" class="w-[200px]" referrerpolicy="no-referrer" />
         </a>
         <el-switch v-model="includeEntries[index]" class="mb-2" />

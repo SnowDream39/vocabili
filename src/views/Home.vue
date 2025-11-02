@@ -1,9 +1,6 @@
 <template>
-  <div class="flex flex-col items-center">
-    <div class="flex flex-row m-4">
-      <NoticeBoard />
-      <LatestRanking />
-    </div>
+  <div class="flex flex-col items-center md:flex-row md:items-start">
+    <LatestRanking />
     <RankingCalendar />
   </div>
 </template>
@@ -12,7 +9,6 @@
 
 import LatestRanking from '@/components/LatestRanking.vue';
 import RankingCalendar from '../components/RankingCalendar.vue';
-import NoticeBoard from '@/components/NoticeBoard.vue';
 
 </script>
 <style scoped>
