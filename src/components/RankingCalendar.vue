@@ -1,5 +1,5 @@
 <template>
-  <div class="calendar grid grid-cols-1 max-h-[80vh] overflow-y-scroll md:max-h-none lg:grid-cols-2">
+  <div class="calendar flex flex-wrap justify-center">
     <div v-for="month in months" class="calendar-month">
       <button @click="month.disabled ? undefined : jumpToBoard('monthly', month.issueNum)" class="month-btn btn-tertiary">{{ month.dateString }}</button>
       <div class="calendar-body">
@@ -157,11 +157,7 @@ onMounted(init)
 </script>
 
 <style scoped>
-.calendar {
-  box-sizing: border-box;
-  padding: 20px;
-  scrollbar-width: none;
-}
+
 
 .calendar-month {
   text-align: center;

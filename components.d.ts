@@ -44,6 +44,7 @@ declare module 'vue' {
     HeaderDrawer: typeof import('./src/components/header/HeaderDrawer.vue')['default']
     HeaderMenu: typeof import('./src/components/header/HeaderMenu.vue')['default']
     InfoItem: typeof import('./src/components/board/InfoItem.vue')['default']
+    LatestRanking: typeof import('./src/components/LatestRanking.vue')['default']
     ListItem: typeof import('./src/components/board/ListItem.vue')['default']
     LoginCard: typeof import('./src/components/user/LoginCard.vue')['default']
     MarkingCard: typeof import('./src/components/song/MarkingCard.vue')['default']

@@ -18,6 +18,7 @@ export default defineConfig({
       surface: 'var(--md-sys-color-surface)',
       'surface-container': 'var(--md-sys-color-surface-container)',
       'on-surface': 'var(--md-sys-color-on-surface)',
+      'on-surface-variant': 'var(--md-sys-color-on-surface-variant)',
       error: 'var(--md-sys-color-error)',
       'on-error': 'var(--md-sys-color-on-error)',
     },

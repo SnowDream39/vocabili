@@ -25,7 +25,7 @@ export default class Board {
   /**
    *
    * @param boardId 可以传入 boardId，也可以只传 name 和 section。
-   * @param issue 如果-1就是向服务器要最新一期，不传就是当天（下一期）。
+   * @param issue 默认是当天
    */
   constructor(boardId: string, issue?: number) {
     const items = boardId.split('-', 3)
@@ -44,6 +44,17 @@ export default class Board {
       this.issue = currentIssue[this.section]
     }
   }
+
+  // 特殊构造方法
+  /**
+   * issue 是 -1
+   */
+  static latest(boardId: string): Board {
+    const board = new Board(boardId)
+    board.issue = -1
+    return board
+  }
+
   get id(): string {
     return [this.name, this.section].join('-');
   }

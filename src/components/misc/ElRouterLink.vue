@@ -13,7 +13,7 @@
 import { useRouter } from 'vue-router'
 const props = defineProps<{
   to: string
-  disabled: boolean
+  disabled?: boolean
   type: string
 }>()
 

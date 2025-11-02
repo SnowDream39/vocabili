@@ -74,9 +74,6 @@ class Requester {
     })
     return response.data.data
   }
-  /**
-   * 如果不填写issue，默认最新期
-   */
   async get_board(board = new Board("vocaloid-daily-main", -1), count = 20, index = 1, field = 'score.total' ) {
     if (board.issue !== -1) {
       const response = await api.get(Requester.endpoint.get_board, {

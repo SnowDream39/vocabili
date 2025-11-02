@@ -1,16 +1,21 @@
 <template>
-  <div class="md:flex md:flex-row md:items-start">
-    <NoticeBoard />
+  <div class="flex flex-col items-center">
+    <div class="flex flex-row m-4">
+      <NoticeBoard />
+      <LatestRanking />
+    </div>
     <RankingCalendar />
   </div>
 </template>
 
 <script setup lang="ts">
-import NoticeBoard from '@/components/NoticeBoard.vue';
+
+import LatestRanking from '@/components/LatestRanking.vue';
 import RankingCalendar from '../components/RankingCalendar.vue';
+import NoticeBoard from '@/components/NoticeBoard.vue';
 
 </script>
-<style lang="scss" scoped>
+<style scoped>
 .info {
   width: 100%;
   padding: 40px 0px 40px 0px;
