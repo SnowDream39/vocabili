@@ -1,5 +1,5 @@
 <template>
-<div class="flex flex-between text-shadow-none">
+<div class="flex flex-between items-start text-shadow-none">
   <div class="flex-1 self-stretch flex flex-col justify-between">
     <div>
       <div class="text-lg text-center">
@@ -35,20 +35,22 @@
   </div>
 
 
-  <a :href="`/song/${board.target.metadata.id}`" class="w-50 max-w-1/2 self-start rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all">
-    <div class="center-container relative">
-      <img class="w-full aspect-video object-cover" :src="board.target.platform.thumbnail" alt="thumbnail" />
-      <div class="absolute right-0 bottom-0 bg-black/60 font-normal px-1 rounded-tl-sm text-white">
-      <span>{{ secondToTime(board.target.platform.duration) }}</span>
-      <span v-if="board.target.platform.page > 1"> / </span>
-      <span v-if="board.target.platform.page > 1">{{ board.target.platform.page }}P</span>
-    </div>
-    </div>
-    <div class="bg-surface-container pb-2">
-      <div class="font-900">{{ board.target.platform.title }}</div>
-      <el-link underline="always" :href="`/artist/uploader/${board.target.platform.uploader[0].id}`" >{{ board.target.platform.uploader[0].name }}</el-link>
-      <div>{{ DateTime.fromISO(board.target.platform.publish).toFormat('yyyy-LL-dd HH:mm:ss') }}</div>
-    </div>
+  <a :href="`/song/${board.target.metadata.id}`" class="w-50 max-w-1/2">
+    <SuspendPanel interact>
+      <div class="center-container relative">
+        <img class="w-full aspect-video object-cover" :src="board.target.platform.thumbnail" alt="thumbnail" />
+        <div class="absolute right-0 bottom-0 bg-black/60 font-normal px-1 rounded-tl-sm text-white">
+        <span>{{ secondToTime(board.target.platform.duration) }}</span>
+        <span v-if="board.target.platform.page > 1"> / </span>
+        <span v-if="board.target.platform.page > 1">{{ board.target.platform.page }}P</span>
+      </div>
+      </div>
+      <div class="bg-surface-container pb-2">
+        <div class="font-900">{{ board.target.platform.title }}</div>
+        <el-link underline="always" :href="`/artist/uploader/${board.target.platform.uploader[0].id}`" >{{ board.target.platform.uploader[0].name }}</el-link>
+        <div>{{ DateTime.fromISO(board.target.platform.publish).toFormat('yyyy-LL-dd HH:mm:ss') }}</div>
+      </div>
+    </SuspendPanel>
   </a>
 </div>
 </template>
@@ -61,6 +63,7 @@ import RankChangeSpan from './RankChangeSpan.vue';
 import ListItem from './ListItem.vue';
 import { ElLink } from 'element-plus';
 import type { Board } from '@/utils/boardData';
+import SuspendPanel from '../container/SuspendPanel.vue';
 
 const props = defineProps<{
   board: Board

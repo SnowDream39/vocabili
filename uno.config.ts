@@ -53,7 +53,6 @@ export default defineConfig({
     'small-title': 'text-xl font-bold',
     // 容器样式
     'center-container': 'flex justify-center items-center',
-    'suspend-panel': 'bg-surface-container/70 rounded-2xl shadow-xl',
     // 按钮样式
     'glass-button': 'border-white hover:bg-white/30 active:bg-white/40 text-shadow-sm text-shadow-white dark:text-shadow-black backdrop-blur-2 rounded-md p-1 transition-colors cursor-pointer',
     'button-lg': 'text-lg border-2 rounded-md p-1',

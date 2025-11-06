@@ -1,7 +1,7 @@
 <template>
-  <div class="suspend-panel p-4">
+  <SuspendPanel class="p-4">
     <Calculator :form="form" :hide-button="true" @send-points="handlePoints" />
-  </div>
+  </SuspendPanel>
   <div class="px-4 w-full max-w-200">
     <PointChart :data="form" ></PointChart>
   </div>
@@ -14,6 +14,7 @@ import Calculator, { type Form } from '@/components/song/Calculator.vue';
 import { ref } from 'vue';
 import PointChart from '@/components/chart/PointChart.vue';
 import { useTitle } from '@vueuse/core';
+import SuspendPanel from '@/components/container/SuspendPanel.vue';
 
 useTitle('分数计算器 | 术力口数据库')
 /**

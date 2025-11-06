@@ -1,5 +1,5 @@
 <template>
-  <div v-if="data" class="max-w-full overflow-hidden">
+  <div v-if="data" class="max-w-full">
     <!-- 待实现：在这里做左右移动按钮 -->
       <el-scrollbar>
         <div class="flex flex-nowrap gap-4 pt-1 pl-4 pb-4">
@@ -10,7 +10,7 @@
             <div><ArtistList :artists="data.metadata.target.synthesizer" type="synthesizer" /></div>
           </div>
           <div class="flex gap-4 items-stretch">
-            <SuspendPanel v-for="(video, index) in data.platform" class="grow-0 shrink-0 w-60 flex flex-col">
+            <SuspendPanel interact v-for="(video, index) in data.platform" class="grow-0 shrink-0 w-60 flex flex-col">
               <div class="grow-0 shrink-0 aspect-ratio-16/9 w-full overflow-hidden">
                 <img :src="video.thumbnail" />
               </div>

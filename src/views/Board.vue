@@ -69,7 +69,7 @@
     </div>
     <!-- 开发中内容，只有大屏可见 -->
     <div class="hidden 2xl:block">
-      <div class="suspend-panel w-[400px] my-4 p-4">
+      <SuspendPanel class="w-[400px] my-4 p-4">
         <canvas id="qrcode"></canvas>
         <h2 class="big-title">本期看点</h2>
         <h3 class="small-title">统计</h3>
@@ -79,7 +79,7 @@
         </ul>
         <h3 class="small-title">跳水</h3>
         <div>该部分开发中</div>
-      </div>
+      </SuspendPanel>
       <CommentFrame/>
     </div>
 
@@ -103,6 +103,7 @@ import type { DataMetadata, Board as DataBoard } from '@/utils/boardData.ts';
 import QRCode from 'qrcode'
 import { issueBefore } from '@/utils/date.ts';
 import { useTitle } from '@vueuse/core';
+import SuspendPanel from '@/components/container/SuspendPanel.vue';
 
 
 const route = useRoute()

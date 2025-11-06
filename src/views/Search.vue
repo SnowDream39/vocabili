@@ -45,11 +45,11 @@
       </div>
     </template>
     <template v-if="tableData[0] && ['vocalist', 'uploader', 'producer', 'synthesizer'].includes(searchTarget)">
-      <div class="flex flex-wrap p-4 gap-2 suspend-panel w-9/10 max-w-112">
+      <SuspendPanel class="flex flex-wrap p-4 gap-2 w-9/10 max-w-112">
         <a v-for="artist in tableData" class="block" :href="`/artist/${searchTarget}/${artist.id}`">
           <el-button>{{ artist.name }}</el-button>
         </a>
-      </div>
+      </SuspendPanel>
     </template>
 
     <button class="btn-primary" @click="expandSearch" id="expand-search" >扩大搜索</button>
@@ -76,6 +76,7 @@ import { requester } from '../utils/api/requester.ts';
 import SearchMusicCard from '@/components/search/SearchMusicCard.vue';
 import { ElSelect, ElOption, ElInput, ElButton, ElPagination } from 'element-plus';
 import { useTitle } from '@vueuse/core';
+import SuspendPanel from '@/components/container/SuspendPanel.vue';
 
 // 响应式数据
 const searchWord = ref('')

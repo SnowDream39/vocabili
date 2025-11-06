@@ -1,5 +1,5 @@
 <template>
-  <div class="suspend-panel max-x-[600px] w-full p-4 space-y-4">
+  <SuspendPanel class="max-x-[600px] w-full p-4 space-y-4">
     <h2 class="text-xl font-semibold mb-4">评论区</h2>
 
     <!-- 新评论输入 -->
@@ -9,7 +9,7 @@
     <CommentList :comments="comments" :isReply="false" />
 
 
-  </div>
+  </SuspendPanel>
 </template>
 
 <script lang="ts" setup>
@@ -19,6 +19,7 @@ import CommentInput from './CommentInput.vue'
 import { getByArticleId } from '@/utils/api/comment'
 import { useStatusStore } from '@/store/status'
 import emitter from '@/utils/emitter'
+import SuspendPanel from '../container/SuspendPanel.vue'
 
 const statusStore = useStatusStore()
 
