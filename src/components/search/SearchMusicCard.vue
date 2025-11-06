@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import CardCoverThumbnail from '../board/CardCoverThumbnail.vue';
+import CardCoverThumbnail from '@/components/container/CardCoverThumbnail.vue';
 import TextMarquee from '../misc/TextMarquee.vue';
 
 defineProps<{

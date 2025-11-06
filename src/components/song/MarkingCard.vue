@@ -1,5 +1,5 @@
 <template>
-  <div class="marking-card max-w-150 suspend-panel w-full p-4">
+  <SuspendPanel class="marking-card max-w-150 w-full p-4">
     <div class="flex flex-col sm:flex-row">
       <div name="left" class=" mx-2" :title="record.title" >
         <a :href="props.svmode ? `https://www.bilibili.com/video/av${record.aid}` :  `https://www.bilibili.com/video/${record.bvid}`" target="_blank">
@@ -45,12 +45,13 @@
       <div class="max-h-12 overflow-hidden">{{ record.intro }}</div>
     </div>
 
-  </div>
+  </SuspendPanel>
 </template>
 
 <script lang="ts" setup>
 import { ElInput, ElSelect, ElSwitch, ElOption } from 'element-plus';
 import MarkingTags from '@/components/song/MarkingTags.vue';
+import SuspendPanel from '../container/SuspendPanel.vue';
 
 const props = defineProps<{
   record: any

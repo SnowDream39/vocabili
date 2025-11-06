@@ -1,23 +1,22 @@
 <template>
-  <div class="w-full m-4 flex flex-nowrap flex-col justify-center items-center xl:flex-row xl:items-start">
+  <div class="w-full flex flex-nowrap flex-col justify-center items-center">
     <!-- 歌曲信息 -->
-    <div v-loading="loading" class="min-h-50 w-full max-w-[600px] mx-10 xl:w-auto xl-basis-lg xl:grow-1 flex flex-col flex-nowrap items-center gap-4" >
-      <SongInfo :songId="songId" class="w-full" @completed="loading = false" />
-      <CommentFrame class="hidden xl:block" />
+    <div v-loading="loading" class="w-full my-4 center-container" >
+      <SongInfoBlock :songId="songId" @completed="loading = false" />
     </div>
 
     <!-- 排行数据 -->
-    <div class="w-full px-4 xl:w-auto xl:grow">
+    <div class="w-full px-4">
       <div v-loading="!chartCompleted" class="relative">
         <SongChart
           :data="chartMap[chartBoardId].data"
           :board-id="chartBoardId"
           :log="log"
+          ref="chartRef"
         />
         <div class="absolute top-2 w-full flex justify-between">
           <ElSwitch v-model="log" activeText="对数y轴"/>
           <div>
-            <el-button v-if="!chartMap[chartBoardId].end" @click="loadAll(chartBoardId)">加载全部</el-button>
             <el-select
               class="w-30!"
               v-model="chartBoardId"
@@ -30,13 +29,20 @@
               />
             </el-select>
           </div>
-
+        </div>
+        <div class="w-full flex justify-end">
+          <el-button v-if="!chartMap[chartBoardId].end" @click="loadAll(chartBoardId)">加载全部</el-button>
+          <el-button @click="showTable">导出表格</el-button>
         </div>
       </div>
+      <SongHistoryTableData
+        v-if="tableVisible"
+        :data="tableData"
+      />
     </div>
 
   </div>
-  <CommentFrame class="xl:hidden" />
+  <CommentFrame />
 </template>
 
 <script lang="ts" setup>
@@ -44,10 +50,11 @@ import { useRoute } from 'vue-router';
 import { onMounted, reactive, ref } from 'vue';
 import { useStatusStore } from '@/store/status';
 import CommentFrame from '@/components/user/CommentFrame.vue';
-import SongInfo from '@/components/song/SongInfo.vue';
+import SongInfoBlock from '@/components/song/SongInfoBlock.vue';
 import SongChart from '@/components/chart/SongChart.vue';
 import { ElSelect, ElOption, ElSwitch, ElButton } from 'element-plus';
 import { requester } from '@/utils/api/requester';
+import SongHistoryTableData from '@/components/song/SongHistoryTableData.vue';
 const statusStore = useStatusStore()
 
 const options = [
@@ -68,8 +75,12 @@ const chartMap = reactive<Record<string, {
   'vocaloid-weekly': {index: 0, end: false, data: []},
   'vocaloid-monthly': {index: 0, end: false, data: []},
 })
+const chartRef = ref<any>()
+const tableVisible = ref<boolean>(false)
+const tableData = ref<any>()
 const log = ref<boolean>(false)
 const loading = ref<boolean>(true)
+
 function initSongId(){
   const route = useRoute();
   statusStore.articleId = route.params.id as string;
@@ -86,6 +97,10 @@ async function fetchData(boardId: string) {
   } else {
     chart.end = false;
   }
+  if (!chartCompleted.value) {
+    chartBoardId.value = boardId
+    chartCompleted.value = true
+  }
 }
 
 async function loadAll(boardId: string) {
@@ -101,88 +116,19 @@ async function loadAll(boardId: string) {
   }
 }
 
+function showTable() {
+  const option = chartRef.value?.getOption()
+  const slider = option.dataZoom.filter((item: any) => item.type == 'slider')[0]
+  const { startValue, endValue } = slider as unknown as any
+  tableData.value = chartMap[chartBoardId.value].data.filter((item: any) => item.issue >= startValue && item.issue <= endValue)
+  tableVisible.value = true
+}
+
 onMounted(async () => {
   await Promise.all([fetchData('vocaloid-daily'), fetchData('vocaloid-weekly'), fetchData('vocaloid-monthly')])
-  chartCompleted.value = true
+
 })
 
 </script>
 
 
-<style scoped>
-/* 保证页面没有横向滚动条 */
-html,
-body {
-  margin: 0px;
-  padding: 0px;
-  overflow-x: hidden;
-  /* 禁止水平滚动 */
-  width: 100%;
-  height: 100%;
-}
-
-a {
-  text-decoration: none;
-}
-
-/* 表格优化：禁止表格产生水平滚动 */
-.el-table {
-  margin: 0;
-  padding: 0;
-  border: none;
-  width: 100%;
-  /* 保证表格宽度始终自适应 */
-}
-
-.el-table-column {
-  padding: 12px;
-}
-
-/* 小屏幕适配 */
-@media (max-width: 768px) {
-  .song-info-container {
-    padding: 10px;
-    margin-left: 50px;
-    margin-right: 50px;
-    /* 小屏幕时减少内边距 */
-  }
-
-  .board-title {
-    font-size: 20px;
-    /* 小屏幕时调整标题字体大小 */
-  }
-
-  .board-table {
-    padding: 8px;
-    /* 小屏幕时调整表格内边距 */
-  }
-
-  .el-table-column {
-    padding: 10px;
-    /* 小屏幕时调整表格列的内边距 */
-  }
-}
-
-/* 超小屏幕适配（如手机） */
-@media (max-width: 480px) {
-  .song-info-container {
-    padding: 10px;
-    /* 手机屏幕时进一步减小内边距 */
-  }
-
-  .board-title {
-    font-size: 18px;
-    /* 手机屏幕时调整标题字体大小 */
-  }
-
-  .board-table {
-    padding: 5px;
-    /* 手机屏幕时减少表格内边距 */
-  }
-
-  .el-table-column {
-    padding: 8px;
-    /* 手机屏幕时调整表格列的内边距 */
-  }
-}
-</style>

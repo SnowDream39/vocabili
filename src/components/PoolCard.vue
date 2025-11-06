@@ -34,7 +34,7 @@
 
 <script lang="ts" setup>
 import InfoItem from '@/components/board/InfoItem.vue';
-import CardCoverThumbnail from './board/CardCoverThumbnail.vue';
+import CardCoverThumbnail from '@/components/container/CardCoverThumbnail.vue';
 defineProps<VideoData>()
 
 interface VideoData {

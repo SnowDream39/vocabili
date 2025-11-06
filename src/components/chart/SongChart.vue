@@ -1,5 +1,5 @@
 <template>
-  <VChart class="h-100 rounded-xl" :autoresize="true" :option="option" />
+  <VChart class="h-100 rounded-xl" :autoresize="true" :option="option" ref="chartRef" />
 </template>
 
 <script setup lang="ts">
@@ -38,6 +38,8 @@ import { useDark } from "@vueuse/core";
 import { startTimeOf } from '@/utils/date'
 import type { BasicSection } from '@/utils/board'
 import type { Stats } from './CalcChart.vue'
+
+const chartRef = ref()
 
 // 自动切换主题
 const dark = useDark()
@@ -190,6 +192,14 @@ watch(() => props, (value) => {
   }
 
 }, { immediate: true, deep: true })
+
+function getOption() {
+  return chartRef.value.getOption()
+}
+
+defineExpose({
+  getOption
+})
 
 
 </script>

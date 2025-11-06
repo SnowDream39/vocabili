@@ -129,7 +129,7 @@ import Board from '@/utils/board';
 import { compareRank } from '@/utils/dataConverter';
 import { ElDialog } from 'element-plus';
 import RankingDialog from './RankingDialog.vue';
-import CardCoverThumbnail from './CardCoverThumbnail.vue';
+import CardCoverThumbnail from '@/components/container/CardCoverThumbnail.vue';
 import { useMediaQuery } from '@vueuse/core';
 import TodayCalculator from '../song/TodayCalculator.vue';
 import TextMarquee from '../misc/TextMarquee.vue';

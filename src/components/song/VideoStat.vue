@@ -34,7 +34,7 @@ import { ElTable, ElTableColumn, ElDialog } from 'element-plus';
 import Calculator from './Calculator.vue';
 import { difference, get_video_current_data, searchData } from '@/utils/calculator';
 
-const props = defineProps(['bvid','songId','videoId','copyright','upload'])
+const props = defineProps(['bvid','songId','videoId','copyright','publish'])
 
 const columns = [
   {key: "name", label: "数据"},
@@ -55,7 +55,7 @@ const calculatorVisible = ref(false)
  *
  */
 async function init() {
-  const publishTime = DateTime.fromFormat(props.upload, 'yyyy-MM-dd hh:mm:ss')
+  const publishTime = DateTime.fromISO(props.publish)
   stat.value = []
 
   // 当前数据
@@ -101,8 +101,6 @@ function showCalculator(row: any) {
     board: new Board(`vocaloid-${row.board}`, currentIssue[row.board as keyof typeof currentIssue])
   }
 }
-
-
 
 onMounted(init)
 

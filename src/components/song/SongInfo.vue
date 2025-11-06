@@ -41,13 +41,11 @@ function handleHeight(value: any) {
 const emits = defineEmits(['completed'])
 
 async function fetchSongInfo(songId: string) {
-  try {
-    const data = await requester.get_song_info(songId);
-    return data[0];
-  } catch (error) {
-    console.log('获取数据失败：', error);
-    return null;
-  }
+
+  const data = await requester.get_song_info(songId);
+  console.log(data[0])
+  return data[0];
+
 }
 
 // 不处理为最终文本
@@ -106,7 +104,6 @@ const statVisible = ref(false)
 
 useTitle(computed(() => {
   if (data.value) {
-    console.log(data)
     return data.value[0].song.name + ' | 术力口数据库'
   } else {
     return '加载中……'
@@ -123,8 +120,6 @@ onMounted(async () => {
     emits('completed')
   }
 })
-
-
 
 </script>
 
