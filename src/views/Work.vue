@@ -83,7 +83,11 @@ function handleFileUpload(file: File) {
     worker.onmessage = (event) => {
       allRecords.value = event.data;
       let length = allRecords.value.length;
-      includeEntries.value = new Array(length).fill(true);
+      if (svmode.value){
+        includeEntries.value = new Array(length).fill(true);
+      } else {
+        includeEntries.value = allRecords.value.map((item: any) => ['done', 'auto'].includes(item.status))
+      }
       currentPage.value = 1;
       worker.terminate();
       console.log("解析完成，记录数:", length);

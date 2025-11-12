@@ -5,7 +5,8 @@
         <a :href="props.svmode ? `https://www.bilibili.com/video/av${record.aid}` :  `https://www.bilibili.com/video/${record.bvid}`" target="_blank">
           <img :src="record.image_url" alt="thumbnail" class="w-[200px]" referrerpolicy="no-referrer" />
         </a>
-        <el-switch v-model="includeEntries[index]" class="mb-2" />
+        <el-switch v-model="includeEntries[index]" active-text="收录" class="mb-2" />
+        <div class="font-bold">{{ statusMap[record.status] }}</div>
       </div>
       <div name="right" class="grow" >
         <div class="text-lg font-bold">{{ record.title }}</div>
@@ -87,6 +88,11 @@ const fields = props.svmode ? [
   ]},
 ]
 
+const statusMap: Record<string, string> = {
+  done: '已打标',
+  auto: 'AI打标',
+  check: '未打标'
+}
 
 
 
