@@ -47,8 +47,6 @@ declare module 'vue' {
     LatestRanking: typeof import('./src/components/LatestRanking.vue')['default']
     ListItem: typeof import('./src/components/board/ListItem.vue')['default']
     LoginCard: typeof import('./src/components/user/LoginCard.vue')['default']
-    MarkingCard: typeof import('./src/components/song/MarkingCard.vue')['default']
-    MarkingTags: typeof import('./src/components/song/MarkingTags.vue')['default']
     NoticeBoard: typeof import('./src/components/NoticeBoard.vue')['default']
     PointChart: typeof import('./src/components/chart/PointChart.vue')['default']
     PoolCard: typeof import('./src/components/PoolCard.vue')['default']
