@@ -1,25 +1,25 @@
 <template>
-  <div v-if="data" class="max-w-full">
+  <div v-if="song" class="max-w-full">
     <!-- 待实现：在这里做左右移动按钮 -->
       <el-scrollbar>
         <div class="flex flex-nowrap gap-4 pt-1 pl-4 pb-4">
           <div id="song-info" class="grow-0 shrink-0 w-60 *:my-2">
-            <h1 class="font-800 text-3xl text-left">{{ data.metadata.name }}</h1>
-            <div><ArtistList :artists="data.metadata.target.producer" type="producer" /></div>
-            <div><ArtistList :artists="data.metadata.target.vocalist" type="vocalist" /></div>
-            <div><ArtistList :artists="data.metadata.target.synthesizer" type="synthesizer" /></div>
+            <h1 class="font-800 text-3xl text-left">{{ song.name }}</h1>
+            <div><ArtistList :artists="song.producers" type="producer" /></div>
+            <div><ArtistList :artists="song.vocalists" type="vocalist" /></div>
+            <div><ArtistList :artists="song.synthesizers" type="synthesizer" /></div>
           </div>
           <div class="flex gap-4 items-stretch">
-            <SuspendPanel interact v-for="(video, index) in data.platform" class="grow-0 shrink-0 w-60 flex flex-col">
+            <SuspendPanel interact v-for="(video, index) in song.videos" class="grow-0 shrink-0 w-60 flex flex-col">
               <div class="grow-0 shrink-0 aspect-ratio-16/9 w-full overflow-hidden">
                 <img :src="video.thumbnail" />
               </div>
               <div class="grow flex flex-col justify-between">
-                <a class="font-bold underline underline-offset-5 hover:no-underline" :href="video.link">{{ video.title }}</a>
+                <a class="font-bold underline underline-offset-5 hover:no-underline" :href="bvidToLink(video.bvid)">{{ video.title }}</a>
                 <div>
                   <div>
-                    <div>{{ copyrightString(video.copyright) }}：<ArtistList :artists="video.uploader" type="uploader" /></div>
-                    <div>{{ DateTime.fromISO(video.publish).toFormat('yyyy-LL-dd HH:mm:ss') }}</div>
+                    <div>{{ copyrightString(video.copyright) }}：<ArtistList :artists="[video.uploader]" type="uploader" /></div>
+                    <div>{{ DateTime.fromISO(video.pubdate).toFormat('yyyy-LL-dd HH:mm:ss') }}</div>
                   </div>
                   <div class="w-30 grow-0 shrink-0">
                     <el-button type="primary" @click="showStat(index)">最新数据</el-button>
@@ -34,11 +34,10 @@
                 custom-class="video-stats-modal"
                 >
                 <VideoStat
-                  :bvid="video.link.split('/').slice(-1)[0]"
-                  :songId="data.metadata.id"
-                  :videoId="video.id"
+                  :bvid="video.bvid"
+                  :songId="song.id"
                   :copyright="video.copyright"
-                  :publish="video.publish"
+                  :publish="video.pubdate"
                 />
               </el-dialog>
             </SuspendPanel>
@@ -53,14 +52,16 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
 import { DateTime } from 'luxon'
-import { requester } from '@/utils/api/requester';
 import { useTitle } from '@vueuse/core';
 import ArtistList from '../search/ArtistList.vue';
 import { ElDialog, ElScrollbar, ElButton } from 'element-plus';
 import VideoStat from './VideoStat.vue';
 import SuspendPanel from '../container/SuspendPanel.vue';
+import api from '@/utils/api/api';
+import type { SongWithVideo } from '@/utils/RankingTypes';
+import { bvidToLink } from '@/utils/videoid';
 // ==============  处理数据  ==============
-const data = ref<any>()
+const song = ref<SongWithVideo>()
 const statVisible = ref<boolean[]>([])
 const emits = defineEmits(['completed'])
 
@@ -69,10 +70,10 @@ function showStat(index: number) {
 }
 
 
-async function fetchSongInfo(songId: string) {
+async function fetchSongInfo(songId: number): Promise<SongWithVideo> {
 
-  const data = await requester.get_song_info(songId);
-  return data[0];
+  const data = await api.getSong(songId);
+  return data.data;
 
 }
 
@@ -80,8 +81,8 @@ async function fetchSongInfo(songId: string) {
 const props = defineProps(['songId'])
 
 useTitle(computed(() => {
-  if (data.value) {
-    return data.value.metadata.name + ' | 术力口数据库'
+  if (song.value) {
+    return song.value.name + ' | 术力口数据库'
   } else {
     return '加载中……'
   }
@@ -93,7 +94,7 @@ function copyrightString(copyright: number) {
 
 onMounted(async () => {
   if (props.songId) {
-    data.value = await fetchSongInfo(props.songId)
+    song.value = await fetchSongInfo(props.songId)
     emits('completed')
   }
 })

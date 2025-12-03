@@ -10,7 +10,7 @@
 <script setup lang="ts">
 import { ElLink } from 'element-plus';
 interface Artist {
-  id: string,
+  id: number,
   name: string,
   color?: number
 }

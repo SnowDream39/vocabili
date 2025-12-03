@@ -10,7 +10,7 @@
       <div v-loading="!chartCompleted" class="relative">
         <SongChart
           :data="chartMap[chartBoardId].data"
-          :board-id="chartBoardId"
+          :board-name="chartBoardId"
           :log="log"
           ref="chartRef"
         />
@@ -53,8 +53,11 @@ import CommentFrame from '@/components/user/CommentFrame.vue';
 import SongInfoBlock from '@/components/song/SongInfoBlock.vue';
 import SongChart from '@/components/chart/SongChart.vue';
 import { ElSelect, ElOption, ElSwitch, ElButton } from 'element-plus';
-import { requester } from '@/utils/api/requester';
 import SongHistoryTableData from '@/components/song/SongHistoryTableData.vue';
+import api from '@/utils/api/api';
+import type { Ranking } from '@/utils/RankingTypes';
+import type { SequentialBoard } from '@/utils/board';
+
 const statusStore = useStatusStore()
 
 const options = [
@@ -63,13 +66,13 @@ const options = [
   { title: '月刊数据', boardId: 'vocaloid-monthly', },
 ]
 
-const songId = ref<string>(initSongId());
+const songId = ref<number>(initSongId());
 const chartCompleted = ref<boolean>(false)
-const chartBoardId = ref<string>('vocaloid-daily')
+const chartBoardId = ref<SequentialBoard>('vocaloid-daily')
 const chartMap = reactive<Record<string, {
   index: number,
   end: boolean,
-  data: any
+  data: Ranking[]
 }>>({
   'vocaloid-daily': {index: 0, end: false, data: []},
   'vocaloid-weekly': {index: 0, end: false, data: []},
@@ -84,21 +87,21 @@ const loading = ref<boolean>(true)
 function initSongId(){
   const route = useRoute();
   statusStore.articleId = route.params.id as string;
-  return route.params.id as string
+  return Number(route.params.id) as number
 }
 
-async function fetchData(boardId: string) {
-  const chart = chartMap[boardId]
+async function fetchData(board: SequentialBoard) {
+  const chart = chartMap[board]
   chart.index += 1;
-  const response = await requester.get_song_rank_history(songId.value, boardId, 64, chart.index);
-  chart.data.push(...response.result);
+  const response = await api.getSongRanking(songId.value, board);
+  chart.data.push(...response.data);
   if (chart.index * 64 >= response.total) {
     chart.end = true;
   } else {
     chart.end = false;
   }
   if (!chartCompleted.value) {
-    chartBoardId.value = boardId
+    chartBoardId.value = board
     chartCompleted.value = true
   }
 }
@@ -108,7 +111,7 @@ async function loadAll(boardId: string) {
   chart.end = true
   while (true) {
     chart.index += 1;
-    const response = await requester.get_song_rank_history(songId.value, boardId, 64, chart.index);
+    const response = await api.getSongRanking(songId.value, boardId, chart.index, 64);
     chart.data.push(...response.result);
     if (chart.index * 64 >= response.total) {
       break

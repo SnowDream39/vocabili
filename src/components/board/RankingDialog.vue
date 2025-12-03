@@ -3,17 +3,17 @@
   <div class="flex-1 self-stretch flex flex-col justify-between">
     <div>
       <div class="text-lg text-center">
-        <span>第{{ board.rank.board }}位</span>
-        <RankChangeSpan :rank-before="board.last?.rank" :change="change" />
+        <span>第{{ ranking.rank }}位</span>
+        <RankChangeSpan :rank-before="ranking.last?.rank" :change="change" />
       </div>
       <div class="text-center">
-        <div class="text-lg">{{ board.point.toLocaleString() }} pts</div>
-        <div v-if="board.last" class="flex flex-row flex-wrap justify-center space-x-2">
+        <div class="text-lg">{{ ranking.point.toLocaleString() }} pts</div>
+        <div v-if="ranking.last" class="flex flex-row flex-wrap justify-center space-x-2">
           <div>
-            上期：{{ board.last.point.toLocaleString() }} pts
+            上期：{{ ranking.last.point.toLocaleString() }} pts
           </div>
           <div>
-            RATE：{{((board.point - board.last.point) / board.last.point * 100).toFixed(2) + '%'}}
+            RATE：{{((ranking.point - ranking.last.point) / ranking.last.point * 100).toFixed(2) + '%'}}
           </div>
         </div>
       </div>
@@ -21,34 +21,34 @@
 
     <div>
       <div class="italic">
-        <div><ListItem :items="board.target.metadata.target.producer" type="producer" /></div>
-        <div><ListItem :items="board.target.metadata.target.vocalist" type="vocalist" /></div>
-        <div><ListItem :items="board.target.metadata.target.synthesizer" type="synthesizer" /></div>
+        <div><ListItem :items="ranking.song.producers" type="producer" /></div>
+        <div><ListItem :items="ranking.song.vocalists" type="vocalist" /></div>
+        <div><ListItem :items="ranking.song.synthesizers" type="synthesizer" /></div>
       </div>
       <div class="space-x-2">
-        <span v-if="[1, 4].includes(board.target.platform.copyright)">本家投稿</span>
+        <span v-if="[1, 4].includes(ranking.video.copyright)">本家投稿</span>
         <span v-else>搬运</span>
-        <span>{{ board.target.metadata.type }}</span>
+        <span>{{ ranking.song.type }}</span>
       </div>
-      <div>上榜次数：{{ board.count }}</div>
+      <div>上榜次数：{{ ranking.count }}</div>
     </div>
   </div>
 
 
-  <a :href="`/song/${board.target.metadata.id}`" class="w-50 max-w-1/2">
+  <a :href="`/song/${ranking.song.id}`" class="w-50 max-w-1/2">
     <SuspendPanel interact>
       <div class="center-container relative">
-        <img class="w-full aspect-video object-cover" :src="board.target.platform.thumbnail" alt="thumbnail" />
+        <img class="w-full aspect-video object-cover" :src="ranking.video.thumbnail" alt="thumbnail" />
         <div class="absolute right-0 bottom-0 bg-black/60 font-normal px-1 rounded-tl-sm text-white">
-        <span>{{ secondToTime(board.target.platform.duration) }}</span>
-        <span v-if="board.target.platform.page > 1"> / </span>
-        <span v-if="board.target.platform.page > 1">{{ board.target.platform.page }}P</span>
+        <span>{{ secondToTime(ranking.video.duration) }}</span>
+        <span v-if="ranking.video.page > 1"> / </span>
+        <span v-if="ranking.video.page > 1">{{ ranking.video.page }}P</span>
       </div>
       </div>
       <div class="bg-surface-container pb-2">
-        <div class="font-900">{{ board.target.platform.title }}</div>
-        <el-link underline="always" :href="`/artist/uploader/${board.target.platform.uploader[0].id}`" >{{ board.target.platform.uploader[0].name }}</el-link>
-        <div>{{ DateTime.fromISO(board.target.platform.publish).toFormat('yyyy-LL-dd HH:mm:ss') }}</div>
+        <div class="font-900">{{ ranking.video.title }}</div>
+        <el-link underline="always" :href="`/artist/uploader/${ranking.video.uploader.id}`" >{{ ranking.video.uploader.name }}</el-link>
+        <div>{{ DateTime.fromISO(ranking.video.pubdate).toFormat('yyyy-LL-dd HH:mm:ss') }}</div>
       </div>
     </SuspendPanel>
   </a>
@@ -62,14 +62,14 @@ import { ref } from 'vue';
 import RankChangeSpan from './RankChangeSpan.vue';
 import ListItem from './ListItem.vue';
 import { ElLink } from 'element-plus';
-import type { Board } from '@/utils/boardData';
+import type { Ranking } from '@/utils/RankingTypes';
 import SuspendPanel from '../container/SuspendPanel.vue';
 
 const props = defineProps<{
-  board: Board
+  ranking: Ranking
 }>()
 
-const change = ref<string>(compareRank(props.board.rank.board, props.board.last ? props.board.last.rank : undefined))
+const change = ref<string>(compareRank(props.ranking.rank, props.ranking.last ? props.ranking.last.rank : undefined))
 
 function secondToTime(seconds: number): string {
   return `${Math.floor(seconds / 60).toString()}:${(seconds % 60).toString().padStart(2, '0')}`

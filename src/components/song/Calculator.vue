@@ -6,7 +6,7 @@
         <el-option v-for="copyright in copyrights" :value="copyright.value" :label="copyright.label" />
       </el-select>
       <span>规则</span>
-      <el-select v-model="form.board.id" placeholder="类型">
+      <el-select v-model="form.board.name" placeholder="类型">
         <el-option v-for="board in boards" :value="board.value" :label="board.label" />
       </el-select>
       <el-input v-model="form.board.issue"/>
@@ -60,7 +60,7 @@
     </div>
   </div>
 
-  <a v-if="!props.hideButton" :href="`/calculator?view=${props.form.view}&favorite=${props.form.favorite}&coin=${props.form.coin}&like=${props.form.like}&copyright=${props.form.copyright}&boardId=${props.form.board.id}&issue=${props.form.board.issue}`">
+  <a v-if="!props.hideButton" :href="`/calculator?view=${props.form.view}&favorite=${props.form.favorite}&coin=${props.form.coin}&like=${props.form.like}&copyright=${props.form.copyright}&boardId=${props.form.board.name}&issue=${props.form.board.issue}`">
     <button class="btn-primary">打开计算器页</button>
   </a>
 

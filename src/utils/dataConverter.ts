@@ -84,7 +84,7 @@ export function boardToPlain(data: any, board: Board, meta: Metadata): VideoData
 
     const {rank,count,change:stat,target:songInfo,last} = data
     const {id:boardId, issue:issueNum} = meta
-    const issue = new Issue(boardId, issueNum)
+    const issue = new Issue(boardId, 'main', issueNum)
 
 
     let [id,name,type] = ['','','']

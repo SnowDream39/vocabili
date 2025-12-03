@@ -26,7 +26,7 @@
 
 
 <script lang="ts" setup>
-import { requester } from '@/utils/api/requester';
+import api from '@/utils/api/api';
 import Board from '@/utils/board';
 import { useTitle } from '@vueuse/core';
 import { ElPagination, ElSelect, ElTable } from 'element-plus';
@@ -65,11 +65,11 @@ function makeData(data: any[]): IssueData[]  {
 
 async function getData() {
   console.log(page.value)
-  let data = await requester.get_board(new Board(`${board.value}-main`, -1), undefined, 1)
+  let data = await api.getRanking(new Board(board.value), undefined, 1)
   currentIssue.value = data.metadata.issue
   let issues: number[] = Array.from({length: size.value}, (_, i) => currentIssue.value - (page.value - 1) * size.value - i).filter(n => n > 0)
 
-  data = await requester.get_boards(board.value, "main", issues, size.value)
+  data = await api.getRankings(board.value, "main", issues, size.value)
   tableData.value = makeData(data)
 }
 

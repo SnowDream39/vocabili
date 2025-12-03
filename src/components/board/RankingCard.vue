@@ -5,9 +5,9 @@
         <div name="left" class="w-20 h-40 flex flex-col flex-wrap justify-center items-center "  >
           <div class="justify-center items-center gap-4">
             <div class="w-20 flex-none flex flex-col items-center gap-2 z-1">
-              <div class="current-rank text-[300%]">{{ board.rank.board }}</div>
+              <div class="current-rank text-[300%]">{{ song.rank }}</div>
               <div class="flex flex-row gap-4">
-                <RankChange :rank-before="board.last ? board.last.rank : 0" :change="change" />
+                <RankChange :rank-before="song.last ? song.last.rank : 0" :change="change" />
               </div>
             </div>
           </div>
@@ -15,35 +15,35 @@
         <div name="right" class="block items-center w-[350px]">
             <TextMarquee>
               <div class="inline-block text-3xl whitespace-nowrap"
-                :title="board.target.metadata.name">{{ board.target.metadata.name }}</div>
+                :title="song.song.name">{{ song.song.name }}</div>
             </TextMarquee>
           <div class="w-full flex" >
             <div class="basis-0 grow-2 whitespace-nowrap overflow-hidden">
               <TextMarquee>
-                <div>{{ board.target.metadata.target.producer.map(item => item.name).join('、') }}</div>
+                <div>{{ song.song.producers.map(item => item.name).join('、') }}</div>
               </TextMarquee>
               <TextMarquee>
-              <div>{{ board.target.metadata.target.vocalist.map(item => item.name).join('、') }}</div>
+              <div>{{ song.song.vocalists.map(item => item.name).join('、') }}</div>
               </TextMarquee>
-              <div>{{ DateTime.fromISO(board.target.platform.publish).toFormat('yyyy-LL-dd HH:mm') }}</div>
+              <div>{{ DateTime.fromISO(song.video.pubdate).toFormat('yyyy-LL-dd HH:mm') }}</div>
               <div>
-                <span>{{ board.point.toLocaleString() }}pts</span>
+                <span>{{ song.point.toLocaleString() }}pts</span>
                 <span> / </span>
-                <span>{{ board.count.toLocaleString() }}回</span>
+                <span>{{ song.count }}回</span>
               </div>
             </div>
             <div class="basis-0 grow flex flex-col justify-center items-start text-shadow-none  bg-white/70 dark:bg-black/50 rounded-lg overflow-hidden">
-              <RankItem icon="i-material-symbols-play-arrow-outline-rounded" :stat="board.change.view" :rank="board.rank.view" :minRank="minRank"/>
-              <RankItem icon="i-material-symbols-star-outline-rounded" :stat="board.change.favorite" :rank="board.rank.favorite" :minRank="minRank"/>
-              <RankItem icon="i-material-symbols-counter-1-outline-rounded" :stat="board.change.coin" :rank="board.rank.coin" :minRank="minRank"/>
-              <RankItem icon="i-material-symbols-thumb-up-outline-rounded" :stat="board.change.like" :rank="board.rank.like" :minRank="minRank"/>
+              <RankItem icon="i-material-symbols-play-arrow-outline-rounded" :stat="song.view" :rank="song.view_rank" :minRank="minRank"/>
+              <RankItem icon="i-material-symbols-star-outline-rounded" :stat="song.favorite" :rank="song.favorite_rank" :minRank="minRank"/>
+              <RankItem icon="i-material-symbols-counter-1-outline-rounded" :stat="song.coin" :rank="song.coin_rank" :minRank="minRank"/>
+              <RankItem icon="i-material-symbols-thumb-up-outline-rounded" :stat="song.like" :rank="song.like_rank" :minRank="minRank"/>
             </div>
           </div>
           <div class="flex justify-around" @click.stop >
-            <a :href="board.target.platform.link" target="_blank">
+            <a :href="bvidToLink(song.bvid)" target="_blank">
               <button class="glass-button button-lg" ><div class="i-material-symbols-play-circle-outline-rounded"></div></button>
             </a>
-            <a :href="'/song/' + board.target.metadata.id">
+            <a :href="'/song/' + song.song_id">
               <button class="glass-button button-lg" ><div class="i-material-symbols-calendar-month-outline-rounded"></div></button>
             </a>
             <button class="glass-button button-lg" @click="showCalculator"><div class="i-material-symbols-calculate-outline-rounded"></div></button>
@@ -54,25 +54,25 @@
     </template>
     <template #front v-else>
       <div name="top" class="px-2 pt-2 flex flex-row flex-nowrap cursor-pointer"  @click="showData" >
-        <div name="top-left" class="w-12 shrink inline-block m-2 relative" :title="board.target.platform.title">
-          <div class="w-12 h-12 text-2xl text-shadow-none font-900 flex justify-center items-center bg-white/20 dark:bg-black/20 backdrop-blur-2 rounded-sm border border-white">{{ board.rank.board }}</div>
-          <RankChange :rank-before="board.last ? board.last.rank : 0" :change="change" />
+        <div name="top-left" class="w-12 shrink inline-block m-2 relative" :title="song.video.title">
+          <div class="w-12 h-12 text-2xl text-shadow-none font-900 flex justify-center items-center bg-white/20 dark:bg-black/20 backdrop-blur-2 rounded-sm border border-white">{{ song.rank }}</div>
+          <RankChange :rank-before="song.last ? song.last.rank : 0" :change="change" />
         </div>
         <div name="top-right" class="w-0 grow-3 inline-block m-2 relative *:text-nowrap *:truncate text-shadow-md">
           <TextMarquee>
             <div class="inline-block text-xl whitespace-nowrap"
-              :title="board.target.metadata.name">{{ board.target.metadata.name }}</div>
+              :title="song.song.name">{{ song.song.name }}</div>
           </TextMarquee>
           <TextMarquee>
-            <div>{{ board.target.metadata.target.producer.map(item => item.name).join('、') }}</div>
+            <div>{{ song.song.producers.map(item => item.name).join('、') }}</div>
           </TextMarquee>
           <div class="flex flex-row justify-between items-center">
-            <div class="text-sm">{{ DateTime.fromISO(board.target.platform.publish).toFormat('yyyy-LL-dd') }}</div>
+            <div class="text-sm">{{ DateTime.fromISO(song.video.pubdate).toFormat('yyyy-LL-dd') }}</div>
             <div class="flex flex-row justify-end gap-4 text-xl text-shadow-none"  @click.stop >
-              <a :href="board.target.platform.link" target="_blank">
+              <a :href="bvidToLink(song.bvid)" target="_blank">
                 <div class="i-material-symbols-play-circle-outline-rounded"></div>
               </a>
-              <a :href="'/song/' + board.target.metadata.id">
+              <a :href="'/song/' + song.song_id">
                 <div class="i-material-symbols-calendar-month-outline-rounded" >历史数据</div>
               </a>
               <button @click="showCalculator">
@@ -86,20 +86,20 @@
         </div>
       </div>
       <div name="bottom" class="flex flex-row flex- justify-center gap-2 items-center text-sm">
-        <RankItem icon="i-material-symbols-play-arrow-outline-rounded" :stat="board.change.view" :rank="board.rank.view" :minRank="minRank"/>
-        <RankItem icon="i-material-symbols-star-outline-rounded" :stat="board.change.favorite" :rank="board.rank.favorite" :minRank="minRank"/>
-        <RankItem icon="i-material-symbols-counter-1-outline-rounded" :stat="board.change.coin" :rank="board.rank.coin" :minRank="minRank"/>
-        <RankItem icon="i-material-symbols-thumb-up-outline-rounded" :stat="board.change.like" :rank="board.rank.like" :minRank="minRank"/>
+        <RankItem icon="i-material-symbols-play-arrow-outline-rounded" :stat="song.view" :rank="song.view_rank" :minRank="minRank"/>
+        <RankItem icon="i-material-symbols-star-outline-rounded" :stat="song.favorite" :rank="song.favorite_rank" :minRank="minRank"/>
+        <RankItem icon="i-material-symbols-counter-1-outline-rounded" :stat="song.coin" :rank="song.coin_rank" :minRank="minRank"/>
+        <RankItem icon="i-material-symbols-thumb-up-outline-rounded" :stat="song.like" :rank="song.like_rank" :minRank="minRank"/>
       </div>
     </template>
     <template #back>
-      <img class="w-full h-full object-cover" :src="board.target.platform.thumbnail" alt="thumbnail" />
+      <img class="w-full h-full object-cover" :src="song.video.thumbnail" alt="thumbnail" />
     </template>
 
   </CardCoverThumbnail>
 
-  <el-dialog v-model="dialogVisible" :title="board.target.metadata.name">
-    <RankingDialog :board="board" />
+  <el-dialog v-model="dialogVisible" :title="song.song.name">
+    <RankingDialog :ranking="song" />
   </el-dialog>
 
   <el-dialog v-model="calculatorVisible" title="分数计算器" :width="250" >
@@ -108,11 +108,11 @@
 
   <TodayCalculator
     v-model="todayCalculatorVisible"
-    :section="props.section"
-    :bvid="board.target.platform.link.split('/').at(-1)!"
-    :video-id="board.target.platform.id"
-    :copyright="board.target.platform.copyright"
-    :key="board.target.platform.id"
+    :board-name="props.boardName ?? 'vocaloid-daily'"
+    :bvid="song.bvid"
+    :video-id="song.bvid"
+    :copyright="song.video.copyright"
+    :key="song.bvid"
   />
 
 </template>
@@ -123,9 +123,7 @@ import type { Form } from '../song/Calculator.vue';
 import RankChange from './RankChange.vue';
 import Calculator from '../song/Calculator.vue';
 import RankItem from './RankItem.vue';
-import type { Board as DataBoard, DataMetadata } from '@/utils/boardData';
 import { DateTime } from 'luxon';
-import Board from '@/utils/board';
 import { compareRank } from '@/utils/dataConverter';
 import { ElDialog } from 'element-plus';
 import RankingDialog from './RankingDialog.vue';
@@ -133,27 +131,30 @@ import CardCoverThumbnail from '@/components/container/CardCoverThumbnail.vue';
 import { useMediaQuery } from '@vueuse/core';
 import TodayCalculator from '../song/TodayCalculator.vue';
 import TextMarquee from '../misc/TextMarquee.vue';
+import type Board from '@/utils/board';
+import type { Ranking } from '@/utils/RankingTypes';
+import { bvidToLink } from '@/utils/videoid';
 
 const isMobile = useMediaQuery('(max-width: 640px)')
 const props = defineProps<{
-  board: DataBoard,
-  metadata: DataMetadata,
+  song: Ranking,
+  board: Board,
   isToday?: boolean,
-  section?: string
+  boardName?: string
 }>()
 const dialogVisible = ref(false)
 const calculatorVisible = ref(false)
 const todayCalculatorVisible = ref(false)
 const form = computed<Form>(() => {
-  const { view, favorite, coin, like } = props.board.change
-  const copyright = props.board.target.platform.copyright
-  const board = new Board(props.metadata.id, Number(props.metadata.issue))
+  const { view, favorite, coin, like } = props.song
+  const copyright = props.song.video.copyright
+  const board = props.board
   return { view, favorite, coin, like, copyright, board }
 })
 
-const change = ref<string>(compareRank(props.board.rank.board, props.board.last ? props.board.last.rank : undefined))
+const change = ref<string>()
 const minRank = computed(() => {
-  return Math.min(props.board.rank.view, props.board.rank.favorite, props.board.rank.coin, props.board.rank.like)
+  return Math.min(props.song.view_rank, props.song.favorite_rank, props.song.coin_rank, props.song.like_rank)
 })
 function showData() {
   dialogVisible.value = true
@@ -168,8 +169,8 @@ function showToday() {
 }
 
 // 监听 props 的变化，并更新 change
-watch(() => props.board.change, () => {
-  change.value = compareRank(props.board.rank.board, props.board.last ? props.board.last.rank : undefined);
-});
+watch(() => props.song, () => {
+  change.value = compareRank(props.song.rank, props.song.last ? props.song.last.rank : undefined);
+}, {immediate: true});
 
 </script>

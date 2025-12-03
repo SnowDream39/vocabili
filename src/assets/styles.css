@@ -117,24 +117,11 @@ a, button {
   flex-wrap: wrap;
 }
 
-@media (max-width: 630px) {
-  .boardpagination {
-    padding: 10px 5px;
-  }
-
-  .pagination {
-    font-size: 12px;
-    :deep(.el-pagination__jump) {
-      margin-left: 0;
-    }
-    :deep(.el-pagination button) {
-      min-width: 24px;
-    }
-    :deep(.el-pager li) {
-      min-width: 24px;
-    }
-  }
+.pagination {
+  font-size: 14px;
+  margin: 10px 0 10px 0;
 }
+
 
 /*  Element Plus 变量 */
 

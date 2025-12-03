@@ -1,5 +1,6 @@
 import axios from "axios";
-import type Board from "../boardv2";
+import type Board from "../board";
+import type { DataItem } from "../calculator";
 
 const api = axios.create({
   baseURL: "http://localhost:8000",
@@ -27,7 +28,10 @@ class Requester {
     song: "/select/song",
     videoSnapshot: "/select/video/snapshot",
     latestRanking: "/select/latest_ranking",
+    songByAchievement: "/select/song/by_achievement",
+    boardMetadata: "/select/board/metadata",
 
+    getBoards: '',  // TODO
   }
 
   constructor() {}
@@ -104,5 +108,49 @@ class Requester {
     return res.data;
   }
 
+  async getSongByAchievement(item: DataItem, level: number, page = 1, pageSize = 20) {
+    const res = await api.get(Requester.endpoint.songByAchievement, {
+      params: {
+        item,
+        level,
+        page,
+        page_size: pageSize
+      }
+    });
+    return res.data;
+  }
+
+  async getBoardMetadata(board: Board) {
+    const res = await api.get(Requester.endpoint.boardMetadata, {
+      params: {
+        board
+      }
+    });
+    return res.data;
+  }
+
+  async getRankings(board: string, part: string, issues: number[], size: number){
+    return await api.get(Requester.endpoint.getBoards, {
+      params: {
+        board,
+        part,
+        issue: issues.join(','),
+        count: size
+      }
+    });
+  }
+
+  async getSongList(type: string, id: string, page = 1, pageSize = 20): Promise<any> {
+    // TODO
+    console.log(type, id, page, pageSize)
+    return []
+  }
+
+
+  async getArtistInfo(type: string, id: string): Promise<any> {
+    // TODO
+    console.log(type, id)
+    return []
+  }
 }
 export default new Requester();

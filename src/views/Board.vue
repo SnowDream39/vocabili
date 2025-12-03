@@ -4,9 +4,9 @@
       <div class="w-full text-center mb-4">
         <div v-if="!isSpecial">
           <div id="last-next-issues">
-            <el-router-link :to="`/board/${board.fullId}/${board.issue-1}?page=1`" type="primary" id="last-issue" :disabled="!lastIssueStatus">&lt;&lt;上一期</el-router-link>
-            <button class="text-primary" @click="changeBoard" id="change-board">切换总榜/新曲榜</button>
-            <el-router-link :to="`/board/${board.fullId}/${Number(board.issue)+1}?page=1`" type="primary" id="next-issue" :disabled="!nextIssueStatus">下一期 &gt;&gt;</el-router-link>
+            <el-router-link :to="`/board/${board.name}/${Number(board.issue)-1}?page=1`" type="primary" id="last-issue" :disabled="!lastIssueStatus">&lt;&lt;上一期</el-router-link>
+            <button class="text-primary" @click="changePart" id="change-board">切换总榜/新曲榜</button>
+            <el-router-link :to="`/board/${board.name}/${Number(board.issue)+1}?page=1`" type="primary" id="next-issue" :disabled="!nextIssueStatus">下一期 &gt;&gt;</el-router-link>
           </div>
           <div class="flex flex-start gap-4">
             <div>排序方式</div>
@@ -41,15 +41,15 @@
         class="pagination"
         @current-change="handlePageChanged"
       />
-      <div v-loading="!metadata || !boards || boards.length == 0" class="min-h-50 w-full grid grid-cols-1 lg:grid-cols-2 gap-4" ref="boardList">
+      <div v-loading="!board || !ranks || ranks.length == 0" class="min-h-50 w-full grid grid-cols-1 lg:grid-cols-2 gap-4" ref="boardList">
         <RankingCard
-          v-for="data in boards"
-          v-if="metadata && boards && boards.length > 0"
-          :board="data"
-          :metadata="metadata"
+          v-for="data in ranks"
+          v-if="board && ranks && ranks.length > 0"
+          :song="data"
+          :board="board"
           :is-today="isToday"
-          :section="board.section"
-          :key="data.target.metadata.id"
+          :section="board.name"
+          :key="data.bvid"
         />
       </div>
       <div class="boardpagination">
@@ -88,22 +88,22 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch, onMounted } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import router from '../router/index.ts'
-import Board, { type BasicSection } from '../utils/board.ts';
-import { requester } from '../utils/api/requester.ts'
+import Board, { type BoardName, type SequentialBoard } from '../utils/board.ts';
+import api from '@/utils/api/api.ts';
 import SpecialSelector from '../components/board/SpecialSelector.vue';
 import CommentFrame from '../components/user/CommentFrame.vue';
 import { useStatusStore } from '@/store/status.ts';
 import RankingCard from '@/components/board/RankingCard.vue';
 import { ElPagination, ElSelect, ElOption } from 'element-plus';
 import ElRouterLink from '@/components/misc/ElRouterLink.vue';
-import type { DataMetadata, Board as DataBoard } from '@/utils/boardData.ts';
 import QRCode from 'qrcode'
-import { issueBefore } from '@/utils/date.ts';
+import { issueBefore } from '@/utils/date';
 import { useTitle } from '@vueuse/core';
 import SuspendPanel from '@/components/container/SuspendPanel.vue';
+import type { Ranking } from '@/utils/RankingTypes.ts';
 
 
 const route = useRoute()
@@ -120,23 +120,28 @@ const orderTypes = {
 // 响应式数据
 const page = ref(Number(route.query.page) || 1)
 const total = ref(0)
-const metadata = ref<DataMetadata>();
+const metadata = ref<{
+  name: BoardName;
+  issue: number;
+  part: string
+}>();
 const orderType = ref<string>('score.total')
-const boards = ref<DataBoard[]>([]);
-const board = ref<Board>(new Board('vocaloid-daily-main', -1))
+const ranks = ref<Ranking[]>([]);
+const isToday = ref<boolean>(false)
+const board = ref<Board>(getCurrentBoard())
 
 const lastIssueStatus = ref(false)
 const nextIssueStatus = ref(false)
 
 const isSpecial = computed(() => {
-  return board.value.section === 'special'
+  if (!board.value) return false
+  return board.value.name === 'special'
 })
 
 const rankDateString = computed(() => board.value.getRankDateString())
 const issueName = computed(() => board.value.getBoardName())
 
 const boardList = ref<HTMLElement | null>(null)
-const isToday = ref<boolean>(false)
 
 useTitle(computed(() => issueName.value + ' | 术力口数据库'))
 
@@ -147,18 +152,14 @@ function changeOrder() {
 
 
 async function handleSearch() {
-  boards.value = []
+  ranks.value = []
   let data
-  if (board.value.issue === -1){
-    data = await requester.get_board(board.value, undefined, page.value, orderType.value)
-  } else {
-    data = await requester.get_board(board.value, undefined, page.value, orderType.value)
-  }
-  boards.value = data.board
+  data = await api.getRanking(board.value, page.value, undefined, orderType.value)
+
+  ranks.value = data.data
   metadata.value = data.metadata
-  total.value = data.metadata.count
-  board.value.issue = data.metadata.issue
-  statusStore.articleId = `${board.value.id}-${board.value.issue}`
+  total.value = data.total
+  statusStore.articleId = `${board.value.name}-${board.value.issue}`
 }
 
 /**
@@ -176,51 +177,54 @@ const handlePageChanged = async () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function changeBoard() {
+function changePart() {
   page.value = 1;
   board.value.part = board.value.part === 'main' ? 'new' : 'main';
-  router.push(`/board/${board.value.fullId}/${board.value.issue}`)
-}
-
-// 监听 page 变化，切换分页时重新获取数据
-watch(page, async () => {
-  await handleSearch();
-}, { immediate: false });
-
-watch(board, async () => {
-  if (board.value.section !== 'special'){
-    await handleSearch()
-    lastIssueStatus.value = await requester.check_issue(board.value.id, board.value.issue - 1);
-    nextIssueStatus.value = await requester.check_issue(board.value.id, Number(board.value.issue) + 1);
-  }
-}, {immediate: false})
-
-// =============== 生命周期 ===============
-
-async function init() {
-  const params = route.params
-  const boardId = params.boardId as string
-  const issue = params.issue as string
-  if (issue !== '') {
-    board.value = new Board(boardId, Number(issue))
-    console.log(issueBefore()[boardId.split('-')[1] as BasicSection])
-    if (Number(issue) == issueBefore()[boardId.split('-')[1] as BasicSection]) {
-      isToday.value = true
-    } else {
-      isToday.value = false
+  router.push({
+    path: `/board/${board.value.name}/${board.value.issue}`,
+    query: {
+      part: board.value.part
     }
-  } else {
-    board.value = new Board(boardId, -1)
-    isToday.value = true
-  }
-  QRCode.toCanvas(document.getElementById('qrcode'), window.location.href, function (error) {
-    if (error) console.error(error)
   })
 }
 
+// 监听 page 变化，切换分页时重新获取数据
 
-onMounted(init)
-watch(() => route.path, init)
+watch(board, async () => {
+  await handleSearch();
+}, {immediate: true})
+
+watch(() => [board.value.issue, board.value.name], async () => {
+  if (board.value.name !== 'special'){
+    lastIssueStatus.value = await api.checkIssue(board.value);
+    nextIssueStatus.value = await api.checkIssue(board.value);
+  }
+})
+
+function getCurrentBoard() {
+  const params = route.params
+  const boardName = params.name as string
+  const issueString = params.issue as string
+  const part = route.query.part as string ?? 'main'
+  if (issueString == '') {
+    const issue = issueBefore()[boardName as SequentialBoard]
+    isToday.value = true
+    return new Board(boardName, part, issue)
+  } else {
+    isToday.value = Number(issueString) == issueBefore()[boardName as SequentialBoard]
+    return new Board(boardName, part, Number(issueString))
+  }
+}
+
+watch(board, () => {
+  QRCode.toCanvas(document.getElementById('qrcode'), window.location.href, function (error) {
+    if (error) console.error(error)
+  })
+})
+
+watch([route.path, route.query.part], () => {
+  board.value = getCurrentBoard()
+})
 
 </script>
 
@@ -246,10 +250,7 @@ h1 {
   }
 }
 
-.pagination {
-  font-size: 14px; // 减小默认字体大小
-  margin: 10px 0 10px 0;
-}
+
 @media (max-width: 640px) {
   .boardpagination {
     padding: 10px 5px;

@@ -5,19 +5,18 @@
 </template>
 
 <script setup lang="ts">
-import { requester } from '@/utils/api/requester';
 import Calculator from './Calculator.vue';
 import { ref, watch } from 'vue';
 import { ElDialog, ElMessage } from 'element-plus';
 import { difference, get_video_current_data, type Count } from '@/utils/calculator';
-import Board, { type BasicSection } from '@/utils/board';
+import Board, { isSequentialBoard, type SequentialBoard } from '@/utils/board';
 import { DateTime } from 'luxon';
+import api from '@/utils/api/api.ts';
 
 const props = defineProps<{
   bvid: string,
-  videoId: string,
   copyright: number,
-  section?: string
+  boardName: string
 }>()
 
 const visible = defineModel<boolean>({
@@ -35,14 +34,16 @@ async function init() {
   let {view,favorite,coin,like} = data.stat
   const currentStat: Count = {view,favorite,coin,like}
 
-  const offsetMap: Record<BasicSection, number> = {
-    daily: 1,
-    weekly: (DateTime.now().weekday - 6) % 7 + 1,
-    monthly: DateTime.now().day,
+  const offsetMap: Record<SequentialBoard, number> = {
+    'vocaloid-daily': 1,
+    'vocaloid-weekly': (DateTime.now().weekday - 6) % 7 + 1,
+    "vocaloid-monthly": DateTime.now().day,
   }
-  const offset = props.section ? offsetMap[props.section as BasicSection] : 1
+  if (!isSequentialBoard(props.boardName))
+    throw new Error(`${props.boardName} 不是一个可算分的排行榜`)
+  const offset = props.boardName ? offsetMap[props.boardName] : 1
   console.log(offset)
-  const historyData = await requester.get_video_stat_history(props.videoId, 1, offset, "newset")
+  const historyData = await api.getVideoSnapshot(props.bvid, 1, offset)
   const lastStat: Count = historyData.result[0].count
 
   const stat = difference(currentStat, lastStat)
@@ -53,7 +54,7 @@ async function init() {
     form.value = {
       view, favorite, coin, like,
       copyright: props.copyright,
-      board: new Board(props.section ? `vocaloid-${props.section}` : 'vocaloid-daily')
+      board: new Board(props.boardName ?? 'vocaloid-daily')
     }
   }
 

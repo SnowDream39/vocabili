@@ -29,14 +29,14 @@
 </template>
 
 <script setup lang="ts">
-import Board, {  type SequentialBoard } from '@/utils/boardv2';
+import Board, {  type SequentialBoard } from '@/utils/board';
 import { ref, watch } from 'vue';
 import { ElTabs, ElTabPane } from 'element-plus';
 import ElRouterLink from './misc/ElRouterLink.vue';
-import apiv2 from '@/utils/api/apiv2';
-import type { Ranking } from '@/utils/RankingData';
+import api from '@/utils/api/api';
+import type { Ranking } from '@/utils/RankingTypes';
 import type { DateTime } from 'luxon';
-import { issueNow } from '@/utils/datev2';
+import { issueNow } from '@/utils/date';
 
 const props = defineProps<{
   today: DateTime | null
@@ -57,7 +57,7 @@ watch(props, async () => {
     const today = props.today
     const promises = []
     for (const board of ['vocaloid-daily', 'vocaloid-weekly', 'vocaloid-monthly'] as SequentialBoard[]) {
-      promises.push(apiv2.getRanking(new Board(board, 'main', issueNow(today)[board]), 1, 10).then(data => {
+      promises.push(api.getRanking(new Board(board, 'main', issueNow(today)[board]), 1, 10).then(data => {
         boardMap.value[board].data = data.data
       }))
     }

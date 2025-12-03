@@ -23,23 +23,23 @@ useTitle('分数计算器 | 术力口数据库')
 function getForm(): Form {
   const route = useRoute()
   if (route.query && route.query.view) {
-    const { view, favorite, coin, like, copyright, boardId, issue } = route.query as unknown as {
+    const { view, favorite, coin, like, copyright, board, issue } = route.query as unknown as {
       view: number,
       favorite: number,
       coin: number,
       like: number,
       copyright: number,
-      boardId: string,
+      board: string,
       issue: number
     }
-    const board = new Board(boardId, Number(issue))
+    const board2 = new Board(board, 'main', Number(issue))
     return {
       view: Number(view),
       favorite: Number(favorite),
       coin: Number(coin),
       like: Number(like),
       copyright: Number(copyright),
-      board
+      board: board2
     }
   } else {
     return {

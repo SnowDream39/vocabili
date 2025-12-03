@@ -36,8 +36,8 @@
  * 我现在比较喜欢把组件拆分得比较小
  */
 import { onMounted, ref, watch } from 'vue';
-import { requester } from '../../utils/api/requester';
 import Board from '../../utils/board';
+import api from '@/utils/api/api';
 
 const emit = defineEmits();
 
@@ -52,7 +52,7 @@ function issueChanged() {
 }
 
 async function init() {
-  const data = await requester.get_board_metadata(new Board('vocaloid-special'));
+  const data = await api.getBoardMetadata(new Board('special'));
   issues.value = data.catalog;
 }
 

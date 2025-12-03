@@ -6,7 +6,7 @@
       :row-class-name="rankin"
       :default-sort="{ prop: 'issue', order: 'descending' }"
       max-height="300"
-      style="width: 100%; overflow-x: auto;"
+      class="w-full! overflow-x-auto"
     >
       <el-table-column fixed sortable prop="issue" label="期数" min-width="80" >
         <template #default="scope">
@@ -37,15 +37,15 @@
 
 <script lang="ts" setup>
 import { ref, useTemplateRef, watch } from 'vue'
-import { requester } from '../../utils/api/requester';
 import { ElTable, ElTableColumn } from 'element-plus';
+import api from '@/utils/api/api';
 const table = useTemplateRef<any>('table');
 
 const emit = defineEmits(['send-data'])
 
 // =========== 配置 ============
 const props = defineProps<{
-  songId?: string;
+  songId?: number;
   boardId: string;
 }>();
 const columns = [
@@ -73,7 +73,7 @@ async function fetchData() {
   if (!props.songId) return[]
   try {
     index.value += 1;
-    const response = await requester.get_song_rank_history(props.songId, props.boardId, 50, index.value);
+    const response = await api.getSongRanking(props.songId, props.boardId, 50, index.value);
     data.value.push(...response.result);
     if (index.value * 50 >= response.total) {
       end.value = true;

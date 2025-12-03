@@ -18,8 +18,8 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { requester } from '../utils/api/requester';
 import { useTitle } from '@vueuse/core';
+import api from '@/utils/api/api';
 
 
 const route = useRoute()
@@ -53,13 +53,13 @@ function converted(data: any) {
 
 
 async function searchSong() {
-  const data = await requester.get_song_list(type, id, page.value, 10)
+  const data = await api.getSongList(type, id, page.value, 10)
   total.value = data.total
   artistSongs.value = data.result.map((item: any) => converted(item))
 }
 
 async function fetchArtistInfo() {
-  const data = await requester.get_artist_info(type, id)
+  const data = await api.getArtistInfo(type, id)
   artistName.value = data[0].name
 }
 

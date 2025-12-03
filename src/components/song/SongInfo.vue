@@ -23,9 +23,9 @@
 import { ref, onMounted, computed } from 'vue';
 import { DateTime, Duration } from 'luxon'
 import VideoInfo from './VideoInfo.vue';
-import { requester } from '@/utils/api/requester';
 import { ElCarousel, ElCarouselItem } from 'element-plus';
 import { useTitle } from '@vueuse/core';
+import api from '@/utils/api/api.ts';
 
 
 // ==============  控制走马灯高度  ===========
@@ -40,9 +40,9 @@ function handleHeight(value: any) {
 // ==============  处理数据  ==============
 const emits = defineEmits(['completed'])
 
-async function fetchSongInfo(songId: string) {
+async function fetchSongInfo(songId: number) {
 
-  const data = await requester.get_song_info(songId);
+  const data = await api.getSong(songId);
   console.log(data[0])
   return data[0];
 

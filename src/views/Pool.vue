@@ -13,10 +13,9 @@
     <!-- 展示区域 -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-center justify-center">
       <PoolCard
-        v-for="data in plainData"
-        v-bind="data"
-        v-if="plainData && plainData.length > 0"
-        :key="data.point"
+        v-for="item in data"
+        v-bind="item"
+        :key="item.song.id"
       />
     </div>
     <div class="boardpagination">
@@ -36,27 +35,30 @@
 <CommentFrame />
 </template>
 
-<script setup>
-import { ref, computed, watch, onMounted, toRaw } from 'vue';
-import { useRoute } from 'vue-router';
-import { poolToPlain } from '../utils/dataConverter.ts'
-import { requester } from '../utils/api/requester.ts'
+<script setup lang="ts">
+import { ref, watch } from 'vue';
 import CommentFrame from '@/components/user/CommentFrame.vue';
 import { useStatusStore } from '@/store/status.ts';
 import PoolCard from '@/components/PoolCard.vue';
 import { ElPagination } from 'element-plus';
 import { useTitle } from '@vueuse/core';
+import api from '@/utils/api/api';
+import type { Snapshot, Song, Video } from '@/utils/RankingTypes';
+import type { DataItem } from '@/utils/calculator.ts';
 
 useTitle('歌曲数据列表 | 术力口数据库')
-const route = useRoute()
 const statusStore = useStatusStore()
 
 // 响应式数据
-const page = ref(Number(route.query.page) || 1)
 const total = ref(1000)
-const rawData = ref(null);
-const stat = ref('view');
-const level = ref('r3');
+const data = ref<{
+  song: Song,
+  video: Video,
+  snapshot: Snapshot
+}[]>();
+const stat = ref<DataItem>('view');
+const level = ref(3);
+const page = ref(1);
 
 // 配置项
 const statOptions = [
@@ -67,31 +69,19 @@ const statOptions = [
 ]
 
 const levelOptions = [
-  { value: 'r1', label: '1万' },
-  { value: 'r2', label: '10万' },
-  { value: 'r3', label: '100万' },
-  { value: 'r4', label: '1000万' },
+  { value: 1, label: '1万' },
+  { value: 2, label: '10万' },
+  { value: 3, label: '100万' },
+  { value: 4, label: '1000万' },
 ]
-
-// 计算属性
-const plainData = computed(() => {
-  try {
-    if (rawData.value) {
-      return rawData.value.map(item => poolToPlain(item, rawData.value.metadata));
-    }
-    return [];
-  } catch (error) {
-    console.log(error)
-    return [];
-  }
-});
 
 
 // 方法
 async function handleSearch() {
-  let data = await requester.list_song_pool(`${stat.value}-${level.value}`, page.value, undefined)
-  rawData.value = data.result;
-  total.value = data.total;
+  let result = await api.getSongByAchievement(stat.value, level.value, page.value, 30)
+
+  data.value = result.data;
+  total.value = result.total;
 }
 
 const handlePageChanged = async () => {
@@ -99,24 +89,13 @@ const handlePageChanged = async () => {
 }
 
 
-async function init() {
-  const params = route.params
-  await handleSearch()
-}
-
-// 注册事件
-onMounted(init)
-watch(() => route.path, init)
-
 watch([stat, level], (pool) => {
   statusStore.articleId = `pool-${pool[0]}-${pool[1]}`
 }, { immediate: true })
 
-
-// 监听 page 变化，切换分页时重新获取数据
 watch(page, async () => {
   await handleSearch();
-}, { immediate: true });
+}, {immediate: true})
 </script>
 
 
@@ -158,17 +137,14 @@ watch(page, async () => {
     width: auto;
   }
   .boardpagination {
-  display: flex;
-  justify-content: center;
-  padding: 15px 10px;
+    display: flex;
+    justify-content: center;
+    padding: 15px 10px;
+  }
 }
 
- .pagination {
-  max-width: 100%;
-  font-size: 14px; // 减小默认字体大小
-}
-}
-@media (max-width: 630px) {
+
+@media (max-width: 640px) {
   .boardpagination {
     padding: 10px 5px;
   }
@@ -186,6 +162,7 @@ watch(page, async () => {
     }
   }
 }
+
 
 
 </style>

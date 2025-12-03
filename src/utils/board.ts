@@ -4,76 +4,71 @@
 import { DateTime } from 'luxon'
 import { endTimeOf, issueNow, startTimeOf } from './date'
 
-export type Section = 'daily' | 'weekly' | 'monthly' | 'special'
-export type BasicSection = 'daily' | 'weekly' | 'monthly'
+export type BoardName = 'vocaloid-daily' | 'vocaloid-weekly' | 'vocaloid-monthly' | 'special'
+export type SequentialBoard = 'vocaloid-daily' | 'vocaloid-weekly' | 'vocaloid-monthly'
 
-const basicSections = ['daily', 'weekly', 'monthly'] as const
-
-function isBasicSection(section: Section): section is BasicSection {
-  return basicSections.includes(section as BasicSection);
+export function isBoardName(name: string): name is BoardName {
+  return ['vocaloid-daily', 'vocaloid-weekly', 'vocaloid-monthly', 'vocaloid-special'].includes(name)
 }
+
+export function isSequentialBoard(name: string): name is SequentialBoard {
+  return ['vocaloid-daily', 'vocaloid-weekly', 'vocaloid-monthly'].includes(name)
+}
+
 
 // 现在时间已经过了哪一期的截止时间。
 export const currentIssue = issueNow()
 
 export default class Board {
-  name: string = 'vocaloid'
-  section: Section = 'daily'
+  name: BoardName = 'vocaloid-daily'
   part: string = 'main'
-  issue: number = -1
+  issue: number | null = null
 
   /**
    *
    * @param boardId 可以传入 boardId，也可以只传 name 和 section。
-   * @param issue 默认是当天
+   * @param issue 可以不传，不会指定默认值
    */
-  constructor(boardId: string, issue?: number) {
-    const items = boardId.split('-', 3)
-    this.name = items[0]
-    this.section = items[1] as Section
-    if (items.length === 3){
-      this.part = items[2]
+  constructor(name: string, part?: string, issue?: number) {
+    if (!isBoardName(name)) {
+      throw new Error(`${name} 不是一个有效的排行榜名称`)
+    }
+    this.name = name
+    if (part){
+      this.part = part
     } else {
       this.part = 'main'
     }
     if (issue) {
       this.issue = Number(issue)
-    } else if (this.section === 'special') {
+    } else if (this.name === 'special') {
       this.issue = 1
-    } else {
-      this.issue = currentIssue[this.section]
     }
   }
 
   // 特殊构造方法
   /**
-   * issue 是 -1
+   * 只能用来构造一般排行榜，昨天那一期
+   * issue 是空
    */
-  static latest(boardId: string): Board {
-    const board = new Board(boardId)
-    board.issue = -1
+  static latest(name: SequentialBoard, part?: string): Board {
+    const board = new Board(name, part, issueNow()[name])
     return board
   }
 
-  get id(): string {
-    return [this.name, this.section].join('-');
-  }
-  set id(value: string) {
-    [this.name, this.section] = value.split('-') as unknown as [string, Section]
-  }
   get fullId(): string {
-    return [this.name, this.section, this.part].join('-');
+    return [this.name, this.part].join('-');
   }
   get startTime(): DateTime | null {
-    if (isBasicSection(this.section)) {
-      return startTimeOf(this.issue, this.section)
+    if (isSequentialBoard(this.name) && this.issue) {
+      return startTimeOf(this.issue, this.name)
     } else {
       return null
     }
   }
   get endTime(): DateTime | null {
-    if(isBasicSection(this.section)) {
-      return endTimeOf(this.issue, this.section)
+    if(isSequentialBoard(this.name) && this.issue) {
+      return endTimeOf(this.issue, this.name)
     } else {
       return null
     }
@@ -81,25 +76,28 @@ export default class Board {
 
   getBoardName() {
     const issueNum = this.issue
-    if (this.section === 'daily'){
+    if (this.name === 'vocaloid-daily'){
       return `日刊虚拟歌手外语排行榜 #${issueNum}`
-    } else if (this.section === 'weekly'){
+    } else if (this.name === 'vocaloid-weekly'){
       return `周刊虚拟歌手外语排行榜 #${issueNum}`
-    } else if (this.section === 'monthly'){
+    } else if (this.name === 'vocaloid-monthly'){
       return `月刊虚拟歌手外语排行榜 #${issueNum}`
-    } else if (this.section === 'special'){
+    } else if (this.name === 'special'){
       return `专题虚拟歌手外语排行榜 #${issueNum}`
     }
   }
 
   getRankDateString() {
+    if (!this.issue) {
+      return ''
+    }
     const issueNum = this.issue
-    if (this.section === 'daily') {
+    if (this.name === 'vocaloid-daily') {
       const firstDate = DateTime.local(2024, 7, 3)
       const startDate = firstDate.plus({days: issueNum-1})
       const endDate = firstDate.plus({days: issueNum})
       return `${startDate.toFormat('yyyy-MM-dd HH:mm')}——${endDate.toFormat('yyyy-MM-dd HH:mm')}`
-    } else if (this.section === 'weekly'){
+    } else if (this.name === 'vocaloid-weekly'){
       const firstDate = DateTime.local(2024, 8, 31)
       const startDate = firstDate.plus({weeks: issueNum-1})
       const endDate = firstDate.plus({weeks: issueNum})

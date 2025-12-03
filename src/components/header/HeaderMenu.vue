@@ -14,9 +14,9 @@
     </el-menu-item>
     <el-sub-menu index="1">
       <template #title>排行</template>
-      <el-menu-item index="/board/vocaloid-daily-main">日刊</el-menu-item>
-      <el-menu-item index="/board/vocaloid-weekly-main">周刊</el-menu-item>
-      <el-menu-item index="/board/vocaloid-monthly-main">月刊</el-menu-item>
+      <el-menu-item index="/board/vocaloid-daily">日刊</el-menu-item>
+      <el-menu-item index="/board/vocaloid-weekly">周刊</el-menu-item>
+      <el-menu-item index="/board/vocaloid-monthly">月刊</el-menu-item>
       <el-menu-item index="/board/vocaloid-special">特刊</el-menu-item>
       <el-menu-item index="/top5">前五</el-menu-item>
     </el-sub-menu>

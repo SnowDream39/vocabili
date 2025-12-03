@@ -1,5 +1,5 @@
 import axios from "axios"
-import Board, { type BasicSection } from "./board"
+import Board, { isSequentialBoard, type SequentialBoard } from "./board"
 import { issueNow, startTimeOf } from "./date"
 
 /*
@@ -9,6 +9,8 @@ copyright的四种类型：
 3 搬运投自制
 4 自制投搬运
 */
+
+export type DataItem = 'view' | 'favorite' | 'coin' | 'like'
 
 export interface Count {
   view: number,
@@ -39,12 +41,12 @@ export function difference(currentStat: Count, lastStat: Count): Count {
 /**
  * 以现在为起点，在一批数据里面找到几天前的数据。
  * @param historyData 一些日期的总数据
- * @param section 刊的类别（daily等）
+ * @param name 刊的类别（daily等）
  * @returns 那天的数据
  */
-export function searchData(historyData: {date: string, count: Count}[], section: BasicSection): Count | null {
+export function searchData(historyData: {date: string, count: Count}[], name: SequentialBoard): Count | null {
   // history 里面的日期是那天0点数据的意思
-  const date = startTimeOf(issueNow()[section], section)
+  const date = startTimeOf(issueNow()[name], name)
   if (date.isValid) {
     const data = historyData.find((item: any) => item.date === date.toFormat('yyyy-MM-dd'))
     if (data) {
@@ -74,13 +76,15 @@ export class Calculator {
 
 
   constructor(count: Count, copyright: number, board: Board) {
+    if (!isSequentialBoard(board.name)) throw new Error(`${board.name} 无法计算分数`)
     this.count = count
+    const issue = board.issue || issueNow()[board.name]
     const view = count.view
     const favorite = count.favorite
     let coin = count.coin
     const like = count.like
     copyright = [1,3].includes(copyright) ? 1 : 2
-    if (board.section === 'daily' && board.issue <= 9) {
+    if (board.name === 'vocaloid-daily' && issue <= 9) {
         this.viewR = view <= 0 ? 0 : Math.min(1, Math.ceil((( coin + favorite + like ) * 25 / view) * 100) / 100)
         this.favoriteR = favorite*20 + view <=0 ? 0 : Math.min(20, Math.ceil( favorite * 20 / (favorite * 20 + view) * 40 * 100) / 100)
         this.coinR = coin <= 0 ? 0 : Math.min(40, Math.ceil((coin * 100 + view) / (coin * 100) * 10 * 100) / 100)
@@ -96,7 +100,7 @@ export class Calculator {
         this.coinP = Math.round(coin * this.coinR)
         this.likeP = Math.round(like * this.likeR)
         this.point = Math.round(this.viewP + this.favoriteP + this.coinP + this.likeP)
-    } else if (board.section === 'daily' && board.issue >= 10 && board.issue <= 122) {
+    } else if (board.name === 'vocaloid-daily' && issue >= 10 && issue <= 122) {
         const c = copyright
         this.viewR = view <= 0 ? 0 : Math.min(1, Math.ceil((( coin + favorite ) * 20 / view * 100)) / 100)
         this.favoriteR = favorite*20 + view <= 0 ? 0 : Math.min(20, Math.ceil((favorite + 2 * coin) * 10 / (favorite * 20 + view) * 40 * 100) / 100)
@@ -113,7 +117,7 @@ export class Calculator {
         this.coinP = Math.round(coin * this.coinR)
         this.likeP = Math.round(like * this.likeR)
         this.point = Math.round(this.viewP + this.favoriteP + this.coinP + this.likeP)
-      } else if ((board.section === 'daily' && board.issue >= 123 && board.issue <= 346) || (board.section === 'weekly' && board.issue <= 41)) {
+      } else if ((board.name === 'vocaloid-daily' && issue >= 123 && issue <= 346) || (board.name === 'vocaloid-weekly' && issue <= 41)) {
         coin = (coin === 0 && view > 0 && favorite > 0 && like > 0) ? 1 : coin
         this.fixA = coin <= 0 ? 0 : (copyright === 1 ? 1 : Math.ceil(Math.max(1, (view + 20 * favorite + 40 * coin + 10 * like) / (200 * coin)) * 100) / 100)
         const fixA = this.fixA
@@ -131,7 +135,7 @@ export class Calculator {
         this.coinP = Math.round(coin * this.coinR * this.fixA)
         this.likeP = Math.round(like * this.likeR)
         this.point = Math.round(Math.round(this.viewP + this.favoriteP + this.coinP + this.likeP) * this.fixB * this.fixC)
-    } else if ((board.section === 'daily' && board.issue >= 347 ) || (board.section === 'weekly' && board.issue >= 42)) {
+    } else if ((board.name === 'vocaloid-daily' && issue >= 347 ) || (board.name === 'vocaloid-weekly' && issue >= 42)) {
       coin = (coin === 0 && view > 0 && favorite > 0 && like > 0) ? 1 : coin
       this.fixA = coin <= 0 ? 0 : (copyright === 1 ? 1 : Math.ceil(Math.max(1, (view + 20 * favorite + 40 * coin + 10 * like) / (200 * coin)) * 100) / 100)
       const fixA = this.fixA
@@ -149,7 +153,7 @@ export class Calculator {
       this.coinP = Math.round(coin * this.coinR * this.fixA)
       this.likeP = Math.round(like * this.likeR)
       this.point = Math.round(Math.round(this.viewP + this.favoriteP + this.coinP + this.likeP) * this.fixB * this.fixC)
-    } else if (board.section === 'monthly' && board.issue <= 10){
+    } else if (board.name === 'vocaloid-monthly' && issue <= 10){
       coin = (coin === 0 && view > 0 && favorite > 0 && like > 0) ? 1 : coin
       this.fixA = coin <= 0 ? 0 : (copyright === 1 ? 1 : Math.ceil(Math.max(1, (view + 20 * favorite + 40 * coin + 10 * like) / (200 * coin)) * 100) / 100)
       const fixA = this.fixA
@@ -167,7 +171,7 @@ export class Calculator {
       this.coinP = Math.round(coin * this.coinR * this.fixA)
       this.likeP = Math.round(like * this.likeR)
       this.point = Math.round(Math.round(this.viewP + this.favoriteP + this.coinP + this.likeP) * this.fixB * this.fixC)
-    } else if (board.section === 'monthly' && board.issue >= 11) {
+    } else if (board.name === 'vocaloid-monthly' && issue >= 11) {
       coin = (coin === 0 && view > 0 && favorite > 0 && like > 0) ? 1 : coin
       this.fixA = coin <= 0 ? 0 : (copyright === 1 ? 1 : Math.ceil(Math.max(1, (view + 20 * favorite + 40 * coin + 10 * like) / (200 * coin)) * 100) / 100)
       const fixA = this.fixA

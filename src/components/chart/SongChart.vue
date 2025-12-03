@@ -36,8 +36,9 @@ import VChart, { THEME_KEY } from "vue-echarts";
 import { ref, provide, computed, watch } from "vue";
 import { useDark } from "@vueuse/core";
 import { startTimeOf } from '@/utils/date'
-import type { BasicSection } from '@/utils/board'
 import type { Stats } from './CalcChart.vue'
+import type { Ranking } from '@/utils/RankingTypes'
+import type { SequentialBoard } from '@/utils/board'
 
 const chartRef = ref()
 
@@ -49,8 +50,8 @@ const theme = computed(() => {
 provide(THEME_KEY, theme);
 
 const props = defineProps<{
-  data: any
-  boardId: string
+  data: Ranking[]
+  boardName: SequentialBoard
   log?: boolean
 }>()
 
@@ -157,15 +158,15 @@ interface RankItem extends Stats {
 
 watch(() => props, (value) => {
   const sortedData: RankItem[] = value.data
-    .map((item: any) => ({
+    .map((item: Ranking) => ({
       issue: item.issue,
-      date: startTimeOf(item.issue, props.boardId.split('-')[1] as BasicSection).toISODate(),
-      rank: item.rank.board,
-      view: item.change.view,
-      favorite: item.change.favorite,
-      coin: item.change.coin,
-      like: item.change.like,
-    })).toSorted((a: any, b: any) => a.issue - b.issue)
+      date: startTimeOf(item.issue, props.boardName).toISODate() as string,
+      rank: item.rank,
+      view: item.view,
+      favorite: item.favorite,
+      coin: item.coin,
+      like: item.like,
+    })).slice().sort((a: any, b: any) => a.issue - b.issue)
   option.value.dataset.source = sortedData
   // 设置时间轴（目前还是有点问题）
   option.value.xAxis[1].data = sortedData.map((d: any) => d.date)

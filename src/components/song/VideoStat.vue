@@ -26,15 +26,32 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
-import { requester } from '../../utils/api/requester';
-import Board, { currentIssue, type BasicSection } from '../../utils/board';
+import Board, { currentIssue, type SequentialBoard } from '../../utils/board';
 import { issueNow, startTimeOf } from '../../utils/date';
 import { DateTime } from 'luxon';
 import { ElTable, ElTableColumn, ElDialog } from 'element-plus';
 import Calculator from './Calculator.vue';
 import { difference, get_video_current_data, searchData } from '@/utils/calculator';
+import api from '@/utils/api/api';
 
-const props = defineProps(['bvid','songId','videoId','copyright','publish'])
+const props = defineProps<{
+  bvid: string,
+  songId: number,
+  copyright: number,
+  publish: string
+}>()
+
+
+
+interface DataRow {
+  name: string,
+  board: SequentialBoard,
+  view: number,
+  favorite: number,
+  coin: number,
+  like: number
+}
+
 
 const columns = [
   {key: "name", label: "数据"},
@@ -67,38 +84,38 @@ async function init() {
   )
 
   // 一些历史数据，等一下找一点出来
-  const historyData = await requester.get_video_stat_history(props.videoId, 31, 1, "newset")
+  const historyData = await api.getVideoSnapshot(props.bvid, 1, 31)
 
-  const settings = [
-    { name:'今日增长', section: 'daily'},
-    { name:'本周增长', section: 'weekly'},
-    { name:'本月增长', section: 'monthly'}
-  ] as {name: string, section: BasicSection}[]
+  const settings: {name: string, board: SequentialBoard}[] = [
+    { name:'今日增长', board: 'vocaloid-daily'},
+    { name:'本周增长', board: 'vocaloid-weekly'},
+    { name:'本月增长', board: 'vocaloid-monthly'}
+  ]
 
   for (const setting of settings) {
-    const startTime = startTimeOf(issueNow()[setting.section], setting.section)
+    const startTime = startTimeOf(issueNow()[setting.board], setting.board)
 
     if (startTime.toMillis() > publishTime.toMillis() ) {
       // 有数据就算，没有就不算。
-      const lastStat = searchData(historyData.result, setting.section as BasicSection)
+      const lastStat = searchData(historyData.data, setting.board)
 
       if (lastStat) {
         const change = difference(currentStat, lastStat)
-        stat.value.push({ name: setting.name, board: setting.section, ...change })
+        stat.value.push({ name: setting.name, board: setting.board, ...change })
       }
     } else {
-      stat.value.push({ name: setting.name, board: setting.section, ...currentStat })
+      stat.value.push({ name: setting.name, board: setting.board, ...currentStat })
     }
   }
 }
 
-function showCalculator(row: any) {
+function showCalculator(row: DataRow) {
   const {coin, favorite, like, view} = row
   calculatorVisible.value = true
   form.value = {
     view, favorite, coin, like,
     copyright: props.copyright,
-    board: new Board(`vocaloid-${row.board}`, currentIssue[row.board as keyof typeof currentIssue])
+    board: new Board(row.board, 'main', currentIssue[row.board])
   }
 }
 

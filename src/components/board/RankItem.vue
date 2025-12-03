@@ -5,8 +5,10 @@
   }">
     <div :class="icon" class="text-lg"></div>
     <div>{{ stat.toLocaleString() }}</div>
-    <div class="i-material-symbols-crown-outline-rounded"></div>
-    <div>{{ rank.toLocaleString() }}</div>
+    <template v-if="rank">
+      <div class="i-material-symbols-crown-outline-rounded"></div>
+      <div>{{ rank.toLocaleString() }}</div>
+    </template>
 
   </div>
 </template>
@@ -17,7 +19,7 @@ import { computed } from 'vue';
 const props = defineProps<{
   icon: string
   stat: any
-  rank: number
+  rank?: number
   minRank?: number
   isMobile?: boolean
 }>()
