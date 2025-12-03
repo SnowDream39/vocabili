@@ -36,17 +36,24 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { DateTime } from 'luxon';
 import router from '../router';
-import { requester } from '../utils/api/requester';
-import Board from '../utils/board';
+
+const props =  defineProps<{
+  today: DateTime | null;
+}>()
 
 const weekDays = [
   '','六','日', '一', '二', '三', '四', '五',
 ];
 
 const today = ref<DateTime>(DateTime.local().plus({days: -2}))
+watch(props, () => {
+  if (props.today) {
+    today.value = props.today
+  }
+}, {immediate: true})
 
 interface MonthConfig {
   dateString: string;
@@ -69,15 +76,7 @@ interface DayConfig {
   disabled: boolean;
 }
 
-/**
- * 最新一期是哪天的
- */
-async function getToday(): Promise<DateTime> {
-  const firstDate = DateTime.local(2024,7,2)
-  const data = await requester.get_board(new Board("vocaloid-daily-main", -1), undefined, 1)
-  const issueNum = data.metadata.issue
-  return firstDate.plus({days: issueNum})
-}
+
 
 // 月份列表，日期均存储于此
 const months = ref<MonthConfig[]>([])
@@ -145,15 +144,12 @@ watch(today, () => {
 
 }, {immediate: true})
 
-async function init() {
-  today.value = await getToday()
-}
+
 
 function jumpToBoard(board: string, issue: number) {
-  router.push(`/board/vocaloid-${board}-main/${issue}`)
+  router.push(`/board/vocaloid-${board}/${issue}`)
 }
 
-onMounted(init)
 </script>
 
 <style scoped>

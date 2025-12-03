@@ -2,9 +2,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
   { path: '/', component: () => import('../views/Home.vue') },
-  { path: '/board/:boardId/:issue?', component: () => import('../views/Board.vue') },
+  { path: '/board/:name/:issue?', component: () => import('../views/BoardV2.vue') },
   { path: '/about', component: () => import('../views/About.vue') },
-  { path: '/song/:id', component: () => import('../views/Song.vue') },
+  { path: '/song/:id', component: () => import('../views/SongV2.vue') },
   { path: '/search', component: () => import('../views/Search.vue') },
   { path: '/artist/:type/:id', component: () => import('../views/Artist.vue') } ,
   { path: '/pool', component: () => import('../views/Pool.vue') },

@@ -10,7 +10,7 @@ import { ElLink } from 'element-plus';
 
 defineProps<{
   items: {
-    id: string;
+    id: number;
     name: string;
   }[];
   type: string;

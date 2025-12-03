@@ -79,3 +79,9 @@ export interface DataMetadata {
     part:  string;
     count: number;
 }
+
+export interface BoardMetadata {
+    id:    string;
+    issue: string;
+    part:  string;
+}

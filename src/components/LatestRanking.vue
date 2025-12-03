@@ -1,27 +1,25 @@
 <template>
   <div class="w-100 px-2 shrink-0">
     <el-tabs v-model="activeName">
-      <el-tab-pane v-for="{name, data} in boardMap" :name="name" :label="name">
-        <div v-if="data">
+      <el-tab-pane v-for="(value, board) in boardMap" :name="board" :label="value.name">
+        <div v-if="value.data && value.data.length > 0">
           <ol>
-            <li v-for="item in data!.board" class="flex flex-nowrap justify-between items-center h-10 my-2">
+            <li v-for="item in value.data" class="flex flex-nowrap justify-between items-center h-10 my-2">
               <div class="h-full flex flex-nowrap items-center gap-2">
-
-                <div class="w-8 text-center">{{ item.rank.board }}</div>
-                <div v-if="item.rank.board <= 3" class="aspect-ratio-16/9 h-full rounded-md overflow-hidden">
-                  <img :src="item.target.platform.thumbnail" referrerpolicy="no-referrer" />
+                <div class="w-8 text-center">{{ item.rank }}</div>
+                <div v-if="item.rank <= 3" class="aspect-ratio-16/9 h-full rounded-md overflow-hidden">
+                  <img :src="item.video.thumbnail" referrerpolicy="no-referrer" />
                 </div>
                 <div>
-                  <div>{{ item.target.metadata.name }}</div>
-                  <div class="text-sm text-on-surface-variant">{{ item.target.metadata.target.producer.map(item => item.name).join('、') }}</div>
+                  <div>{{ item.song.name }}</div>
+                  <div class="text-sm text-on-surface-variant">{{ item.song.producers.map(item => item.name).join('、') }}</div>
                 </div>
               </div>
               <div class="text-sm text-on-surface-variant">{{ item.point.toLocaleString() }} pt</div>
             </li>
           </ol>
           <div class="w-full flex justify-end px-2">
-            <ElRouterLink :to="`/board/${data.metadata.id}-${data.metadata.part}`" type="primary">&gt;&gt;更多</ElRouterLink>
-
+            <ElRouterLink :to="`/board/${board}/${issueNow(props.today as DateTime)[board]}`" type="primary">&gt;&gt;更多</ElRouterLink>
           </div>
         </div>
       </el-tab-pane>
@@ -31,30 +29,40 @@
 </template>
 
 <script setup lang="ts">
-import { requester } from '@/utils/api/requester';
-import Board from '@/utils/board';
-import type { BoardData } from '@/utils/boardData';
-import { onMounted, ref } from 'vue';
+import Board, {  type SequentialBoard } from '@/utils/boardv2';
+import { ref, watch } from 'vue';
 import { ElTabs, ElTabPane } from 'element-plus';
 import ElRouterLink from './misc/ElRouterLink.vue';
+import apiv2 from '@/utils/api/apiv2';
+import type { Ranking } from '@/utils/RankingData';
+import type { DateTime } from 'luxon';
+import { issueNow } from '@/utils/datev2';
 
-const activeName = ref('日刊')
-const dailyData = ref<BoardData>()
-const weeklyData = ref<BoardData>()
-const monthlyData = ref<BoardData>()
+const props = defineProps<{
+  today: DateTime | null
+}>()
 
-const boardMap = ref([
-  { name: '日刊', data: dailyData },
-  { name: '周刊', data: weeklyData },
-  { name: '月刊', data: monthlyData },
-])
+const activeName = ref('vocaloid-daily')
+const boardMap = ref<Record<SequentialBoard, {
+  name: string,
+  data: Ranking[] | null
+}>>({
+  'vocaloid-daily': { name: '日刊', data: null  },
+  'vocaloid-weekly': { name: '周刊', data: null },
+  'vocaloid-monthly': { name: '月刊', data: null },
+})
 
-onMounted(async () => {
-  await Promise.all([
-    requester.get_board(Board.latest('vocaloid-daily-main'), 10).then(data => { dailyData.value = data } ),
-    requester.get_board(Board.latest('vocaloid-weekly-main'), 10).then(data => { weeklyData.value = data } ),
-    requester.get_board(Board.latest('vocaloid-monthly-main'), 10).then(data => { monthlyData.value = data } ),
-  ])
+watch(props, async () => {
+  if (props.today) {
+    const today = props.today
+    const promises = []
+    for (const board of ['vocaloid-daily', 'vocaloid-weekly', 'vocaloid-monthly'] as SequentialBoard[]) {
+      promises.push(apiv2.getRanking(new Board(board, 'main', issueNow(today)[board]), 1, 10).then(data => {
+        boardMap.value[board].data = data.data
+      }))
+    }
+    await Promise.all(promises)
+  }
 })
 
 </script>

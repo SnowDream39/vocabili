@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col items-center md:flex-row md:items-start">
-    <LatestRanking />
-    <RankingCalendar />
+    <LatestRanking :today="today" />
+    <RankingCalendar :today="today" />
   </div>
 </template>
 
@@ -9,7 +9,25 @@
 
 import LatestRanking from '@/components/LatestRanking.vue';
 import RankingCalendar from '../components/RankingCalendar.vue';
+import { DateTime } from 'luxon';
+import apiv2 from '@/utils/api/apiv2';
+import { onMounted, ref } from 'vue';
 
+const today = ref<DateTime | null>(null);
+
+/**
+ * 最新一期是哪天的
+ */
+async function getToday(): Promise<DateTime> {
+  const latestIssue = await apiv2.getLatestRanking('vocaloid-daily')
+  return DateTime.local(2024,7,2).plus({days: latestIssue})
+}
+
+onMounted(() => {
+  getToday().then(date => {
+    today.value = date
+  })
+})
 </script>
 <style scoped>
 .info {
