@@ -3,19 +3,19 @@
   <ElSelect v-model="board" placeholder="选择榜单">
     <ElOption v-for="option of options" :label="option.label" :value="option.value"/>
   </ElSelect>
-  <ElTable :data="tableData" v-if="tableData.length > 0">
-    <ElTableColumn prop="issue" label="期数"/>
-    <ElTableColumn v-for="rank of [0,1,2,3,4]" :key="rank" :label="rank+1">
-      <template #default="{row}">
-        <ElImage :src="row.songs[rank].thumbnail" />
-      </template>
-    </ElTableColumn>
-  </ElTable>
+  <div id="top5-table" class="grid grid-cols-6">
+    <template v-for="issueData in data">
+      <div>{{ issueData.issue }}</div>
+      <div v-for="item in issueData.rankings">
+        <img :src="item.video.thumbnail" alt="thumbnail">
+      </div>
+    </template>
+  </div>
   <ElPagination
-    v-if="tableData.length > 0"
+    v-if="data.length > 0"
     layout="prev, pager, next, sizes, jumper"
     :pager-count="5"
-    :total="currentIssue"
+    :total="total"
     v-model:page-size="size"
     :page-sizes="[5,10,20]"
     @size-change="getData"
@@ -27,15 +27,15 @@
 
 <script lang="ts" setup>
 import api from '@/utils/api/api';
-import Board from '@/utils/board';
+import type { Ranking } from '@/utils/RankingTypes';
 import { useTitle } from '@vueuse/core';
-import { ElPagination, ElSelect, ElTable } from 'element-plus';
+import { ElPagination, ElSelect } from 'element-plus';
 import { onMounted, ref } from 'vue';
 
 useTitle('前五列表 | 术力口数据库')
 interface IssueData {
   issue: number;
-  songs: any[];
+  rankings: Ranking[];
 }
 
 const options = [
@@ -44,33 +44,17 @@ const options = [
   { label: '月刊', value: 'vocaloid-monthly' }
 ]
 
-const tableData = ref<IssueData[]>([])
-const board = ref<string>('vocaloid-weekly')
+const data = ref<IssueData[]>([])
+const board = ref<string>('vocaloid-daily')
 const page = ref<number>(1)
-const currentIssue = ref<number>(0)
 const size = ref<number>(5)
-
-function makeData(data: any[]): IssueData[]  {
-  const newData: IssueData[] = []
-  for (const d of data) {
-    newData.push({
-      issue: Number(d.metadata.issue),
-      songs: d.board.map((song: any) => ({
-        thumbnail: song.target.platform.thumbnail
-      }))
-    })
-  }
-  return newData;
-}
+const total = ref<number>(0)
 
 async function getData() {
   console.log(page.value)
-  let data = await api.getRanking(new Board(board.value), undefined, 1)
-  currentIssue.value = data.metadata.issue
-  let issues: number[] = Array.from({length: size.value}, (_, i) => currentIssue.value - (page.value - 1) * size.value - i).filter(n => n > 0)
-
-  data = await api.getRankings(board.value, "main", issues, size.value)
-  tableData.value = makeData(data)
+  let result = await api.getRankingTop5(board.value, 'main', page.value, size.value)
+  data.value = result.data
+  total.value = result.total
 }
 
 

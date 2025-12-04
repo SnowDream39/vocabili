@@ -28,6 +28,7 @@ class Requester {
     song: "/select/song",
     videoSnapshot: "/select/video/snapshot",
     latestRanking: "/select/latest_ranking",
+    rankingTop5: "/select/ranking/top5",
     songByAchievement: "/select/song/by_achievement",
     songByArtist: "/select/song/by_artist",
     artistInfo: '/select/artist',
@@ -115,6 +116,13 @@ class Requester {
   async getRankings(board: string, part: string, issues: number[], size: number){
     const res = await api.get(Requester.endpoint.getBoards, {
       params: { board, part, issue: issues.join(','), count: size }
+    });
+    return res.data;
+  }
+
+  async getRankingTop5(board: string, part: string, page: number, pageSize: number) {
+    const res = await api.get(Requester.endpoint.rankingTop5, {
+      params: { board, part, page, page_size: pageSize }
     });
     return res.data;
   }
