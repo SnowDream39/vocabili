@@ -45,7 +45,7 @@ const options = [
 ]
 
 const data = ref<IssueData[]>([])
-const board = ref<string>('vocaloid-daily')
+const board = ref<string>('vocaloid-')
 const page = ref<number>(1)
 const size = ref<number>(5)
 const total = ref<number>(0)
