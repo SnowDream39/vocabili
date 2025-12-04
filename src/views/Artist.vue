@@ -30,20 +30,18 @@ const artistName = ref('')
 const page = ref(1)
 const total = ref(0)
 const artistSongs = ref<SongWithVideos[]>([])
-
+const artistType = route.params.type as string
+const artistId = route.params.id as string
 useTitle(computed(() => artistName.value + ' | 术力口数据库'))
 
-
-const {type,id} = route.params as { type: string; id: string };
-
 async function searchSong() {
-  const data = await api.getArtistSongList(type, id, page.value, 10)
+  const data = await api.getArtistSongList(artistType, artistId, page.value, 10)
   total.value = data.total
   artistSongs.value = data.data
 }
 
 async function fetchArtistInfo() {
-  const data = await api.getArtistInfo(type, id)
+  const data = await api.getArtistInfo(artistType, artistId)
   artistName.value = data.data.name
 }
 
