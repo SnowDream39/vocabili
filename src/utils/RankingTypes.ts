@@ -30,7 +30,7 @@ export interface Song {
     synthesizers: Uploader[];
 }
 
-export interface SongWithVideo extends Song {
+export interface SongWithVideos extends Song {
     videos: Video[];
 }
 
@@ -50,6 +50,10 @@ export interface Video {
     copyright:   number;
     duration:    number;
     uploader:    Uploader;
+}
+
+export interface VideoWithSong extends Video {
+    song: Song;
 }
 
 export interface Snapshot {

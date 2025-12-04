@@ -11,12 +11,12 @@
         </template>
       </el-input>
 
-      <el-select v-model="searchTarget" class="search-select" placeholder="搜索类型" @change="handleSearch">
+      <el-select v-model="searchTarget" class="search-select" placeholder="搜索类型">
         <el-option v-for="item in searchTargetOptions" :key="item.value" :value="item.value" :label="item.label" />
       </el-select>
     </div>
     <div class="search-container" >
-      <el-select v-model="searchSort" class="search-select" placeholder="排序" @change="handleSearch">
+      <el-select v-model="searchSort" class="search-select" placeholder="排序">
         <el-option v-for="item in searchSortOptions" :key="item.value" :value="item.value" :label="item.label" />
       </el-select>
 
@@ -37,16 +37,23 @@
 
 
     <!-- 搜索结果 -->
-    <template v-if="tableData[0] && ['name', 'platform'].includes(searchTarget)">
+    <template v-if="searchData && searchData.type == 'song'">
       <div class="flex flex-wrap justify-center max-w-200">
-        <a v-for="item in tableData" :href="'/song/' + item.id">
-          <SearchMusicCard :key="item.id" v-bind="item"/>
+        <a v-for="item in searchData.data" :href="'/song/' + item.id">
+          <SearchSongCard :key="item.id" :song="item"/>
         </a>
       </div>
     </template>
-    <template v-if="tableData[0] && ['vocalist', 'uploader', 'producer', 'synthesizer'].includes(searchTarget)">
+    <template v-if="searchData && searchData.type == 'video'">
+      <div class="flex flex-wrap justify-center max-w-200">
+        <a v-for="item in searchData.data" :href="'/song/' + item.song.id">
+          <SearchVideoCard :key="item.bvid" :video="item"/>
+        </a>
+      </div>
+    </template>
+    <template v-if="searchData && searchData.type == 'artist'">
       <SuspendPanel class="flex flex-wrap p-4 gap-2 w-9/10 max-w-112">
-        <a v-for="artist in tableData" class="block" :href="`/artist/${searchTarget}/${artist.id}`">
+        <a v-for="artist in searchData.data" class="block" :href="`/artist/${searchTarget}/${artist.id}`">
           <el-button>{{ artist.name }}</el-button>
         </a>
       </SuspendPanel>
@@ -69,19 +76,29 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, ref, toRaw } from 'vue';
-import router from '../router/index.ts';
-import { requester } from '../utils/api/requester.ts';
-import SearchMusicCard from '@/components/search/SearchMusicCard.vue';
+import SearchSongCard from '@/components/search/SearchSongCard.vue';
+import SearchVideoCard from '@/components/search/SearchVideoCard.vue';
 import { ElSelect, ElOption, ElInput, ElButton, ElPagination } from 'element-plus';
 import { useTitle } from '@vueuse/core';
 import SuspendPanel from '@/components/container/SuspendPanel.vue';
+import api from '@/utils/api/api.ts';
+import type { SongWithVideos, Uploader, VideoWithSong } from '@/utils/RankingTypes';
 
 // 响应式数据
 const searchWord = ref('')
-const rawData = ref(null)
-const searchTarget = ref('name')
+const searchData = ref<{
+  type: 'song',
+  data: SongWithVideos[],
+} | {
+  type: 'video',
+  data: VideoWithSong[],
+} | {
+  type: 'artist',
+  data: Uploader[],
+}>()
+const searchTarget = ref('song')
 const searchSort = ref('default')
 const searchAscending = ref(false)
 const total = ref(0)
@@ -94,8 +111,8 @@ useTitle(computed(() => `搜索：${searchWord.value} | 术力口数据库`))
 
 // 配置项
 const searchTargetOptions = [
-  { value: 'name', label: '歌名' },
-  { value: 'platform', label: '视频' },
+  { value: 'song', label: '歌名' },
+  { value: 'video', label: '视频' },
   { value: 'producer', label: '作者' },
   { value: 'uploader', label: 'UP主' },
   { value: 'vocalist', label: '歌手' },
@@ -104,7 +121,7 @@ const searchTargetOptions = [
 
 // 计算属性
 const searchSortOptions = computed(() => {
-  if (searchType.value === 'song') {
+  if (searchTarget.value === 'song') {
     return [
       { value: 'default', label: '默认' },
       { value: 'view', label: '播放量' },
@@ -119,46 +136,36 @@ const searchSortOptions = computed(() => {
   }
 })
 
-const tableData = computed(() => {
-  return rawData.value?.map(item => formatItem(item)) || []
-})
-
-const searchType = computed(() => {
-  if (['platform', 'name'].includes(searchTarget.value)) {
-    return 'song'
-  } else {
-    return 'artist'
-  }
-})
 
 
 // 方法
 const handleSearch = async () => {
   try {
     loading.value = true
-    let data
-    const options = {
-      index: page.value,
-      count: pageSize.value,
-      threshold: threshold.value,
-      sort: searchSort.value
-    }
-    if (searchTarget.value === 'platform') {
-      options.count = 20
-      data = await requester.search_song_by_platform(searchWord.value, options)
-    } else if (searchTarget.value === 'name') {
-      options.count = 20
-      data = await requester.search_song_by_name(searchWord.value, options)
+    let result
+    if (searchTarget.value === 'video') {
+      result = await api.search('video', searchWord.value, page.value, pageSize.value)
+      searchData.value = {
+        type: 'video',
+        data: result.data
+      }
+    } else if (searchTarget.value === 'song') {
+      result = await api.search('song', searchWord.value, page.value, pageSize.value)
+      searchData.value = {
+        type: 'song',
+        data: result.data
+      }
     } else {
-      options.count = 30
-      data = await requester.search_artist(searchTarget.value, searchWord.value, options)
+      result = await api.search(searchTarget.value, searchWord.value, page.value, pageSize.value)
+      searchData.value = {
+        type: 'artist',
+        data: result.data
+      }
     }
 
-    const { result, total: totalCount } = data
-    pageSize.value = options.count
+    console.log('搜索结果:', toRaw(searchData.value))
 
-    rawData.value = result
-    total.value = totalCount
+    total.value = result.total
   } catch (error) {
     console.error('搜索失败:', error)
   } finally {
@@ -170,17 +177,6 @@ const handlePageChanged = async () => {
   await handleSearch();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
-
-const formatItem = (data) => (['platform', 'name'].includes(searchTarget.value)
-  ? {
-    id: data.metadata.id,
-    name: data.metadata.name,
-    type: data.metadata.type,
-    vocalist: data.metadata.target.vocalist.map(v => v.name).join('、'),
-    producer: data.metadata.target.producer.map(p => p.name).join('、'),
-    thumbnail: data.platform[0].thumbnail
-  }
-  : data.target)
 
 const expandSearch = async () => {
   threshold.value *= 0.8

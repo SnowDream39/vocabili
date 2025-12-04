@@ -4,24 +4,24 @@
       <div class="m-1">
         <TextMarquee>
           <div class="h-7 flex flex-row justify-between items-center whitespace-nowrap">
-            <div>{{ vocalist }}</div>
+            <div>{{ song.vocalists.map(v => v.name).join('、') }}</div>
           </div>
         </TextMarquee>
         <TextMarquee>
         <div class="h-12 flex flex-col justify-around">
-          <div class="w-full text-xl font-bold">{{ name }}</div>
+          <div class="w-full text-xl font-bold">{{ song.name }}</div>
         </div>
         </TextMarquee>
         <TextMarquee>
         <div class="h-7 flex flex-row justify-between items-center">
-          <div>{{ producer }}</div>
+          <div>{{ song.producers.map(p => p.name).join('、') }}</div>
         </div>
         </TextMarquee>
       </div>
     </template>
-    <template #back>
+    <template #back v-if="song.videos.length">
       <img class="back-thumbnail w-full h-full object-cover"
-          :src="thumbnail" alt="thumbnail" />
+          :src="song.videos[0].thumbnail" alt="thumbnail" />
     </template>
   </CardCoverThumbnail>
 </template>
@@ -29,12 +29,10 @@
 <script setup lang="ts">
 import CardCoverThumbnail from '@/components/container/CardCoverThumbnail.vue';
 import TextMarquee from '../misc/TextMarquee.vue';
+import type { SongWithVideos } from '@/utils/RankingTypes';
 
 defineProps<{
-  producer: string;
-  vocalist: string;
-  name: string;
-  thumbnail: string;
+  song: SongWithVideos
 }>();
 
 </script>

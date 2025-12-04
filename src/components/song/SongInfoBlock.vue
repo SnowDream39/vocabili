@@ -58,10 +58,10 @@ import { ElDialog, ElScrollbar, ElButton } from 'element-plus';
 import VideoStat from './VideoStat.vue';
 import SuspendPanel from '../container/SuspendPanel.vue';
 import api from '@/utils/api/api';
-import type { SongWithVideo } from '@/utils/RankingTypes';
+import type { SongWithVideos } from '@/utils/RankingTypes';
 import { bvidToLink } from '@/utils/videoid';
 // ==============  处理数据  ==============
-const song = ref<SongWithVideo>()
+const song = ref<SongWithVideos>()
 const statVisible = ref<boolean[]>([])
 const emits = defineEmits(['completed'])
 
@@ -70,7 +70,7 @@ function showStat(index: number) {
 }
 
 
-async function fetchSongInfo(songId: number): Promise<SongWithVideo> {
+async function fetchSongInfo(songId: number): Promise<SongWithVideos> {
 
   const data = await api.getSong(songId);
   return data.data;
