@@ -13,7 +13,7 @@
           <a style="text-decoration: none;" :href="`/board/${scope.row.board}/${scope.row.issue}`">{{ scope.row.issue }}</a>
         </template>
       </el-table-column>
-      <el-table-column sortable prop="rank.board" label="排名" min-width="80" />
+      <el-table-column sortable prop="rank" label="排名" min-width="80" />
       <el-table-column sortable prop="point" label="得分" min-width="90" />
       <el-table-column
         v-for="column in columns"
@@ -23,8 +23,8 @@
         :sort-method="sortChange(column.key)"
         min-width="125">
         <template #default="scope">
-          <span>{{ scope.row.change[column.key] }}</span>
-          <span style="float:right">{{ scope.row.rank[column.key] }}位</span>
+          <span>{{ scope.row[column.key] }}</span>
+          <span style="float:right">{{ scope.row[`${column.key}_rank`] }}位</span>
         </template>
       </el-table-column>
     </el-table>
@@ -33,13 +33,15 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { ElTable, ElTableColumn } from 'element-plus';
+import type { Ranking } from '@/utils/RankingTypes';
+
 const table = ref('table');
 
 const emit = defineEmits(['send-data'])
 
 // =========== 配置 ============
 const props = defineProps<{
-  data: any
+  data: Ranking[],
 }>();
 const columns = [
   {key: "view", label: "播放"},

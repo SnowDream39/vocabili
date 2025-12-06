@@ -3,7 +3,7 @@ import type Board from "../board";
 import type { DataItem } from "../calculator";
 
 const api = axios.create({
-  baseURL: "http://localhost:8000/v2",
+  baseURL: "https://api.vocabili.top/v2",
   timeout: 20000,
 });
 

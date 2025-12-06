@@ -19,7 +19,7 @@
             </li>
           </ol>
           <div class="w-full flex justify-end px-2">
-            <ElRouterLink :to="`/board/${board}/${issueNow(props.today as DateTime)[board]}`" type="primary">&gt;&gt;更多</ElRouterLink>
+            <ElRouterLink :to="`/board/${board}/${value.issue}`" type="primary">&gt;&gt;更多</ElRouterLink>
           </div>
         </div>
       </el-tab-pane>
@@ -45,20 +45,23 @@ const props = defineProps<{
 const activeName = ref('vocaloid-daily')
 const boardMap = ref<Record<SequentialBoard, {
   name: string,
+  issue: number,
   data: Ranking[] | null
 }>>({
-  'vocaloid-daily': { name: '日刊', data: null  },
-  'vocaloid-weekly': { name: '周刊', data: null },
-  'vocaloid-monthly': { name: '月刊', data: null },
+  'vocaloid-daily': { name: '日刊', issue: 1, data: null  },
+  'vocaloid-weekly': { name: '周刊', issue: 1, data: null },
+  'vocaloid-monthly': { name: '月刊', issue: 1, data: null },
 })
 
 watch(props, async () => {
   if (props.today) {
-    const today = props.today
     const promises = []
     for (const board of ['vocaloid-daily', 'vocaloid-weekly', 'vocaloid-monthly'] as SequentialBoard[]) {
-      promises.push(api.getRanking(new Board(board, 'main', issueNow(today)[board]), 1, 10).then(data => {
-        boardMap.value[board].data = data.data
+      promises.push(api.getLatestRanking(board).then(data => {
+        boardMap.value[board].issue = data
+        api.getRanking(new Board(board, 'main', data), 1, 10).then(data => {
+          boardMap.value[board].data = data.data
+        })
       }))
     }
     await Promise.all(promises)

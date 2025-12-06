@@ -26,8 +26,6 @@
         <div><ListItem :items="ranking.song.synthesizers" type="synthesizer" /></div>
       </div>
       <div class="space-x-2">
-        <span v-if="[1, 4].includes(ranking.video.copyright)">本家投稿</span>
-        <span v-else>搬运</span>
         <span>{{ ranking.song.type }}</span>
       </div>
       <div>上榜次数：{{ ranking.count }}</div>
@@ -47,7 +45,10 @@
       </div>
       <div class="bg-surface-container pb-2">
         <div class="font-900">{{ ranking.video.title }}</div>
-        <el-link underline="always" :href="`/artist/uploader/${ranking.video.uploader.id}`" >{{ ranking.video.uploader.name }}</el-link>
+        <div>
+          <el-link underline="always" :href="`/artist/uploader/${ranking.video.uploader.id}`" >{{ ranking.video.uploader.name }}</el-link>
+          <span v-if="[4, 100].includes(ranking.video.copyright)">（搬运）</span>
+        </div>
         <div>{{ DateTime.fromISO(ranking.video.pubdate).toFormat('yyyy-LL-dd HH:mm:ss') }}</div>
       </div>
     </SuspendPanel>

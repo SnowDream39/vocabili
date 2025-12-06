@@ -88,7 +88,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import router from '../router/index.ts'
 import Board, { type BoardName, type SequentialBoard } from '../utils/board.ts';
@@ -173,8 +173,12 @@ async function handleIssueChanged(selected: any) {
   await handleSearch()
 }
 
-const handlePageChanged = async () => {
+function scrollToTop() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+const handlePageChanged = async () => {
+  scrollToTop()
 }
 
 function changePart() {
@@ -187,6 +191,10 @@ function changePart() {
     }
   })
 }
+
+onMounted(() => {
+  scrollToTop()
+})
 
 // 监听 page 变化，切换分页时重新获取数据
 

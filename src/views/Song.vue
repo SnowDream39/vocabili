@@ -129,7 +129,7 @@ function showTable() {
 
 onMounted(async () => {
   await Promise.all([fetchData('vocaloid-daily'), fetchData('vocaloid-weekly'), fetchData('vocaloid-monthly')])
-
+  chartBoardId.value = 'vocaloid-daily'
 })
 
 </script>

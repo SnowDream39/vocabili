@@ -18,7 +18,7 @@
                 <a class="font-bold underline underline-offset-5 hover:no-underline" :href="bvidToLink(video.bvid)">{{ video.title }}</a>
                 <div>
                   <div>
-                    <div>{{ copyrightString(video.copyright) }}：<ArtistList :artists="[video.uploader]" type="uploader" /></div>
+                    <div><ArtistList :artists="[video.uploader]" type="uploader" /><span v-if="[2, 3, 101].includes(video.copyright)">（搬运）</span></div>
                     <div>{{ DateTime.fromISO(video.pubdate).toFormat('yyyy-LL-dd HH:mm:ss') }}</div>
                   </div>
                   <div class="w-30 grow-0 shrink-0">
@@ -87,10 +87,6 @@ useTitle(computed(() => {
     return '加载中……'
   }
 }))
-
-function copyrightString(copyright: number) {
-  return [1, 100].includes(copyright) ? '作者' : '搬运'
-}
 
 onMounted(async () => {
   if (props.songId) {
