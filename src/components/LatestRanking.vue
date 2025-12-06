@@ -36,7 +36,6 @@ import ElRouterLink from './misc/ElRouterLink.vue';
 import api from '@/utils/api/api';
 import type { Ranking } from '@/utils/RankingTypes';
 import type { DateTime } from 'luxon';
-import { issueNow } from '@/utils/date';
 
 const props = defineProps<{
   today: DateTime | null
