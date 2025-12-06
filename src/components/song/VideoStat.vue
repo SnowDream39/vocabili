@@ -80,7 +80,7 @@ async function init() {
   const {view,favorite,coin,like} = data.stat
   const currentStat = {view,favorite,coin,like}
   stat.value.push(
-    { name:'当前数据', board:'monthly', ...currentStat},
+    { name:'当前数据', board:'vocaloid-monthly', ...currentStat},
   )
 
   // 一些历史数据，等一下找一点出来
@@ -94,6 +94,7 @@ async function init() {
 
   for (const setting of settings) {
     const startTime = startTimeOf(issueNow()[setting.board], setting.board)
+    console.log(startTime.toFormat('yyyy-MM-dd'))
 
     if (startTime.toMillis() > publishTime.toMillis() ) {
       // 有数据就算，没有就不算。

@@ -1,6 +1,7 @@
 import axios from "axios"
 import Board, { isSequentialBoard, type SequentialBoard } from "./board"
 import { issueNow, startTimeOf } from "./date"
+import type { Snapshot } from "./RankingTypes"
 
 /*
 copyright的四种类型：
@@ -44,13 +45,14 @@ export function difference(currentStat: Count, lastStat: Count): Count {
  * @param name 刊的类别（daily等）
  * @returns 那天的数据
  */
-export function searchData(historyData: {date: string, count: Count}[], name: SequentialBoard): Count | null {
+export function searchData(historyData: Snapshot[], name: SequentialBoard): Count | null {
+  console.log(historyData)
   // history 里面的日期是那天0点数据的意思
   const date = startTimeOf(issueNow()[name], name)
   if (date.isValid) {
     const data = historyData.find((item: any) => item.date === date.toFormat('yyyy-MM-dd'))
     if (data) {
-      return data.count
+      return data
     }
     return null
   } else {

@@ -141,15 +141,12 @@ const isSpecial = computed(() => {
 const rankDateString = computed(() => board.value.getRankDateString())
 const issueName = computed(() => board.value.getBoardName())
 
-const boardList = ref<HTMLElement | null>(null)
-
 useTitle(computed(() => issueName.value + ' | 术力口数据库'))
 
 // =============== 交互事件 ===============
 function changeOrder() {
   console.log(orderType.value)
 }
-
 
 async function handleSearch() {
   ranks.value = []
@@ -198,16 +195,16 @@ onMounted(() => {
 
 // 监听 page 变化，切换分页时重新获取数据
 
-watch(board, async () => {
+watch([board, page], async () => {
   await handleSearch();
-}, {immediate: true})
+}, {immediate: true, deep: true})
 
 watch(() => [board.value.issue, board.value.name], async () => {
-  if (board.value.name !== 'special'){
-    lastIssueStatus.value = await api.checkIssue(board.value);
-    nextIssueStatus.value = await api.checkIssue(board.value);
-  }
-})
+  // @ts-ignore
+  lastIssueStatus.value = await api.checkIssue(new Board(board.value.name, 'main', board.value.issue - 1))
+  // @ts-ignore
+  nextIssueStatus.value = await api.checkIssue(new Board(board.value.name, 'main', board.value.issue + 1))
+}, {immediate: true})
 
 function getCurrentBoard() {
   const params = route.params
@@ -228,9 +225,9 @@ watch(board, () => {
   QRCode.toCanvas(document.getElementById('qrcode'), window.location.href, function (error) {
     if (error) console.error(error)
   })
-})
+}, { deep: true})
 
-watch([route.path, route.query.part], () => {
+watch(() => [route.path, route.query.part], () => {
   board.value = getCurrentBoard()
 })
 

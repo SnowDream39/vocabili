@@ -38,14 +38,14 @@
 
     <!-- 搜索结果 -->
     <template v-if="searchData && searchData.type == 'song'">
-      <div class="flex flex-wrap justify-center max-w-200">
+      <div class="flex flex-wrap justify-center w-4/5 min-w-75">
         <a v-for="item in searchData.data" :href="'/song/' + item.id">
           <SearchSongCard :key="item.id" :song="item"/>
         </a>
       </div>
     </template>
     <template v-if="searchData && searchData.type == 'video'">
-      <div class="flex flex-wrap justify-center max-w-200">
+      <div class="flex flex-wrap justify-center w-4/5 min-w-75">
         <a v-for="item in searchData.data" :href="'/song/' + item.song.id">
           <SearchVideoCard :key="item.bvid" :video="item"/>
         </a>

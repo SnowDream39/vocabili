@@ -21,22 +21,7 @@ declare module 'vue' {
     CommentLikeButton: typeof import('./src/components/user/CommentLikeButton.vue')['default']
     CommentList: typeof import('./src/components/user/CommentList.vue')['default']
     CommentReplyButton: typeof import('./src/components/user/CommentReplyButton.vue')['default']
-    ElCard: typeof import('element-plus/es')['ElCard']
-    ElDrawer: typeof import('element-plus/es')['ElDrawer']
-    ElEmpty: typeof import('element-plus/es')['ElEmpty']
-    ElForm: typeof import('element-plus/es')['ElForm']
-    ElFormItem: typeof import('element-plus/es')['ElFormItem']
-    ElInput: typeof import('element-plus/es')['ElInput']
-    ElLink: typeof import('element-plus/es')['ElLink']
-    ElMenu: typeof import('element-plus/es')['ElMenu']
-    ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
-    ElOption: typeof import('element-plus/es')['ElOption']
     ElRouterLink: typeof import('./src/components/misc/ElRouterLink.vue')['default']
-    ElSelect: typeof import('element-plus/es')['ElSelect']
-    ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
-    ElSwitch: typeof import('element-plus/es')['ElSwitch']
-    ElTable: typeof import('element-plus/es')['ElTable']
-    ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     Footer: typeof import('./src/components/Footer.vue')['default']
     Header: typeof import('./src/components/header/Header.vue')['default']
     HeaderDrawer: typeof import('./src/components/header/HeaderDrawer.vue')['default']
@@ -71,8 +56,5 @@ declare module 'vue' {
     TodayCalculator: typeof import('./src/components/song/TodayCalculator.vue')['default']
     VideoInfo: typeof import('./src/components/song/VideoInfo.vue')['default']
     VideoStat: typeof import('./src/components/song/VideoStat.vue')['default']
-  }
-  export interface GlobalDirectives {
-    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }
