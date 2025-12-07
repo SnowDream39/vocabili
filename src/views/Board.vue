@@ -104,7 +104,6 @@ import { issueBefore } from '@/utils/date';
 import { useTitle } from '@vueuse/core';
 import SuspendPanel from '@/components/container/SuspendPanel.vue';
 import type { Ranking } from '@/utils/RankingTypes.ts';
-import { on } from 'events';
 
 
 const route = useRoute()
