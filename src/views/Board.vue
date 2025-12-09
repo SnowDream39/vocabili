@@ -47,7 +47,7 @@
           v-if="board && ranks && ranks.length > 0"
           :song="data"
           :board="board"
-          :is-today="isToday"
+          :is-today="!nextIssueStatus"
           :section="board.name"
           :key="data.bvid"
         />
@@ -91,7 +91,7 @@
 import { ref, computed, watch, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import router from '../router/index.ts'
-import Board, { type BoardName, type SequentialBoard } from '../utils/board.ts';
+import Board, { type BoardName } from '../utils/board.ts';
 import api from '@/utils/api/api.ts';
 import SpecialSelector from '../components/board/SpecialSelector.vue';
 import CommentFrame from '../components/user/CommentFrame.vue';
@@ -100,7 +100,6 @@ import RankingCard from '@/components/board/RankingCard.vue';
 import { ElPagination, ElSelect, ElOption } from 'element-plus';
 import ElRouterLink from '@/components/misc/ElRouterLink.vue';
 import QRCode from 'qrcode'
-import { issueBefore } from '@/utils/date';
 import { useTitle } from '@vueuse/core';
 import SuspendPanel from '@/components/container/SuspendPanel.vue';
 import type { Ranking } from '@/utils/RankingTypes.ts';
@@ -127,7 +126,6 @@ const metadata = ref<{
 }>();
 const orderType = ref<string>('score.total')
 const ranks = ref<Ranking[]>([]);
-const isToday = ref<boolean>(false)
 const board = ref<Board>(getCurrentBoard())
 
 const lastIssueStatus = ref(false)
@@ -200,6 +198,8 @@ watch([board, page], async () => {
 }, {immediate: true, deep: true})
 
 watch(() => [board.value.issue, board.value.name], async () => {
+  lastIssueStatus.value = false
+  nextIssueStatus.value = false
   // @ts-ignore
   lastIssueStatus.value = await api.checkIssue(new Board(board.value.name, 'main', board.value.issue - 1))
   // @ts-ignore
@@ -212,11 +212,8 @@ function getCurrentBoard() {
   const issueString = params.issue as string
   const part = route.query.part as string ?? 'main'
   if (issueString == '') {
-    const issue = issueBefore()[boardName as SequentialBoard]
-    isToday.value = true
-    return new Board(boardName, part, issue)
+    return new Board(boardName, part)
   } else {
-    isToday.value = Number(issueString) == issueBefore()[boardName as SequentialBoard]
     return new Board(boardName, part, Number(issueString))
   }
 }

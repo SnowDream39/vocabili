@@ -64,7 +64,7 @@ class Requester {
         page_size: 1
       }
     });
-    if (res.data) {
+    if (res.data.data.length) {
       return true;
     } else {
       return false;
