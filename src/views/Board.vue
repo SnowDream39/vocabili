@@ -234,10 +234,6 @@ watch(() => [route.path, route.query.part], () => {
   board.value = getCurrentBoard()
 })
 
-watch(board, () => {
-  console.log(new Error().stack)
-})
-
 onMounted(updateQRCode)
 
 </script>

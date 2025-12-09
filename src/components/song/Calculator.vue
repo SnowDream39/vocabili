@@ -67,11 +67,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { Calculator } from '@/utils/calculator'
-import Board from '@/utils/board';
+import Board, { type SequentialBoard } from '@/utils/board';
 import { ElSelect, ElInput, ElOption } from 'element-plus';
 import CalcChart from '@/components/chart/CalcChart.vue';
+import { issueNow } from '@/utils/date';
+
 
 export interface Form {
   view: number
@@ -87,6 +89,12 @@ const props = defineProps<{
   form: Form,
   hideButton?: boolean
 }>()
+
+onMounted(() => {
+  if (props.form.board.issue === null) {
+    props.form.board.issue = issueNow()[props.form.board.name as SequentialBoard]
+  }
+})
 
 const form = ref<Form>(props.form)
 

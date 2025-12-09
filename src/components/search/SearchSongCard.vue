@@ -9,7 +9,7 @@
         </TextMarquee>
         <TextMarquee>
         <div class="h-12 flex flex-col justify-around">
-          <div class="w-full text-xl font-bold">{{ song.name }}</div>
+          <div class="w-full text-xl font-bold">{{ makeSongName(song) }}</div>
         </div>
         </TextMarquee>
         <TextMarquee>
@@ -30,6 +30,7 @@
 import CardCoverThumbnail from '@/components/container/CardCoverThumbnail.vue';
 import TextMarquee from '../misc/TextMarquee.vue';
 import type { SongWithVideos } from '@/utils/RankingTypes';
+import { makeSongName } from '@/utils/displayText';
 
 defineProps<{
   song: SongWithVideos

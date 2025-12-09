@@ -7,7 +7,7 @@
       <div class="p-3 flex justify-center items-center gap-4 overflow-hidden cursor-pointer">
         <div name="right" class="block w-full">
           <TextMarquee>
-            <div class="inline-block text-2xl whitespace-nowrap" :title="song.name">{{ song.name }}</div>
+            <div class="inline-block text-2xl whitespace-nowrap" :title="song.name">{{ makeSongName(song) }}</div>
           </TextMarquee>
           <div class="w-full flex">
             <div class="basis-0 grow-2 whitespace-nowrap overflow-hidden">
@@ -52,6 +52,7 @@ import TextMarquee from './misc/TextMarquee.vue';
 import { DateTime } from 'luxon';
 import RankItem from './board/RankItem.vue';
 import { bvidToLink } from '@/utils/videoid';
+import { makeSongName } from '@/utils/displayText';
 
 defineProps<{
   song: Song,

@@ -4,7 +4,7 @@
       <el-scrollbar>
         <div class="flex flex-nowrap gap-4 pt-1 pl-4 pb-4">
           <div id="song-info" class="grow-0 shrink-0 w-60 *:my-2">
-            <h1 class="font-800 text-3xl text-left">{{ song.name }}</h1>
+            <h1 class="font-800 text-3xl text-left">{{ makeSongName(song) }}</h1>
             <div><ArtistList :artists="song.producers" type="producer" /></div>
             <div><ArtistList :artists="song.vocalists" type="vocalist" /></div>
             <div><ArtistList :artists="song.synthesizers" type="synthesizer" /></div>
@@ -60,6 +60,7 @@ import SuspendPanel from '../container/SuspendPanel.vue';
 import api from '@/utils/api/api';
 import type { SongWithVideos } from '@/utils/RankingTypes';
 import { bvidToLink } from '@/utils/videoid';
+import { makeSongName } from '@/utils/displayText';
 // ==============  处理数据  ==============
 const song = ref<SongWithVideos>()
 const statVisible = ref<boolean[]>([])

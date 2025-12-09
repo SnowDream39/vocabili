@@ -42,9 +42,8 @@ async function init() {
   if (!isSequentialBoard(props.boardName))
     throw new Error(`${props.boardName} 不是一个可算分的排行榜`)
   const offset = props.boardName ? offsetMap[props.boardName] : 1
-  console.log(offset)
   const historyData = await api.getVideoSnapshot(props.bvid, 1, offset)
-  const lastStat: Count = historyData.result[0].count
+  const lastStat: Count = historyData.data[0]
 
   const stat = difference(currentStat, lastStat)
 

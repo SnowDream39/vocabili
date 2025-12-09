@@ -15,7 +15,7 @@
         <div name="right" class="block items-center w-[350px]">
             <TextMarquee>
               <div class="inline-block text-3xl whitespace-nowrap"
-                :title="song.song.name">{{ song.song.name }}</div>
+                :title="song.song.name">{{ makeSongName(song.song) }}</div>
             </TextMarquee>
           <div class="w-full flex" >
             <div class="basis-0 grow-2 whitespace-nowrap overflow-hidden">
@@ -61,7 +61,7 @@
         <div name="top-right" class="w-0 grow-3 inline-block m-2 relative *:text-nowrap *:truncate text-shadow-md">
           <TextMarquee>
             <div class="inline-block text-xl whitespace-nowrap"
-              :title="song.song.name">{{ song.song.name }}</div>
+              :title="song.song.name">{{ makeSongName(song.song) }}</div>
           </TextMarquee>
           <TextMarquee>
             <div>{{ song.song.producers.map(item => item.name).join('、') }}</div>
@@ -110,7 +110,6 @@
     v-model="todayCalculatorVisible"
     :board-name="props.boardName ?? 'vocaloid-daily'"
     :bvid="song.bvid"
-    :video-id="song.bvid"
     :copyright="song.video.copyright"
     :key="song.bvid"
   />
@@ -134,6 +133,7 @@ import TextMarquee from '../misc/TextMarquee.vue';
 import type Board from '@/utils/board';
 import type { Ranking } from '@/utils/RankingTypes';
 import { bvidToLink } from '@/utils/videoid';
+import { makeSongName } from '@/utils/displayText';
 
 const isMobile = useMediaQuery('(max-width: 640px)')
 const props = defineProps<{

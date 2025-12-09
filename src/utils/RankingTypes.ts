@@ -24,6 +24,7 @@ export interface Ranking {
 export interface Song {
     id:           number;
     name:         string;
+    display_name?: string;
     type:         string;
     producers:    Uploader[];
     vocalists:    Uploader[];
