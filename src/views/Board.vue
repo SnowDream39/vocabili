@@ -200,6 +200,10 @@ watch([board, page], async () => {
 watch(() => [board.value.issue, board.value.name], async () => {
   lastIssueStatus.value = false
   nextIssueStatus.value = false
+  if (!board.value.issue){
+    board.value.issue = await api.getLatestRanking(board.value.name)
+    return
+  }
   // @ts-ignore
   lastIssueStatus.value = await api.checkIssue(new Board(board.value.name, 'main', board.value.issue - 1))
   // @ts-ignore
@@ -228,6 +232,10 @@ watch(board, updateQRCode, { deep: true})
 
 watch(() => [route.path, route.query.part], () => {
   board.value = getCurrentBoard()
+})
+
+watch(board, () => {
+  console.log(new Error().stack)
 })
 
 onMounted(updateQRCode)
