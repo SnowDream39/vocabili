@@ -105,10 +105,7 @@ async function getToday(): Promise<DateTime> {
 }
 
 function navigateToRanking(boardType: string) {
-  if (today.value) {
-    const issue = Math.ceil(today.value.diff(DateTime.local(2024, 7, 2)).as('days'));
-    router.push(`/board/${boardType}/${issue}`);
-  }
+  router.push(`/board/${boardType}/`);
 }
 
 onMounted(() => {

@@ -17,6 +17,7 @@ export default defineConfig({
       'on-tertiary': 'var(--md-sys-color-on-tertiary)',
       surface: 'var(--md-sys-color-surface)',
       'surface-container': 'var(--md-sys-color-surface-container)',
+      'surface-variant': 'var(--md-sys-color-surface-variant)',
       'on-surface': 'var(--md-sys-color-on-surface)',
       'on-surface-variant': 'var(--md-sys-color-on-surface-variant)',
       error: 'var(--md-sys-color-error)',

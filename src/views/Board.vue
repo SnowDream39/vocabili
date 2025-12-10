@@ -109,11 +109,11 @@ const route = useRoute()
 const statusStore = useStatusStore()
 
 const orderTypes = {
-  'score.total': '总分',
-  'offset.view': '播放',
-  'offset.favorite': '收藏',
-  'offset.coin': '投币',
-  'offset.like': '点赞',
+  'score': '总分',
+  'view': '播放',
+  'favorite': '收藏',
+  'coin': '投币',
+  'like': '点赞',
 }
 
 // 响应式数据
@@ -124,7 +124,7 @@ const metadata = ref<{
   issue: number;
   part: string
 }>();
-const orderType = ref<string>('score.total')
+const orderType = ref<string>('score')
 const ranks = ref<Ranking[]>([]);
 const board = ref<Board>(getCurrentBoard())
 
@@ -191,9 +191,7 @@ onMounted(() => {
   scrollToTop()
 })
 
-// 监听 page 变化，切换分页时重新获取数据
-
-watch([board, page], async () => {
+watch([board, page, orderType], async () => {
   await handleSearch();
 }, {immediate: true, deep: true})
 

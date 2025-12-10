@@ -40,7 +40,7 @@ class Requester {
 
   constructor() {}
 
-  async getRanking(board: Board, page = 1, pageSize = 20, orderType = 'score.total') {
+  async getRanking(board: Board, page = 1, pageSize = 20, orderType = 'score') {
     const res = await api.get(Requester.endpoint.ranking, {
       params: {
         board: board.name,
