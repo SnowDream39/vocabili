@@ -13,7 +13,6 @@
             <el-select
               class="w-20!"
               v-model="orderType"
-              @change="changeOrder"
             >
               <el-option
                 v-for="(value, key) in orderTypes"
@@ -49,6 +48,7 @@
           :board="board"
           :is-today="!nextIssueStatus"
           :section="board.name"
+          :show-count="['vocaloid-daily', 'vocaloid-weekly'].includes(board.name) && board.part == 'main'"
           :key="data.bvid"
         />
       </div>
@@ -142,10 +142,6 @@ const issueName = computed(() => board.value.getBoardName())
 useTitle(computed(() => issueName.value + ' | 术力口数据库'))
 
 // =============== 交互事件 ===============
-function changeOrder() {
-  console.log(orderType.value)
-}
-
 async function handleSearch() {
   ranks.value = []
   let data

@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen bg-surface">
     <!-- Hero Section -->
-    <section class="bg-gradient-to-br from-primary/10 to-tertiary/10 py-8 lg:py-12 px-4">
+    <section class="bg-linear-to-br from-primary/10 to-tertiary/10 py-8 lg:py-12 px-4">
       <div class="max-w-7xl mx-auto text-center">
         <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-on-surface mb-3 lg:mb-4">
           术力口数据库
@@ -10,7 +10,7 @@
           追踪 VOCALOID 音乐的最新动态与历史数据
         </p>
         <div class="flex flex-wrap justify-center gap-3 lg:gap-4">
-          <div class="bg-surface-container px-4 lg:px-6 py-2 lg:py-3 rounded-full shadow-sm">
+          <div class="block bg-surface-container px-4 lg:px-6 py-2 lg:py-3 rounded-full shadow-sm cursor-pointer" @click="navigateToRanking('vocaloid-daily')">
             <span class="text-xs lg:text-sm text-on-surface-variant">今日刊号</span>
             <span class="ml-1 lg:ml-2 font-semibold text-primary text-sm lg:text-base">{{ today?.toFormat('yyyy-MM-dd') || '加载中...' }}</span>
           </div>

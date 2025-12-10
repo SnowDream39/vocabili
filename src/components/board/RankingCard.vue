@@ -28,8 +28,10 @@
               <div>{{ DateTime.fromISO(song.video.pubdate).toFormat('yyyy-LL-dd HH:mm') }}</div>
               <div>
                 <span>{{ song.point.toLocaleString() }}pts</span>
-                <span> / </span>
-                <span>{{ song.count }}回</span>
+                <template v-if="props.showCount">
+                  <span> / </span>
+                  <span>{{ song.count }}回</span>
+                </template>
               </div>
             </div>
             <div class="basis-0 grow flex flex-col justify-center items-start text-shadow-none  bg-white/70 dark:bg-black/50 rounded-lg overflow-hidden">
@@ -140,7 +142,8 @@ const props = defineProps<{
   song: Ranking,
   board: Board,
   isToday?: boolean,
-  boardName?: string
+  boardName?: string,
+  showCount?: boolean
 }>()
 const dialogVisible = ref(false)
 const calculatorVisible = ref(false)
