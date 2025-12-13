@@ -107,12 +107,16 @@ const boards = ref([
 const copyrights = ref([
   { value: 1, label: '原创' },
   { value: 2, label: '搬运' },
+  { value: 3, label: '薛定谔态' },
+  { value: 101, label: '搬运投自制' },
+  { value: 100, label: '自制投搬运' },
 ])
 
 const results = computed(() => {
   const { view, favorite, coin, like, copyright } = form.value
   const count = { view, favorite, coin, like, copyright }
-  const calc = new Calculator(count, copyright, form.value.board)
+  const calcCopyright = [1, 3, 101].includes(copyright) ? 1 : 2
+  const calc = new Calculator(count, calcCopyright, form.value.board)
   return calc.getResults()
 })
 
