@@ -16,6 +16,7 @@ export interface Ranking {
     board:         string;
     point:         number;
     like_rank:     number;
+    seperates:     number[];
     song:         Song;
     video:        Video;
     last:         Ranking;

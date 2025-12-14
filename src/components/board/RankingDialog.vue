@@ -16,6 +16,7 @@
             RATE：{{((ranking.point - ranking.last.point) / ranking.last.point * 100).toFixed(2) + '%'}}
           </div>
         </div>
+        <div v-if="ranking.seperates[0] > 0">分期排名：{{ ranking.seperates.join('→') }}</div>
       </div>
     </div>
 
