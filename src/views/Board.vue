@@ -145,7 +145,7 @@ useTitle(computed(() => issueName.value + ' | 术力口数据库'))
 async function handleSearch() {
   ranks.value = []
   let data
-  data = await api.getRanking(board.value, page.value, undefined, orderType.value, board.value.name == 'vocaloid-weekly')
+  data = await api.getRanking(board.value, page.value, undefined, orderType.value)
 
   ranks.value = data.data
   metadata.value = data.metadata

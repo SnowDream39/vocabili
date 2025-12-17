@@ -46,16 +46,16 @@
     </template>
     <template v-if="searchData && searchData.type == 'video'">
       <div class="flex flex-wrap justify-center w-4/5 min-w-75">
-        <a v-for="item in searchData.data" :href="'/song/' + item.song.id">
+        <router-link v-for="item in searchData.data" :to="'/song/' + item.song.id">
           <SearchVideoCard :key="item.bvid" :video="item"/>
-        </a>
+        </router-link>
       </div>
     </template>
     <template v-if="searchData && searchData.type == 'artist'">
       <SuspendPanel class="flex flex-wrap p-4 gap-2 w-9/10 max-w-112">
-        <a v-for="artist in searchData.data" class="block" :href="`/artist/${searchTarget}/${artist.id}`">
-          <el-button>{{ artist.name }}</el-button>
-        </a>
+        <div v-for="artist in searchData.data" class="block w-full">
+          <SearchArtistRow :key="artist.id" :type="searchData.type" :artist="artist"/>
+        </div>
       </SuspendPanel>
     </template>
 
@@ -80,7 +80,8 @@
 import { computed, ref, toRaw } from 'vue';
 import SearchSongCard from '@/components/search/SearchSongCard.vue';
 import SearchVideoCard from '@/components/search/SearchVideoCard.vue';
-import { ElSelect, ElOption, ElInput, ElButton, ElPagination } from 'element-plus';
+import SearchArtistRow from '@/components/search/SearchArtistRow.vue';
+import { ElSelect, ElOption, ElInput, ElPagination } from 'element-plus';
 import { useTitle } from '@vueuse/core';
 import SuspendPanel from '@/components/container/SuspendPanel.vue';
 import api from '@/utils/api/api.ts';

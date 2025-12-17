@@ -58,6 +58,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ScrollToTop: typeof import('./src/components/misc/ScrollToTop.vue')['default']
+    SearchArtistRow: typeof import('./src/components/search/SearchArtistRow.vue')['default']
     SearchSongCard: typeof import('./src/components/search/SearchSongCard.vue')['default']
     SearchVideoCard: typeof import('./src/components/search/SearchVideoCard.vue')['default']
     SideAdvertisement: typeof import('./src/components/misc/SideAdvertisement.vue')['default']
