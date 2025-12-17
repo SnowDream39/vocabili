@@ -54,7 +54,7 @@
     <template v-if="searchData && searchData.type == 'artist'">
       <SuspendPanel class="flex flex-wrap p-4 gap-2 w-9/10 max-w-112">
         <div v-for="artist in searchData.data" class="block w-full">
-          <SearchArtistRow :key="artist.id" :type="searchData.type" :artist="artist"/>
+          <SearchArtistRow :key="artist.id" :type="searchTarget" :artist="artist"/>
         </div>
       </SuspendPanel>
     </template>
