@@ -45,9 +45,9 @@
             <a :href="bvidToLink(song.bvid)" target="_blank">
               <button class="glass-button button-lg" ><div class="i-material-symbols-play-circle-outline-rounded"></div></button>
             </a>
-            <a :href="'/song/' + song.song_id">
+            <router-link :to="'/song/' + song.song_id">
               <button class="glass-button button-lg" ><div class="i-material-symbols-calendar-month-outline-rounded"></div></button>
-            </a>
+            </router-link>
             <button class="glass-button button-lg" @click="showCalculator"><div class="i-material-symbols-calculate-outline-rounded"></div></button>
             <button v-if="props.isToday" class="glass-button button-lg" @click="showToday"><div class="i-material-symbols-today-rounded"></div></button>
           </div>
@@ -74,9 +74,9 @@
               <a :href="bvidToLink(song.bvid)" target="_blank">
                 <div class="i-material-symbols-play-circle-outline-rounded"></div>
               </a>
-              <a :href="'/song/' + song.song_id">
+              <router-link :to="'/song/' + song.song_id">
                 <div class="i-material-symbols-calendar-month-outline-rounded" >历史数据</div>
-              </a>
+              </router-link>
               <button @click="showCalculator">
                 <div class="i-material-symbols-calculate-outline-rounded"></div>
               </button>

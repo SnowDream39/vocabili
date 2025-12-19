@@ -39,9 +39,9 @@
     <!-- 搜索结果 -->
     <template v-if="searchData && searchData.type == 'song'">
       <div class="flex flex-wrap justify-center w-4/5 min-w-75">
-        <a v-for="item in searchData.data" :href="'/song/' + item.id">
+        <router-link v-for="item in searchData.data" :to="'/song/' + item.id">
           <SearchSongCard :key="item.id" :song="item"/>
-        </a>
+        </router-link>
       </div>
     </template>
     <template v-if="searchData && searchData.type == 'video'">

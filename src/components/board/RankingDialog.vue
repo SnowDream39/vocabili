@@ -33,7 +33,7 @@
   </div>
 
 
-  <a :href="`/song/${ranking.song.id}`" class="w-50 max-w-1/2">
+  <router-link :to="`/song/${ranking.song.id}`" class="w-50 max-w-1/2">
     <SuspendPanel interact>
       <div class="center-container relative">
         <img class="w-full aspect-video object-cover" :src="ranking.video.thumbnail" alt="thumbnail" />
@@ -52,7 +52,7 @@
         <div>{{ DateTime.fromISO(ranking.video.pubdate).toFormat('yyyy-LL-dd HH:mm:ss') }}</div>
       </div>
     </SuspendPanel>
-  </a>
+  </router-link>
 </div>
 </template>
 

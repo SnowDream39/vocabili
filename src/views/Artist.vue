@@ -2,9 +2,9 @@
   <h1 class="text-2xl font-bold">{{ artistName }}</h1>
   <div>歌曲数：{{ total }}</div>
   <div class="flex flex-wrap justify-center w-4/5 min-w-75">
-    <a v-for="item in artistSongs" class="flex flex-wrap flex-row justify-center gap-4" :href="'/song/' + item.id">
+    <router-link v-for="item in artistSongs" class="flex flex-wrap flex-row justify-center gap-4" :to="'/song/' + item.id">
       <SearchSongCard :key="item.id" :song="item"/>
-    </a>
+    </router-link>
   </div>
   <el-pagination
     background

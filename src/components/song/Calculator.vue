@@ -60,9 +60,9 @@
     </div>
   </div>
 
-  <a v-if="!props.hideButton" :href="`/calculator?view=${props.form.view}&favorite=${props.form.favorite}&coin=${props.form.coin}&like=${props.form.like}&copyright=${props.form.copyright}&board=${props.form.board.name}&issue=${props.form.board.issue}`">
+  <router-link v-if="!props.hideButton" :to="`/calculator?view=${props.form.view}&favorite=${props.form.favorite}&coin=${props.form.coin}&like=${props.form.like}&copyright=${props.form.copyright}&board=${props.form.board.name}&issue=${props.form.board.issue}`">
     <button class="btn-primary">打开计算器页</button>
-  </a>
+  </router-link>
 
 </template>
 

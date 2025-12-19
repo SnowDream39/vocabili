@@ -33,11 +33,11 @@
                 <div class="i-material-symbols-play-circle-outline-rounded"></div>
               </button>
             </a>
-            <a :href="'/song/' + song.id">
+            <router-link :to="'/song/' + song.id">
               <button class="glass-button button-lg">
                 <div class="i-material-symbols-calendar-month-outline-rounded"></div>
               </button>
-            </a>
+            </router-link>
           </div>
         </div>
       </div>

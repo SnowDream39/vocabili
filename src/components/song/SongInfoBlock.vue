@@ -15,7 +15,7 @@
                 <img :src="video.thumbnail" />
               </div>
               <div class="grow flex flex-col justify-between">
-                <a class="font-bold underline underline-offset-5 hover:no-underline" :href="bvidToLink(video.bvid)">{{ video.title }}</a>
+                <a class="font-bold underline underline-offset-5 hover:no-underline" :href="bvidToLink(video.bvid)" target="_blank">{{ video.title }}</a>
                 <div>
                   <div>
                     <div><ArtistList :artists="[video.uploader]" type="uploader" /><span v-if="[2, 3, 101].includes(video.copyright)">（搬运）</span></div>
